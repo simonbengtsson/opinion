@@ -1,0 +1,21 @@
+{
+  "name": "hage",
+  "version": "0.0.1",
+  "homepage": "https://github.com/someatoms/Hage-DAT076",
+  "authors": [
+    "Simon Bengtsson <simonbengt@gmail.com>",
+    "Kim Kling <kim@kimkling.net>",
+    "Caroline Kabat <carolinekabat@gmail.com>",
+    "planhage"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}
