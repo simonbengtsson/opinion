@@ -1,7 +1,7 @@
 
 package com.dat076hage.hage;
 
-import com.dat076hage.hage.controllers.PostController;
+import com.dat076hage.hage.controllers.*;
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
@@ -21,5 +21,6 @@ public class ApplicationConfig extends Application {
     
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(PostController.class);
+        resources.add(UserController.class);
     }
 }
