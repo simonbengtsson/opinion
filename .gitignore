@@ -24,3 +24,5 @@ node_modules
 # Others
 hs_err_pid*
 .mtj.tmp/
+.idea
+*.iml
