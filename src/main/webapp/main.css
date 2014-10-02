@@ -1,0 +1,17 @@
+.navbar {
+    background: black;
+    color: #fff;
+}
+
+.navbar .glyphicon-search {
+    font-size: 20px;
+}
+
+#hage .navbar a {
+    color: #fff;
+}
+
+.logo {
+    height: 50px;
+    margin: 0 auto;
+}
