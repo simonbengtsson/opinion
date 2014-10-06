@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 
-<body ng-controller="MainCtrl">
+<body>
 
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
@@ -31,13 +31,12 @@
     </div>
 </nav>
 
-<div class="container">
-    <div class="post" ng-repeat="post in posts">{{ post.content }}</div>
-</div>
+<div class="container" ng-view></div>
 
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.js"></script>
 <script src="main.js"></script>
