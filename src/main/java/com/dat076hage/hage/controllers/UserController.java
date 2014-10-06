@@ -6,6 +6,7 @@
 package com.dat076hage.hage.controllers;
 
 import com.dat076hage.hage.*;
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -24,7 +25,7 @@ public class UserController {
     
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response findAll(){
+    public String findAll(){
         List<User> userList = new ArrayList<User>();
         
         userList.add(new User("Kim", "Kling"));
@@ -33,7 +34,12 @@ public class UserController {
 
         GenericEntity<List<User>> genericEntProd = new GenericEntity<List<User>>(userList) {};
         
+        Gson gson = new Gson();
+        return gson.toJson(userList);
         
-        return Response.ok(genericEntProd).build();
+        //System.out.println("DEBUG: " + genericEntProd);
+        //return "DEBUG: " + genericEntProd;
+        //return Response.ok(genericEntProd).build();
+        //return Response.ok(userList.toArray()).build();
     }
 }
