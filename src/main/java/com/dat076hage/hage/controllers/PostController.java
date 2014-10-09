@@ -7,6 +7,7 @@
 package com.dat076hage.hage.controllers;
 
 import com.dat076hage.hage.Post;
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.*;
@@ -23,20 +24,29 @@ public class PostController {
     
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response findAll() {
+    public String findAll() {
         List<Post> postList = new ArrayList<Post>(); 
-        Post post = new Post();
-        Post post2 = new Post();
-        post.setMsg("hej");
-        post2.setMsg("hej2");
-        postList.add(post);
-        postList.add(post2);
-        
-
-        GenericEntity<List<Post>> genericEntProd = new GenericEntity<List<Post>>(postList) {};
         
         
-        return Response.ok(genericEntProd).build();
+        //populate for testing
+        postList.add(new Post("jag hatar fiskar"));
+        postList.add(new Post("fuck alfons aoberg"));
+       
+        Gson gson = new Gson();
+        
+        return gson.toJson(postList);
     }  
+    
+    @GET
+    @Path("/findByUserId")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public String findByUserId() {
+        
+        List<Post> postList = new ArrayList<Post>();
+        Gson gson = new Gson();
+        
+        return gson.toJson("hej");
+        
+    }
     
 }
