@@ -1,3 +1,18 @@
 <div ng-controller="ProfileCtrl">
 <h1>Profile</h1>
+
+<h4>User: {{ users[0].firstname }}</h4>
+
+
+
+<div class="container-fluid">
+    <div ng-repeat="user in users">
+        
+        <div class="post" ng-repeat="post in user.posts">
+            {{ post.content }}
+          
+            {{ post.hates }}
+        </div>
+    </div>
+
 </div>
