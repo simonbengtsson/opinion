@@ -29,13 +29,8 @@ public class PostController {
         List<Post> postList = new ArrayList<>(); 
         
         
-        //populate for testing
-        postList.add(new Post("jag hatar fiskar"));
-        postList.add(new Post("fuck alfons aoberg"));
-       
-        Gson gson = new Gson();
         
-        return gson.toJson(postList);
+        return Response.ok(genericEntProd).build();
     }  
     
     @GET

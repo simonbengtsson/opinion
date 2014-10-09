@@ -5,6 +5,7 @@
  */
 package com.dat076hage.hage;
 
+import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +14,9 @@ import java.util.List;
  * @author kim
  */
 public class User {
-    private long id;
-    private String firstname;
-    private String lastname;
+    @Expose private long id;
+    @Expose private String firstname;
+    @Expose private String lastname;
     private static int idCount;
     private static List<User> users = new ArrayList<User>();
     private List<Post> posts = new ArrayList<Post>();
@@ -49,5 +50,14 @@ public class User {
     
     public static List<User> getUsers(){
         return new ArrayList<User>(users);
+    }
+    
+    public static void initTestUsers(){
+        if(User.getUsers().isEmpty()){
+            new User("Kim", "Kling");
+            new User("Simon", "Bengtsson");
+            new User("Simon", "Planhage");
+            new User("Caroline", "Kabat");
+        }
     }
 }
