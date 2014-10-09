@@ -12,11 +12,18 @@ package com.dat076hage.hage;
  */
 public class Post {
     
-    private String msg;
-    private int postId;
+    private String content;
+    private long postId;
+    private static int idCount;
     
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public Post (String content) {
+        this.content = content;
+        this.postId = getId();
+    }
+    
+    
+    private int getId() {
+        return ++idCount;
     }
     
 }

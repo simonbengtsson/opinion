@@ -5,6 +5,9 @@
  */
 package com.dat076hage.hage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author kim
@@ -14,24 +17,37 @@ public class User {
     private String firstname;
     private String lastname;
     private static int idCount;
+    private static List<User> users = new ArrayList<User>();
+    private List<Post> posts = new ArrayList<Post>();
     
     public User(){
-        this.id = getId();
-        this.firstname = "";
-        this.lastname = "";
+        this("", "");
     }
     
     public User(String firstname, String lastname){
-        this.id = getId();
+        this.id = createId();
         this.firstname = firstname;
         this.lastname = lastname;
+        users.add(this);
     }
     
-    private long getId(){
+    private long createId(){
         return ++idCount;
+    }
+    
+    public void addPost(Post post){
+        posts.add(post);
+    }
+    
+    public List<Post> getPosts(){
+        return new ArrayList<Post>(posts);
     }
     
     public String toString(){
         return String.format("id:%s firstname:%s lastname:%s", id, firstname, lastname);
+    }
+    
+    public static List<User> getUsers(){
+        return new ArrayList<User>(users);
     }
 }
