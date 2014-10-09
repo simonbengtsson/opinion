@@ -27,10 +27,12 @@ public class PostController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public String findAll() {
         List<Post> postList = new ArrayList<>(); 
+        for (User u : User.getUsers())
+            for (Post p : u.getPosts())
+                postList.add(p);
         
-        
-        
-        return Response.ok(genericEntProd).build();
+        Gson gson = new Gson();
+        return gson.toJson(postList);
     }  
     
     @GET
@@ -43,6 +45,25 @@ public class PostController {
         List<Post> postList = new ArrayList<>();
         
         
+        
+
+        
+        
+        // subtract id with 1 to compensate for list indexing
+        postList.addAll(userList.get(((int) id - 1)).getPosts());
+        
+        
+        
+        
+        Gson gson = new Gson();
+        
+        return gson.toJson(postList);
+        
+    }
+    
+    private List<User> initializeTest() {
+        
+        List<User> userList = new ArrayList<>();
         
         User firstUser = new User("steken", "stek");
         User secondUser = new User("alfons", "aoberg");
@@ -61,23 +82,21 @@ public class PostController {
         
         thirdUser.addPost(new Post("ninja"));
         
+        return userList;
+    }
+    
+    
+    @POST
+    @Path("/createPost")
+    @Consumes(value = MediaType.APPLICATION_FORM_URLENCODED)
+    public String create(@FormParam("userID") int userId, @FormParam("content") String content) {
         
-        // subtract id with 1 to compensate for list indexing
-        postList.addAll(userList.get(((int) id - 1)).getPosts());
-        
-        
-        
-        
+        User.getUsers().get(userId - 1).addPost(new Post(content));
         Gson gson = new Gson();
         
-        return gson.toJson(postList);
+        return gson.toJson("testweb");
         
     }
     
-    /**
-    @PUT
-    @Path("/createPost")
-    @Consumes(value = MediaType.APPLICATION_FORM_URLENCODED)
-    **/
     
 }
