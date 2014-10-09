@@ -31,8 +31,14 @@ public class PostController {
             for (Post p : u.getPosts())
                 postList.add(p);
         
+<<<<<<< HEAD
         Gson gson = new Gson();
         return gson.toJson(postList);
+=======
+        
+        
+        return null;
+>>>>>>> cb995088219999e3e133529872f83034f0799060
     }  
     
     @GET

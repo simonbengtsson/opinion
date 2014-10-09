@@ -1,6 +1,6 @@
 var app = angular.module('hage');
 
-app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http', '$modal', 'API_URL', function ($scope, model, network, $http, $modal, API_URL) {
+app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http', '$modal', function ($scope, model, network, $http, $modal) {
 
     $scope.openCreateModal = function () {
         var mi = $modal.open({

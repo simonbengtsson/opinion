@@ -1,6 +1,14 @@
 <div ng-controller="PostCtrl">
 <div class="post" ng-repeat="post in posts">
-    {{ post.content }}
-    <div class="hate-btn" ng-click="hate()"><span></span> 10k</div>
+
+    <div class="hage-content"> {{ post.content }} </div>
+
+    <img src="assets/rage.jpg" style="width: 400px;">
+
+    <div class="hate-btn" ng-click="hate(post)">
+        <span class=""></span>
+        {{ post.hates }}
+    </div>
+
 </div>
 </div>
