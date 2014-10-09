@@ -29,7 +29,7 @@ public class PostController {
         
         
         
-        return Response.ok(genericEntProd).build();
+        return null;
     }  
     
     @GET
