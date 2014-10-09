@@ -35,7 +35,7 @@ public class PostController {
 
         GenericEntity<List<Post>> genericEntProd = new GenericEntity<List<Post>>(postList) {};
         
-        
+
         return Response.ok(genericEntProd).build();
     }  
     
