@@ -20,7 +20,7 @@ public class ApplicationConfig extends Application {
     }
     
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(PostController.class);
-        resources.add(UserController.class);
+        resources.add(com.dat076hage.hage.controllers.PostController.class);
+        resources.add(com.dat076hage.hage.controllers.UserController.class);
     }
 }
