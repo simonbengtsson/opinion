@@ -1,51 +1,45 @@
 <!DOCTYPE html>
 <html ng-app="hage" id="hage">
-    <head>
-        <title>Hage</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap-theme.css">
-        <link rel="stylesheet" type="text/css" href="main.css">
 
-    </head>
-    <body ng-controller="MainCtrl">
-        
-        <nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    </div>
+<head>
+    <title>Hage</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap-theme.css">
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-          <li class="active"><span class="glyphicon glyphicon-search"></span></li>
-      </ul>
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+<body ng-controller="MainCtrl">
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div>
+            <ul class="nav-left nav-section">
+                <li>
+                    <a href="#"><span class="glyphicon glyphicon-search"></span></a>
+                    <!--<input type="text" placeholder="Search">-->
+                </li>
+            </ul>
+
+            <img class="logo" alt="App logo" src="logo.png">
+
+            <ul class="nav-right nav-section">
+                <li ng-click="openCreateModal()"><a href="#"><span class="glyphicon glyphicon-plus"></span></a></li>
+                <li><a href="#/profile"><span class="glyphicon glyphicon-user"></span></a></li>
+            </ul>
         </div>
-      </form>
-        
-        <img src="logo.png" class="logo">  
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-plus"></span></a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+    </div>
 </nav>
-        
-        <h1>:)</h1>
-        <button class="btn btn-primary">HEj</button>
-        <script src="bower_components/jquery/dist/jquery.js"></script>
-        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="bower_components/angular/angular.js"></script>
-        <script src="main.js"></script>
-    </body>
+
+<div class="container" ng-view></div>
+
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="main.js"></script>
+</body>
+
 </html>
