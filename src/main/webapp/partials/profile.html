@@ -1,23 +1,30 @@
 <div ng-controller="ProfileCtrl">
-<div class="container-fluid">
     
-    <img ng-src="{{users[0].profilePic}}" width="180">
-    <h3>{{ users[0].firstname }}</h3>
-    <h5>{{ users[0].userInfo }}</h5>
-
+    <div class="container-fluid">
     
-        <div ng-repeat="user in users">
+        <!-- User info -->
+        <div class="userInfo">
+            <img class="img-circle" ng-src="{{users[0].profilePic}}" width="170">
+            <h3>{{ users[0].firstname }}</h3>
+            <small>{{ users[0].userInfo }}</small>
+        </div>
 
-            <div class="post" ng-repeat="post in user.posts">
-                {{ post.content }}
-                
+        <!-- User's hages -->
+        <div class="col-md-6 col-md-offset-3"> 
+            <div class="post" ng-repeat="post in users[0].posts">
+
+                <div class="hage-content">
+                    {{ post.content }}
+                </div>
+
                 <div class="hate-btn" ng-controller="PostCtrl" ng-click="hate(post)">
-                <span class=""></span>
-                    {{ post.hates }}
+                    <span class=""></span>
+                    {{ post.hates}}
                 </div>  
-                
-            </div>
-        </div>  
-   
 
+            </div>
+        </div>
+  
+    </div>    
+    
 </div>

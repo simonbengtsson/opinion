@@ -83,3 +83,8 @@
 .hate-btn:hover span {
     background: url(../assets/angry2.png);
 }
+
+.userInfo {
+    position: fixed;
+    text-align: center;
+}
