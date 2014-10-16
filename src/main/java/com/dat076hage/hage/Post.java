@@ -6,14 +6,10 @@
 
 package com.dat076hage.hage;
 
-
 import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.Date;
-
 import javax.persistence.ManyToOne;
-
-
 /**
  *
  * @author stek
