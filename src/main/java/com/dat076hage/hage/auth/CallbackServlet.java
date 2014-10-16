@@ -11,15 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.brickred.socialauth.AuthProvider;
 import org.brickred.socialauth.SocialAuthManager;
 import org.brickred.socialauth.util.AccessGrant;
 import org.brickred.socialauth.util.SocialAuthUtil;
 
 /**
- * This is called from Twitter (a redirect)
- *
- * @author hajo
+ * Servlet that is called by third-party oauth provider
  */
 @WebServlet(name = "CallbackServlet", urlPatterns = {"/callback"})
 public class CallbackServlet extends HttpServlet {
@@ -28,42 +27,39 @@ public class CallbackServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         LOG.log(Level.INFO, "*** CallbackServlet");
         AccessGrant ag;
-        HttpSession session = request.getSession();
+
         try {
-            Map<String, String> paramsMap = SocialAuthUtil.getRequestParametersMap(request);
             // Must use same manager as used for login
-            SocialAuthManager manager = (SocialAuthManager) session.getAttribute("authManager");
-            LOG.log(Level.INFO, "*** Callback authManager is {0}", manager);
+            SocialAuthManager manager = (SocialAuthManager) request.getSession().getAttribute("authManager");
+            Map<String, String> paramsMap = SocialAuthUtil.getRequestParametersMap(request);
             AuthProvider provider = manager.connect(paramsMap);
-            LOG.log(Level.INFO, "*** Callback provider is {0}", provider);
             ag = provider.getAccessGrant();
-            LOG.log(Level.INFO, "*** Callback got access grant");
         } catch (Exception ex) {
-            //ex.printStackTrace();
-            response.sendRedirect("error.html");
+            response.sendRedirect("");
             return;
         }
-        // Clear state
-        session.invalidate();
+
+        request.getSession().invalidate();
 
         Cookie cookie = new Cookie("key", ag.getKey());
         cookie.setMaxAge(24 * 60 * 60);
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
-        response.sendRedirect("home.html");
-
+        response.sendRedirect("");
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -74,10 +70,10 @@ public class CallbackServlet extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

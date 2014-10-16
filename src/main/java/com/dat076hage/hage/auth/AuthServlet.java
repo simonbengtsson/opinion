@@ -1,6 +1,7 @@
 package com.dat076hage.hage.auth;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,49 +15,31 @@ import org.brickred.socialauth.SocialAuthConfig;
 import org.brickred.socialauth.SocialAuthManager;
 
 /**
- *
- * This will call Twitter for authentication (login)
- * and get the keys
- *
- * NOTE: To logout just invalidate the session
- *
- * @author hajo
+ * Third party auth servlet
  */
 @WebServlet(name = "AuthServlet", urlPatterns = {"/auth"})
 public class AuthServlet extends HttpServlet {
 
     private static final Logger LOG = Logger.getLogger(AuthServlet.class.getSimpleName());
+    protected final String callbackUrl = "http://localhost:8080/Hage-DAT076/callback";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         LOG.log(Level.INFO, "*** AuthServlet");
-        //Create an instance of SocialAuthConfgi object
         SocialAuthConfig config = SocialAuthConfig.getDefault();
-        LOG.log(Level.INFO, "*** Auth got config");
+
         try {
-            //load configuration. By default load the configuration from oauth_consumer.properties. 
-            //You can also pass input stream, properties object or properties file name.
+            // By default conf from oauth_consumer.properties is loaded.
             config.load();
-            LOG.log(Level.INFO, "*** Auth config loaded");
-            //Create an instance of SocialAuthManager and set config
             SocialAuthManager manager = new SocialAuthManager();
-            LOG.log(Level.INFO, "*** Auth manager{0}", manager);
             manager.setSocialAuthConfig(config);
 
-            // URL of YOUR application which will be called (from twitter) after authentication        
-            // MUST have localhost else session lost. See web for "naked hosts" (no domain)
-            String successUrl = "http://localhost:8080/rest_oauth/callback";
-
-            // Get Provider URL to which you should redirect for authentication.
-            // id can have values "facebook", "twitter", "yahoo" etc. or the OpenID URL
-            // This iwill issue a redirect!!
-            String url = manager.getAuthenticationUrl("twitter", successUrl);
+            String url = manager.getAuthenticationUrl("twitter", callbackUrl);
 
             // Store temporarily in session
-            HttpSession session = request.getSession();
-            session.setAttribute("authManager", manager);
+            request.getSession().setAttribute("authManager", manager);
 
-            // Send to authentication
             response.sendRedirect(url);
                       
         } catch (Exception e) {

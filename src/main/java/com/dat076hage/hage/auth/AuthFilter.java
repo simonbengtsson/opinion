@@ -16,9 +16,7 @@ import org.brickred.socialauth.SocialAuthManager;
 import org.brickred.socialauth.util.AccessGrant;
 
 /**
- * Protecting the /protected resource
- *
- * @author hajo
+ * Protects sensitive routes
  */
 @Provider
 public class AuthFilter implements ContainerRequestFilter {
@@ -30,16 +28,14 @@ public class AuthFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext rCtx) {
-        LOG.log(Level.INFO, "JAX-RS filter hit");
+        LOG.log(Level.INFO, "*** AuthFilter");
         Map<String, Cookie> cookies = rCtx.getCookies();
         Cookie c = cookies.get("key");
         if (c == null) {
             throw new WebApplicationException(Status.UNAUTHORIZED);
         }
-        LOG.log(Level.INFO, "Cookie {0}", c.getValue());
         AccessGrant ag = new AccessGrant();
         ag.setKey(c.getValue());
-        //ag.setSecret(secret); NOT needed
         ag.setProviderId("twitter");
 
         try {
