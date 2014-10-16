@@ -6,9 +6,13 @@
 
 package com.dat076hage.hage;
 
+
 import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.Date;
+
+import javax.persistence.ManyToOne;
+
 
 /**
  *
@@ -26,6 +30,8 @@ public class Post {
     
     
     private static int idCount;
+    @ManyToOne
+    private User user;
     
     public Post (String content) {
         this.content = content;

@@ -24,7 +24,7 @@ import javax.ws.rs.core.*;
 public class PostController {
   
     public PostController() {
-        initializeTest();
+      //  initializeTest();
     }
     
     @GET
@@ -74,11 +74,12 @@ public class PostController {
         
     }
     
+    /**
     private List<User> initializeTest() {
         
         List<User> userList = new ArrayList<>();
         
-        User firstUser = new User("steken", "stek");
+        //User firstUser = new User("steken", "stek");
         User secondUser = new User("alfons", "aoberg");
         User thirdUser = new User("glenn", "hysen");
         
@@ -97,7 +98,7 @@ public class PostController {
         
         return userList;
     }
-    
+    **/
     
     @POST
     @Path("/createPost")
