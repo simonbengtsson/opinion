@@ -22,20 +22,31 @@ import javax.ws.rs.core.*;
  */
 @Path("/posts")
 public class PostController {
+  
+    public PostController() {
+        initializeTest();
+    }
     
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public String findAll() {
+    public String findAll(@QueryParam("username") String userName) {
+        
+        // will be handled with database
         List<Post> postList = new ArrayList<>(); 
         for (User u : User.getUsers())
             for (Post p : u.getPosts())
                 postList.add(p);
-        
 
         Gson gson = new Gson();
-        return gson.toJson(postList);
+        return gson.toJson(userName);
+    } 
+    
+    @GET
+    @Produces(value = {MediaType.APPLICATION_JSON}) 
+    public String findAll() {
+        return "hej";
+    };
 
-    }  
     
     @GET
     @Path("/findByUserId")
