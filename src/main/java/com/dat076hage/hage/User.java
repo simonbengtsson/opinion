@@ -8,32 +8,41 @@ package com.dat076hage.hage;
 import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author kim
  */
+@Entity
 public class User {
-    @Expose private long id;
-    @Expose private String firstname;
-    @Expose private String lastname;
-    private static int idCount;
-    private static List<User> users = new ArrayList<User>();
+    @Id
+    @Column(nullable = false, updatable = false, length = 50)
+    @Expose private String username;
+    private String hash;
+    @Expose private String description;
+    
+    //TODO: http://en.wikibooks.org/wiki/Java_Persistence/ManyToMany#Mapping_a_Join_Table_with_Additional_Columns
+    @ManyToMany
+    private List<User> following = new ArrayList<User>();
+    
+    @OneToMany(mappedBy = "user") 
     private List<Post> posts = new ArrayList<Post>();
     
+    //TODO: Remove when database is in place
+    @Expose private static List<User> users = new ArrayList<User>();
+    
     public User(){
-        this("", "");
+        this("");
     }
     
-    public User(String firstname, String lastname){
-        this.id = createId();
-        this.firstname = firstname;
-        this.lastname = lastname;
+    public User(String username){
+        this.username = username;
         users.add(this);
-    }
-    
-    private long createId(){
-        return ++idCount;
     }
     
     public void addPost(Post post){
@@ -45,7 +54,7 @@ public class User {
     }
     
     public String toString(){
-        return String.format("id:%s firstname:%s lastname:%s", id, firstname, lastname);
+        return String.format("username:%s", username);
     }
     
     public static List<User> getUsers(){
@@ -54,10 +63,10 @@ public class User {
     
     public static void initTestUsers(){
         if(User.getUsers().isEmpty()){
-            new User("Kim", "Kling");
-            new User("Simon", "Bengtsson");
-            new User("Simon", "Planhage");
-            new User("Caroline", "Kabat");
+            new User("KimKling");
+            new User("SimonBengtsson");
+            new User("SimonPlanhage");
+            new User("CarolineKabat");
         }
     }
 }

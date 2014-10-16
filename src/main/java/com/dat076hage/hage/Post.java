@@ -6,6 +6,8 @@
 
 package com.dat076hage.hage;
 
+import javax.persistence.ManyToOne;
+
 /**
  *
  * @author stek
@@ -15,6 +17,8 @@ public class Post {
     private String content;
     private long postId;
     private static int idCount;
+    @ManyToOne
+    private User user;
     
     public Post (String content) {
         this.content = content;
