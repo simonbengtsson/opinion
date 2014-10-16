@@ -6,13 +6,16 @@
 
 package com.dat076hage.hage;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 /**
  *
  * @author stek
  */
-public class Post {
+@Entity
+public class Post implements Serializable {
     
     private String content;
     private long postId;

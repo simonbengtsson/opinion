@@ -6,19 +6,26 @@
 package com.dat076hage.hage;
 
 import com.google.gson.annotations.Expose;
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 /**
  *
  * @author kim
  */
-public class Hate {
+@Entity
+public class Hate implements Serializable {
     @ManyToOne
     @Expose private User user;
     @ManyToOne
     @Expose private Post post;
     @Expose private Date dateTime;
+    
+    public Hate(){
+        
+    }
     
     public Hate(User user, Post post){
         this.user = user;
