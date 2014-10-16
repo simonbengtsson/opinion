@@ -1,0 +1,12 @@
+<div class="post">
+
+    <div class="hage-content"> {{ post.content }} </div>
+
+    <img src="assets/rage.jpg" style="width: 400px;">
+
+    <div class="hate-btn" ng-click="model.hate(post)" ng-class="post.hated ? 'hated' : ''">
+        <span class=""></span>
+        {{ post.hates.length }}
+    </div>
+
+</div>
