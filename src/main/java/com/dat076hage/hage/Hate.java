@@ -9,6 +9,7 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 /**
@@ -17,10 +18,14 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class Hate implements Serializable {
+    @Id
     @ManyToOne
     @Expose private User user;
+    
+    @Id
     @ManyToOne
     @Expose private Post post;
+    
     @Expose private Date dateTime;
     
     public Hate(){

@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 /**
@@ -21,7 +23,9 @@ import javax.persistence.ManyToOne;
 public class Post implements Serializable {
     
     @Expose private String content;
+    
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Expose private long postId;
     private String picturePath;
     private Date postDate;
@@ -29,14 +33,18 @@ public class Post implements Serializable {
     private ArrayList hageTagList;
     private int[] coordinates = new int[2];
     
-    
     private static int idCount;
     @ManyToOne
     private User user;
     
-    public Post (String content) {
+    public Post(){
+        
+    }
+    
+    public Post (User user, String content) {
+        this.user = user;
         this.content = content;
-        this.postId = getId();        
+        this.postId = getId();
     }
     
     
