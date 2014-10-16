@@ -8,8 +8,11 @@ package com.dat076hage.hage;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import com.google.gson.annotations.Expose;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
 /**
  *
  * @author stek
@@ -17,15 +20,23 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Post implements Serializable {
     
-    private String content;
-    private long postId;
+    @Expose private String content;
+    @Id
+    @Expose private long postId;
+    private String picturePath;
+    private Date postDate;
+    private String link;
+    private ArrayList hageTagList;
+    private int[] coordinates = new int[2];
+    
+    
     private static int idCount;
     @ManyToOne
     private User user;
     
     public Post (String content) {
         this.content = content;
-        this.postId = getId();
+        this.postId = getId();        
     }
     
     

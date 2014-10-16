@@ -22,16 +22,31 @@ import javax.ws.rs.core.*;
  */
 @Path("/posts")
 public class PostController {
+  
+    public PostController() {
+      //  initializeTest();
+    }
     
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public String findAll() {
+    public String findAll(@QueryParam("username") String userName) {
+        
+        // will be handled with database
         List<Post> postList = new ArrayList<>(); 
-        
-        
-        
-        return null;
-    }  
+        for (User u : User.getUsers())
+            for (Post p : u.getPosts())
+                postList.add(p);
+
+        Gson gson = new Gson();
+        return gson.toJson(userName);
+    } 
+    
+    @GET
+    @Produces(value = {MediaType.APPLICATION_JSON}) 
+    public String findAll() {
+        return "hej";
+    };
+
     
     @GET
     @Path("/findByUserId")
@@ -44,7 +59,27 @@ public class PostController {
         
         
         
-        User firstUser = new User("steken", "stek");
+
+        
+        
+        // subtract id with 1 to compensate for list indexing
+        postList.addAll(userList.get(((int) id - 1)).getPosts());
+        
+        
+        
+        
+        Gson gson = new Gson();
+        
+        return gson.toJson(postList);
+        
+    }
+    
+    /**
+    private List<User> initializeTest() {
+        
+        List<User> userList = new ArrayList<>();
+        
+        //User firstUser = new User("steken", "stek");
         User secondUser = new User("alfons", "aoberg");
         User thirdUser = new User("glenn", "hysen");
         
@@ -61,23 +96,21 @@ public class PostController {
         
         thirdUser.addPost(new Post("ninja"));
         
+        return userList;
+    }
+    **/
+    
+    @POST
+    @Path("/createPost")
+    @Consumes(value = MediaType.APPLICATION_FORM_URLENCODED)
+    public String create(@FormParam("userID") int userId, @FormParam("content") String content) {
         
-        // subtract id with 1 to compensate for list indexing
-        postList.addAll(userList.get(((int) id - 1)).getPosts());
-        
-        
-        
-        
+        User.getUsers().get(userId - 1).addPost(new Post(content));
         Gson gson = new Gson();
         
-        return gson.toJson(postList);
+        return gson.toJson("testweb");
         
     }
     
-    /**
-    @PUT
-    @Path("/createPost")
-    @Consumes(value = MediaType.APPLICATION_FORM_URLENCODED)
-    **/
     
 }
