@@ -6,7 +6,7 @@ app.service('ModelService', [function () {
         {content: 'This is a hage', hates: 100}
     ];
     this.users = [{ 
-        firstname: 'Ada Lovelace', 
+        firstname: 'Ada', 
         posts: [
             {content: 'Long long long long long long long long long long long long long long long long long long long long long long long hate text for testing layout for long(er) text', hates: 0},
             {content: "BILJETTKONTROLLANTER >:((((", hates: 23423}, 
