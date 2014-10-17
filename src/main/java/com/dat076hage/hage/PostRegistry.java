@@ -27,4 +27,6 @@ public class PostRegistry extends AbstractDAO<Post, String>{
         return em;
     }
     
+    // Below is all special methods for Posts, see AbstractDAO for the rest
+    
 }

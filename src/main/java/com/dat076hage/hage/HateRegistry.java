@@ -27,4 +27,5 @@ public class HateRegistry extends AbstractDAO<Hate, String>{
         return em;
     }
     
+    // Below is all special methods for Posts, see AbstractDAO for the rest
 }
