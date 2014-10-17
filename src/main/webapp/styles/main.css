@@ -107,3 +107,7 @@
     position: fixed;
     text-align: center;
 }
+
+textarea {
+    resize: none;
+}

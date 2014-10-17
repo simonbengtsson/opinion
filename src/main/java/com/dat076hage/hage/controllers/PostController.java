@@ -23,18 +23,13 @@ import javax.ws.rs.core.*;
  *
  * @author stek
  */
-@Path("/posts")
+@Path("posts")
 public class PostController {
-  
     @EJB
     PostRegistry postReg;
     
-    public PostController() {
-        initializeTest();
-    }
-    
-
     @GET
+    @Consumes(value = MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(value = {MediaType.APPLICATION_JSON}) 
     public String findAll(@QueryParam("username") String userName, @QueryParam("hagetag") String hageTag) {
         
@@ -49,8 +44,8 @@ public class PostController {
     };
     
     @POST
-    @Produces(value = {MediaType.APPLICATION_JSON})
     @Consumes(value = {MediaType.APPLICATION_FORM_URLENCODED})
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public String createPost(@QueryParam("text") String text) {
         return "Create new post with text: " + text;
     }
@@ -58,43 +53,22 @@ public class PostController {
     @PUT
     @Consumes(value = MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public String updatePost(@QueryParam("postId") long postId, @QueryParam("newText") String newText) {
+    public String updatePost(@QueryParam("id") long postId, @QueryParam("text") String newText) {
         return "postId: " + postId + ", text: " + newText;
     }
     
     @DELETE
     @Consumes(value = MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public String deletePost(@QueryParam("postId") long postId) {
+    public String deletePost(@QueryParam("id") long postId) {
         return "post should be deleted: " + postId;
     }
     
     @GET
-    @Path(value = "id")
+    @Path(value = "single")
+    @Consumes(value = MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public String findPost(@QueryParam("id") long postId) {
-        return "postId to be found: " + postId;
+    public String findPost(@QueryParam("id") long id) {
+        return "postId to be found: " + id;
     }
-    
-    
-    
-    
-
-    private List<User> initializeTest() {
-        
-        List<User> userList = new ArrayList<>();
-        
-        User firstUser = new User("steken", "en kool stek", "2454");
-        User secondUser = new User("alfons", "en kool stek", "2454");
-        User thirdUser = new User("glenn", "en kool stek", "2454");
-
-        userList.add(firstUser);
-        userList.add(secondUser);
-        userList.add(thirdUser);
-        return userList;
-
-    }
-    
-    
-    
 }
