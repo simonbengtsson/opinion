@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.brickred.socialauth.AuthProvider;
+import org.brickred.socialauth.Profile;
 import org.brickred.socialauth.SocialAuthManager;
 import org.brickred.socialauth.util.AccessGrant;
 import org.brickred.socialauth.util.SocialAuthUtil;
@@ -36,6 +37,9 @@ public class CallbackServlet extends HttpServlet {
             SocialAuthManager manager = (SocialAuthManager) request.getSession().getAttribute("authManager");
             Map<String, String> paramsMap = SocialAuthUtil.getRequestParametersMap(request);
             AuthProvider provider = manager.connect(paramsMap);
+            Profile profile = provider.getUserProfile();
+            System.out.println("*** Name " + profile.getFirstName());
+            LOG.log(Level.INFO, "*** Name " + profile.getFirstName());
             ag = provider.getAccessGrant();
         } catch (Exception ex) {
             response.sendRedirect("");
