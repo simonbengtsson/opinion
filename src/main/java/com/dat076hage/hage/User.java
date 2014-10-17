@@ -8,12 +8,16 @@ package com.dat076hage.hage;
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -24,15 +28,20 @@ public class User implements Serializable{
     @Id
     @Column(nullable = false, updatable = false, length = 50)
     @Expose private String username;
-    private String hash;
+    
     @Expose private String description;
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @Expose private Date memberSince;
+    
+    private String hash;
     
     //TODO: http://en.wikibooks.org/wiki/Java_Persistence/ManyToMany#Mapping_a_Join_Table_with_Additional_Columns
     @ManyToMany
-    private List<User> following;
+    @Expose private List<User> following;
     
     @OneToMany(mappedBy = "user") 
-    private List<Post> posts;
+    @Expose private List<Post> posts;
     
     //TODO: Remove when database is in place
     @Expose private static List<User> users = new ArrayList<User>();
