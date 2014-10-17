@@ -7,10 +7,13 @@
 package com.dat076hage.hage.controllers;
 
 import com.dat076hage.hage.Post;
+import com.dat076hage.hage.PostRegistry;
 import com.dat076hage.hage.User;
+import com.dat076hage.hage.UserRegistry;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
@@ -23,6 +26,9 @@ import javax.ws.rs.core.*;
 @Path("/posts")
 public class PostController {
   
+    @EJB
+    PostRegistry postReg;
+    
     public PostController() {
         initializeTest();
     }
