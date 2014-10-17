@@ -109,7 +109,7 @@ public class PostController {
     @Consumes(value = MediaType.APPLICATION_FORM_URLENCODED)
     public String create(@FormParam("userID") int userId, @FormParam("content") String content) {
         
-        User.getUsers().get(userId - 1).addPost(new Post(content));
+        //User.getUsers().get(userId - 1).addPost(new Post(content));
         Gson gson = new Gson();
         
         return gson.toJson("testweb");

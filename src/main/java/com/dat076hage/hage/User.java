@@ -6,6 +6,7 @@
 package com.dat076hage.hage;
 
 import com.google.gson.annotations.Expose;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -19,7 +20,7 @@ import javax.persistence.OneToMany;
  * @author kim
  */
 @Entity
-public class User {
+public class User implements Serializable{
     @Id
     @Column(nullable = false, updatable = false, length = 50)
     @Expose private String username;
@@ -28,29 +29,34 @@ public class User {
     
     //TODO: http://en.wikibooks.org/wiki/Java_Persistence/ManyToMany#Mapping_a_Join_Table_with_Additional_Columns
     @ManyToMany
-    private List<User> following = new ArrayList<User>();
+    private List<User> following;
     
     @OneToMany(mappedBy = "user") 
-    private List<Post> posts = new ArrayList<Post>();
+    private List<Post> posts;
     
     //TODO: Remove when database is in place
     @Expose private static List<User> users = new ArrayList<User>();
     
     public User(){
-        this("");
     }
     
-    public User(String username){
+    public User(String username, String description, String hash){
+        posts = new ArrayList<Post>();
+        following = new ArrayList<User>();
         this.username = username;
+        this.description = description;
+        this.hash = hash;
         users.add(this);
-    }
-    
-    public void addPost(Post post){
-        posts.add(post);
     }
     
     public List<Post> getPosts(){
         return new ArrayList<Post>(posts);
+    }
+    
+    public Post createNewPost(String content){
+        Post post = new Post(this, content);
+        posts.add(post);
+        return post;
     }
     
     public String toString(){
@@ -63,10 +69,10 @@ public class User {
     
     public static void initTestUsers(){
         if(User.getUsers().isEmpty()){
-            new User("KimKling");
-            new User("SimonBengtsson");
-            new User("SimonPlanhage");
-            new User("CarolineKabat");
+            new User("KimKling", null, null);
+            new User("SimonBengtsson", null, null);
+            new User("SimonPlanhage", null, null);
+            new User("CarolineKabat", null, null);
         }
     }
 }

@@ -1,14 +1,8 @@
-<div ng-controller="PostCtrl">
-<div class="post" ng-repeat="post in posts">
-
-    <div class="hage-content"> {{ post.content }} </div>
-
-    <img src="assets/rage.jpg" style="width: 400px;">
-
-    <div class="hate-btn" ng-click="hate(post)">
-        <span class=""></span>
-        {{ post.hates }}
+<div ng-controller="PostCtrl" class="container">
+    <div class="col-sm-4">
+        <h4>Featured haters</h4>
     </div>
-
-</div>
+    <div class="col-sm-8">
+        <hage-post ng-repeat="post in model.posts" hage-post="post"></hage-post>
+    </div>
 </div>

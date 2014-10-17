@@ -2,7 +2,7 @@
 <html ng-app="hage" id="hage">
 
 <head>
-    <title>Hag2</title>
+    <title>Hage</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap-theme.css">
@@ -21,18 +21,17 @@
                 </li>
             </ul>
 
-            <!--   <img class="logo" alt="App logo" src="assets/logo.png"> -->
-            <a href="#/"><img class="logo" alt="App logo" ng-src="assets/logo.png"></a>
+            <a href="#"><img class="logo" alt="App logo" ng-src="assets/logo.png"></a>
                 
             <ul class="nav-right nav-section">
                 <li ng-click="openCreateModal()"><a href="#"><span class="glyphicon glyphicon-plus"></span></a></li>
-                <li><a href="#/profile"><span class="glyphicon glyphicon-user"></span></a></li>
+                <li ng-click="goToProfile()"><span><span class="glyphicon glyphicon-user"></span></span></li>
             </ul>
         </div>
     </div>
 </nav>
 
-<div class="container" ng-view></div>
+<div ng-view autoscroll="true"></div>
 
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
@@ -46,6 +45,7 @@
 <script src="js/controllers/PostCtrl.js"></script>
 <script src="js/services/ModelService.js"></script>
 <script src="js/services/NetworkService.js"></script>
+<script src="js/directives/PostDirective.js"></script>
 
 </body>
 
