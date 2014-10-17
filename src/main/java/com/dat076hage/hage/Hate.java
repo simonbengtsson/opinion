@@ -9,6 +9,8 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
@@ -20,10 +22,12 @@ import javax.persistence.Temporal;
 @Entity
 public class Hate implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    
     @ManyToOne
     @Expose private User user;
     
-    @Id
     @ManyToOne
     @Expose private Post post;
     
