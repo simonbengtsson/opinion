@@ -24,9 +24,10 @@ import javax.ws.rs.core.*;
 public class PostController {
   
     public PostController() {
-      //  initializeTest();
+        initializeTest();
     }
     
+    /**
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
     public String findAll(@QueryParam("username") String userName) {
@@ -40,11 +41,14 @@ public class PostController {
         Gson gson = new Gson();
         return gson.toJson(userName);
     } 
+    **/
     
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON}) 
-    public String findAll() {
-        return "hej";
+    public String findAll(@QueryParam("username") String userName, @QueryParam("hagetag") String hageTag) {
+        if(hageTag != null)
+            return "Username: " + userName + ", searched hagetag: " + hageTag;
+        else return "Username: " + userName;
     };
 
     
@@ -74,14 +78,14 @@ public class PostController {
         
     }
     
-    /**
+    
     private List<User> initializeTest() {
         
         List<User> userList = new ArrayList<>();
         
-        //User firstUser = new User("steken", "stek");
-        User secondUser = new User("alfons", "aoberg");
-        User thirdUser = new User("glenn", "hysen");
+        User firstUser = new User("steken");
+        User secondUser = new User("alfons");
+        User thirdUser = new User("glenn");
         
         userList.add(firstUser);
         userList.add(secondUser);
@@ -98,7 +102,7 @@ public class PostController {
         
         return userList;
     }
-    **/
+    
     
     @POST
     @Path("/createPost")
