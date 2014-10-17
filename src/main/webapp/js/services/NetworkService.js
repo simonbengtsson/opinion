@@ -12,10 +12,10 @@ app.service('NetworkService', ['$http', 'API_URL', function ($http, API_URL) {
     };
 
     var dummyPosts = [
-        {text: 'Long long long long long long long long long long long long long long long long long long long long long long long hate text for testing layout for long(er) text', hatingUsers: [dummyUser], author: dummyUser},
-        {text: "BILJETTKONTROLLANTER >:((((", hatingUsers: [], author: dummyUser, picture: 'http://www.nhs.uk/Conditions/stress-anxiety-depression/PublishingImages/E%20to%20I/expert-tips-on-child-anger_364x200_107668795.jpg'},
-        {text: "When you change to autumn jacket and forget your västtrafikkort in your summer jacket... at home", hatingUsers: [], author: dummyUser},
-        {text: "Hello world! :D ..... not.", hatingUsers: [], author: dummyUser}
+        {text: 'Long long long long long long long long long long long long long long long long long long long long long long long hate text for testing layout for long(er) text', hatingUsers: [dummyUser], author: dummyUser, comments: []},
+        {text: "BILJETTKONTROLLANTER >:((((", hatingUsers: [], author: dummyUser, picture: 'http://www.nhs.uk/Conditions/stress-anxiety-depression/PublishingImages/E%20to%20I/expert-tips-on-child-anger_364x200_107668795.jpg', comments: []},
+        {text: "When you change to autumn jacket and forget your västtrafikkort in your summer jacket... at home", hatingUsers: [], author: dummyUser, comments: []},
+        {text: "Hello world! :D ..... not.", hatingUsers: [], author: dummyUser, comments: [{id: 1, author: dummyUser, text: "Test comment"}]}
     ];
 
     dummyUser.posts = dummyPosts;
@@ -76,6 +76,18 @@ app.service('NetworkService', ['$http', 'API_URL', function ($http, API_URL) {
     this.deleteHate = function(post) {
         return dummyPromise("Success!");
         //return $http.delete(API_URL + '/hate/' + post.id);
+    };
+
+    // Hates
+
+    this.createComment = function(post) {
+        return dummyPromise("Success!");
+        //return $http.post(API_URL + '/hate/' + post.id + '/comments/');
+    };
+
+    this.deleteHate = function(post, comment) {
+        return dummyPromise("Success!");
+        return $http.delete(API_URL + '/hate/' + post.id + '/comments/' + comment.id);
     };
 
 }]);
