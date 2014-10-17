@@ -30,10 +30,11 @@
     height: 50px;
 }
 
-.navbar li a {
+.navbar li > a, .navbar li > span {
     display: block;
     padding: 15px;
     line-height: 20px;
+    cursor: pointer;
 }
 
 .navbar li:hover {
