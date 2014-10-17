@@ -6,8 +6,10 @@
 package com.dat076hage.hage.controllers;
 
 import com.dat076hage.hage.User;
+import com.dat076hage.hage.UserRegistry;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
@@ -22,10 +24,8 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/users")
 public class UserController {
-    
-    @PersistenceContext
-    private EntityManager em;
-    
+    @EJB
+    UserRegistry userReg;
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
     @GET
@@ -33,16 +33,17 @@ public class UserController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public String findAll(){
         User user = new User("kimkling", "About me", "1234");
-        em.persist(user);
+        
+        userReg.create(user);
+        
         return "{'message':'User persisted'}";
-        //return gson.toJson(User.getUsers());
     }
     
     @GET
-    @Path(value = "/username/{username}")
+    @Path(value = "/username")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public String find(@PathParam("username") final String username) {
-        User user = em.find(User.class, username);
+        User user = userReg.find("kimkling");
         return gson.toJson(user);
         
     }

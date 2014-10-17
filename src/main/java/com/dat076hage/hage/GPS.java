@@ -6,10 +6,13 @@
 
 package com.dat076hage.hage;
 
+import javax.persistence.Embeddable;
+
 /**
  *
  * @author stek
  */
+@Embeddable
 public class GPS {
     
     private double[] coordinates = new double[2];

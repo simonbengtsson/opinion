@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.persistence.Embedded;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,7 +38,8 @@ public class Post implements Serializable {
     private String link;
     private ArrayList hageTagList;
     private int[] coordinates = new int[2];
-    
+    @Embedded
+    private GPS position;
     
     @PersistenceContext
     private EntityManager em;

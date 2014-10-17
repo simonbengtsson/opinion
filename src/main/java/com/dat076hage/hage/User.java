@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 /**
@@ -24,6 +25,7 @@ import javax.persistence.Temporal;
  * @author kim
  */
 @Entity
+@Table(name = "users")
 public class User implements Serializable{
     @Id
     @Column(nullable = false, updatable = false, length = 50)

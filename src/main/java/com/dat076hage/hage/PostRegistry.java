@@ -6,6 +6,7 @@
 package com.dat076hage.hage;
 
 import com.dat076hage.hage.persistence.AbstractDAO;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -13,9 +14,10 @@ import javax.persistence.PersistenceContext;
  *
  * @author kim
  */
+@Stateless
 public class PostRegistry extends AbstractDAO<Post, String>{
 
-    @PersistenceContext
+    @PersistenceContext(unitName="hage_pu")
     private EntityManager em;
     
     public PostRegistry() {
@@ -24,6 +26,7 @@ public class PostRegistry extends AbstractDAO<Post, String>{
     
     @Override
     protected EntityManager getEntityManager() {
+        System.out.print(em.toString());
         return em;
     }
     
