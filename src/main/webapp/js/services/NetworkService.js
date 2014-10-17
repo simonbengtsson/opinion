@@ -12,9 +12,9 @@ app.service('NetworkService', ['$http', 'API_URL', function ($http, API_URL) {
     };
 
     var dummyPosts = [
-        {text: 'Long long long long long long long long long long long long long long long long long long long long long long long hate text for testing layout for long(er) text', hatingUsers: [dummyUser], author: dummyUser, comments: []},
-        {text: "BILJETTKONTROLLANTER >:((((", hatingUsers: [], author: dummyUser, picture: 'http://www.nhs.uk/Conditions/stress-anxiety-depression/PublishingImages/E%20to%20I/expert-tips-on-child-anger_364x200_107668795.jpg', comments: []},
-        {text: "When you change to autumn jacket and forget your västtrafikkort in your summer jacket... at home", hatingUsers: [], author: dummyUser, comments: []},
+        {text: 'Long long long long long long long long long long long long long long long long long long long long long long long hate text for testing layout for long(er) text', hatingUsers: [dummyUser], author: dummyUser, comments: [{id: 1, author: dummyUser, text: "Test comment"}]},
+        {text: "BILJETTKONTROLLANTER >:((((", hatingUsers: [], author: dummyUser, picture: 'http://www.nhs.uk/Conditions/stress-anxiety-depression/PublishingImages/E%20to%20I/expert-tips-on-child-anger_364x200_107668795.jpg', comments: [{id: 1, author: dummyUser, text: "Test comment"}]},
+        {text: "When you change to autumn jacket and forget your västtrafikkort in your summer jacket... at home", hatingUsers: [], author: dummyUser, comments: [{id: 1, author: dummyUser, text: "Test comment"}]},
         {text: "Hello world! :D ..... not.", hatingUsers: [], author: dummyUser, comments: [{id: 1, author: dummyUser, text: "Test comment"}]}
     ];
 

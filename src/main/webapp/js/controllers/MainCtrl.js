@@ -35,7 +35,7 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
 
     $scope.goToProfile = function () {
         if (model.user) {
-            $location.path('profile');
+            $location.path(model.user.username);
         } else {
             $modal.open({
                 templateUrl: 'partials/login-modal.html'
