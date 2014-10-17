@@ -7,10 +7,13 @@
 package com.dat076hage.hage.controllers;
 
 import com.dat076hage.hage.Post;
+import com.dat076hage.hage.PostRegistry;
 import com.dat076hage.hage.User;
+import com.dat076hage.hage.UserRegistry;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
@@ -24,7 +27,9 @@ import javax.ws.rs.core.*;
 @Consumes(value = MediaType.APPLICATION_JSON)
 @Produces(value = MediaType.APPLICATION_JSON)
 public class PostController {
- 
+    @EJB
+    PostRegistry postReg;
+    
     @GET
     public String findAll(@QueryParam("username") String userName, @QueryParam("hagetag") String hageTag) {
         
