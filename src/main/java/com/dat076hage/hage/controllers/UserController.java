@@ -8,7 +8,6 @@ package com.dat076hage.hage.controllers;
 import com.dat076hage.hage.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.util.logging.Level;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -31,15 +30,10 @@ public class UserController {
     }
     
     @GET
-    @Path(value = "{id}")
+    @Path(value = "{username}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public String find(@PathParam("id") final int id) {
-        User.initTestUsers();
-        if(0 < id && id-1 < User.getUsers().size()){
-            return gson.toJson(User.getUsers().get(id-1));
-        }else{
-            return "Invalid id";
-        }
+    public String find(@PathParam("username") final String username) {
+        return null;
         
     }
 }
