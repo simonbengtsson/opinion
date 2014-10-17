@@ -24,7 +24,7 @@ public class AuthFilter implements ContainerRequestFilter {
     private static final Logger LOG = Logger.getLogger(AuthFilter.class.getName());
 
     @Context
-    SecurityContext sCtx;
+    SecurityContext sCtx;   
     
     @Override
     public void filter(ContainerRequestContext rCtx) {
