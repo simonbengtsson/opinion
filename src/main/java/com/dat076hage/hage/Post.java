@@ -28,6 +28,7 @@ public class Post implements Serializable {
     private String link;
     private ArrayList hageTagList;
     private int[] coordinates = new int[2];
+    privat
     
     
     private static int idCount;
