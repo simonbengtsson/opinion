@@ -25,9 +25,11 @@ public class AuthFilter implements ContainerRequestFilter {
 
     @Context
     SecurityContext sCtx;
-
+    
     @Override
     public void filter(ContainerRequestContext rCtx) {
+    
+        /**
         LOG.log(Level.INFO, "*** AuthFilter");
         Map<String, Cookie> cookies = rCtx.getCookies();
         Cookie c = cookies.get("key");
@@ -49,6 +51,7 @@ public class AuthFilter implements ContainerRequestFilter {
         } catch (Exception ex) {
             throw new WebApplicationException(Status.UNAUTHORIZED);
         }
+        **/
     }
 
 }

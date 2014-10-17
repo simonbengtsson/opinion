@@ -27,70 +27,65 @@ public class PostController {
         initializeTest();
     }
     
-    /**
-    @GET
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public String findAll(@QueryParam("username") String userName) {
-        
-        // will be handled with database
-        List<Post> postList = new ArrayList<>(); 
-        for (User u : User.getUsers())
-            for (Post p : u.getPosts())
-                postList.add(p);
-
-        Gson gson = new Gson();
-        return gson.toJson(userName);
-    } 
-    **/
+    
     
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON}) 
     public String findAll(@QueryParam("username") String userName, @QueryParam("hagetag") String hageTag) {
-        if(hageTag != null)
+        
+        //TODO: temporary test, to be replaced
+        if(hageTag != null) { // return json with posts that are to be displayed for user and also has the following hagetag
             return "Username: " + userName + ", searched hagetag: " + hageTag;
-        else return "Username: " + userName;
+        }
+        else { // return json with posts that are to be displayed for user
+            return "Username: " + userName;
+        }
+            
     };
-
+    
+    @POST
+    @Consumes(value = {MediaType.APPLICATION_JSON})
+    public String createPost(@QueryParam("text") String text) {
+        return text;
+    }
+    
+    @PUT
+    @Consumes(value = MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public String updatePost(@QueryParam("postId") long postId, @QueryParam("newText") String newText) {
+        return "postId: " + postId + ", text: " + newText;
+    }
+    
+    @DELETE
+    @Consumes(value = MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public String deletePost(@QueryParam("postId") long postId) {
+        return "post should be deleted: " + postId;
+    }
     
     @GET
-    @Path("/findByUserId")
+    @Path(value = "{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public String findByUserId(@QueryParam("id") long id) {
-        
-        
-        List<User> userList = new ArrayList<>();
-        List<Post> postList = new ArrayList<>();
-        
-        
-        
-
-        
-        
-        // subtract id with 1 to compensate for list indexing
-        postList.addAll(userList.get(((int) id - 1)).getPosts());
-        
-        
-        
-        
-        Gson gson = new Gson();
-        
-        return gson.toJson(postList);
-        
+    public String findPost(@QueryParam("id") long postId) {
+        return "postId to be found: " + postId;
     }
+    
+    
     
     
     private List<User> initializeTest() {
         
         List<User> userList = new ArrayList<>();
         
-        User firstUser = new User("steken");
-        User secondUser = new User("alfons");
-        User thirdUser = new User("glenn");
+        User firstUser = new User("steken", "en kool stek", "2454");
+        User secondUser = new User("alfons", "en kool stek", "2454");
+        User thirdUser = new User("glenn", "en kool stek", "2454");
         
         userList.add(firstUser);
         userList.add(secondUser);
         userList.add(thirdUser);
         
+        /**
         firstUser.addPost(new Post("hej1"));
         firstUser.addPost(new Post("hej2"));
         firstUser.addPost(new Post("hej3"));
@@ -99,22 +94,10 @@ public class PostController {
         secondUser.addPost(new Post("fisk"));
         
         thirdUser.addPost(new Post("ninja"));
-        
+        **/
         return userList;
     }
     
-    
-    @POST
-    @Path("/createPost")
-    @Consumes(value = MediaType.APPLICATION_FORM_URLENCODED)
-    public String create(@FormParam("userID") int userId, @FormParam("content") String content) {
-        
-        //User.getUsers().get(userId - 1).addPost(new Post(content));
-        Gson gson = new Gson();
-        
-        return gson.toJson("testweb");
-        
-    }
     
     
 }
