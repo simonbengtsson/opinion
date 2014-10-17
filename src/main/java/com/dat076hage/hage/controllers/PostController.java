@@ -43,9 +43,10 @@ public class PostController {
     };
     
     @POST
-    @Consumes(value = {MediaType.APPLICATION_JSON})
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    @Consumes(value = {MediaType.APPLICATION_FORM_URLENCODED})
     public String createPost(@QueryParam("text") String text) {
-        return text;
+        return "Create new post with text: " + text;
     }
     
     @PUT
@@ -63,7 +64,7 @@ public class PostController {
     }
     
     @GET
-    @Path(value = "{id}")
+    @Path(value = "id")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public String findPost(@QueryParam("id") long postId) {
         return "postId to be found: " + postId;
