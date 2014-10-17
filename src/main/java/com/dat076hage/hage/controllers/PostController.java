@@ -27,8 +27,7 @@ public class PostController {
         initializeTest();
     }
     
-    
-    
+
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON}) 
     public String findAll(@QueryParam("username") String userName, @QueryParam("hagetag") String hageTag) {
@@ -73,6 +72,7 @@ public class PostController {
     
     
     
+
     private List<User> initializeTest() {
         
         List<User> userList = new ArrayList<>();
@@ -80,22 +80,12 @@ public class PostController {
         User firstUser = new User("steken", "en kool stek", "2454");
         User secondUser = new User("alfons", "en kool stek", "2454");
         User thirdUser = new User("glenn", "en kool stek", "2454");
-        
+
         userList.add(firstUser);
         userList.add(secondUser);
         userList.add(thirdUser);
-        
-        /**
-        firstUser.addPost(new Post("hej1"));
-        firstUser.addPost(new Post("hej2"));
-        firstUser.addPost(new Post("hej3"));
-        
-        secondUser.addPost(new Post("hej"));
-        secondUser.addPost(new Post("fisk"));
-        
-        thirdUser.addPost(new Post("ninja"));
-        **/
         return userList;
+
     }
     
     

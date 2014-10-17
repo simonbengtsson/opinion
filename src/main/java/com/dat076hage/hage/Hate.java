@@ -9,10 +9,8 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Temporal;
 
 /**

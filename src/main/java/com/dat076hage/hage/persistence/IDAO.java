@@ -22,9 +22,5 @@ public interface IDAO<T, K> {
 
     public T find(K id);
 
-    public List<T> findAll();
-
-    public List<T> findRange(int first, int n );
-
     public int count();
 }

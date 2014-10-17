@@ -25,4 +25,6 @@ public class UserRegistry extends AbstractDAO<User, String> {
     protected EntityManager getEntityManager() {
         return em;
     }
+    
+    // Below is all special methods for Posts, see AbstractDAO for the rest
 }

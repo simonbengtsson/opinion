@@ -1,12 +1,19 @@
 <div class="post">
+    <div class="content">
 
-    <div class="hage-content"> {{ post.text }} </div>
+        <div class="hage-content" ng-bind-html="post.text | linky"></div>
 
-    <img ng-if="post.picture" ng-src="{{ post.picture }}" style="max-width: 400px; width: 100%; margin-top: 20px;">
+        <img ng-if="post.picture" ng-src="{{ post.picture }}" style="max-width: 400px; width: 100%; margin-top: 20px;">
 
-    <div class="hate-btn" ng-click="hate(post)" ng-class="model.isHated(post) ? 'hated' : ''">
-        <span class="hate-smiley"></span>
-        {{ post.hatingUsers.length }}
+        <div class="hate-btn" ng-click="hate(post)" ng-class="model.isHated(post) ? 'hated' : ''">
+            <span class="hate-smiley"></span>
+            {{ post.hatingUsers.length }}
+        </div>
+
+    </div>
+
+    <div class="comments">
+        Test
     </div>
 
 </div>

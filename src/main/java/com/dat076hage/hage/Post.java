@@ -41,7 +41,6 @@ public class Post implements Serializable {
     
     @PersistenceContext
     private EntityManager em;
-    
     private static int idCount;
     @ManyToOne
     private User user;
