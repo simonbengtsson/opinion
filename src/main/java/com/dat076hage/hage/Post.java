@@ -11,10 +11,12 @@ import javax.persistence.Entity;
 import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Temporal;
 /**
  *
@@ -36,6 +38,9 @@ public class Post implements Serializable {
     private ArrayList hageTagList;
     private int[] coordinates = new int[2];
     
+    
+    @PersistenceContext
+    private EntityManager em;
     private static int idCount;
     @ManyToOne
     private User user;

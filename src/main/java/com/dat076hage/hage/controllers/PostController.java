@@ -24,13 +24,15 @@ import javax.ws.rs.core.*;
 public class PostController {
   
     public PostController() {
-      //  initializeTest();
+        initializeTest();
     }
     
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON}) 
-    public String findAll() {
-        return "hej";
+    public String findAll(@QueryParam("username") String userName, @QueryParam("hagetag") String hageTag) {
+        if(hageTag != null)
+            return "Username: " + userName + ", searched hagetag: " + hageTag;
+        else return "Username: " + userName;
     };
 
     
@@ -38,53 +40,41 @@ public class PostController {
     @Path("/findByUserId")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public String findByUserId(@QueryParam("id") long id) {
-        
-        
         List<User> userList = new ArrayList<>();
         List<Post> postList = new ArrayList<>();
-        
-        
-        
-
-        
         
         // subtract id with 1 to compensate for list indexing
         postList.addAll(userList.get(((int) id - 1)).getPosts());
         
-        
-        
-        
         Gson gson = new Gson();
-        
         return gson.toJson(postList);
         
     }
     
-    /**
     private List<User> initializeTest() {
         
         List<User> userList = new ArrayList<>();
         
-        //User firstUser = new User("steken", "stek");
-        User secondUser = new User("alfons", "aoberg");
-        User thirdUser = new User("glenn", "hysen");
+        User firstUser = new User("steken", "", "");
+        User secondUser = new User("alfons", "", "");
+        User thirdUser = new User("glenn", "", "");
         
         userList.add(firstUser);
         userList.add(secondUser);
         userList.add(thirdUser);
         
-        firstUser.addPost(new Post("hej1"));
-        firstUser.addPost(new Post("hej2"));
-        firstUser.addPost(new Post("hej3"));
+        firstUser.createNewPost("hej1");
+        firstUser.createNewPost("hej2");
+        firstUser.createNewPost("hej3");
         
-        secondUser.addPost(new Post("hej"));
-        secondUser.addPost(new Post("fisk"));
+        secondUser.createNewPost("hej");
+        secondUser.createNewPost("fisk");
         
-        thirdUser.addPost(new Post("ninja"));
+        thirdUser.createNewPost("ninja");
         
         return userList;
     }
-    **/
+    
     
     @POST
     @Path("/createPost")
