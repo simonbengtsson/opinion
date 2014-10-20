@@ -12,11 +12,9 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -56,6 +54,10 @@ public class User implements Serializable{
         this.hash = hash;
     }
     
+    public String getUsername(){
+        return username;
+    }
+    
     public List<Post> getPosts(){
         return new ArrayList<>(posts);
     }
@@ -67,6 +69,6 @@ public class User implements Serializable{
     }
     
     public String toString(){
-        return String.format("username:%s", username);
+        return String.format("username: %s | description: %s", username, description);
     }
 }

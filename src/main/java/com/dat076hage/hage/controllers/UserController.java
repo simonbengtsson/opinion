@@ -5,9 +5,11 @@
  */
 package com.dat076hage.hage.controllers;
 
+import com.dat076hage.hage.User;
 import com.dat076hage.hage.UserRegistry;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -34,12 +36,16 @@ public class UserController {
     
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
-
-    
     @POST
-    public String createUser(@QueryParam("cusername") String username, @QueryParam("description") String description) {
+    public String createUser(String contentBody) {
+        JsonObject json = gson.fromJson(contentBody, JsonObject.class);
+        System.out.print(json);
+        String username = json.get("username").getAsString();
+        String description = json.get("description").getAsString();
+        String hash = "uniqueHASH";
+        User user = new User(username, description, hash);
         
-        return "create user: " + username + ", description: " + description;
+        return gson.toJson(user);
     }
     
     @PUT
