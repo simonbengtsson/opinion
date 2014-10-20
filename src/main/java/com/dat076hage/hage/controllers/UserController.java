@@ -13,8 +13,10 @@ import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -36,18 +38,25 @@ public class UserController {
     
     @GET
     @Path("{name}")
-    @Produces(value = {MediaType.APPLICATION_JSON})
     public String findUser(@PathParam("name") String name  ){
     
         return "searched username: " + name;
     }
     
     @POST
-    public String createUser(@QueryParam("username") String username, @QueryParam("desription") String description) {
+    public String createUser(@QueryParam("username") String username, @QueryParam("description") String description) {
         
         return "create user: " + username + ", description: " + description;
-        
     }
     
+    @PUT
+    public String updateUser(@QueryParam("username") String username, @QueryParam("description") String description) {
+        
+        return "update user: " + username + ", description: " + description;
+    }
     
+    @DELETE
+    public String deleteUser(@QueryParam("username") String username) {
+        return "user to be deleted: " + username;
+    }
 }
