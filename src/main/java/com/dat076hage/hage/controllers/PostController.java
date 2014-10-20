@@ -8,6 +8,7 @@ package com.dat076hage.hage.controllers;
 
 import com.dat076hage.hage.Post;
 import com.dat076hage.hage.PostRegistry;
+import com.dat076hage.hage.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javax.ejb.EJB;

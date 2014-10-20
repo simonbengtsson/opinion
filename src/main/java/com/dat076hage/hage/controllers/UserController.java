@@ -12,17 +12,22 @@ import com.google.gson.GsonBuilder;
 import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
  *
  * @author kim
  */
-@Path("/users")
+@Path("users")
+@Produces(value = {MediaType.APPLICATION_JSON})
+@Consumes(value = {MediaType.APPLICATION_JSON})
 public class UserController {
     @EJB
     UserRegistry userReg;
@@ -30,22 +35,19 @@ public class UserController {
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
     @GET
-    @Path(value = "/persist")
+    @Path("{name}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public String findAll(){
-        User user = new User("kimkling", "About me", "1234");
-        
-        userReg.create(user);
-        
-        return "{'message':'User persisted'}";
+    public String findUser(@PathParam("name") String name  ){
+    
+        return "searched username: " + name;
     }
     
-    @GET
-    @Path(value = "/username")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public String find(@PathParam("username") final String username) {
-        User user = userReg.find("kimkling");
-        return gson.toJson(user);
+    @POST
+    public String createUser(@QueryParam("username") String username, @QueryParam("desription") String description) {
+        
+        return "create user: " + username + ", description: " + description;
         
     }
+    
+    
 }
