@@ -45,23 +45,19 @@ public class User implements Serializable{
     @OneToMany(mappedBy = "user") 
     @Expose private List<Post> posts;
     
-    //TODO: Remove when database is in place
-    @Expose private static List<User> users = new ArrayList<User>();
-    
     public User(){
     }
     
     public User(String username, String description, String hash){
-        posts = new ArrayList<Post>();
-        following = new ArrayList<User>();
+        posts = new ArrayList<>();
+        following = new ArrayList<>();
         this.username = username;
         this.description = description;
         this.hash = hash;
-        users.add(this);
     }
     
     public List<Post> getPosts(){
-        return new ArrayList<Post>(posts);
+        return new ArrayList<>(posts);
     }
     
     public Post createNewPost(String content){
@@ -72,18 +68,5 @@ public class User implements Serializable{
     
     public String toString(){
         return String.format("username:%s", username);
-    }
-    
-    public static List<User> getUsers(){
-        return new ArrayList<User>(users);
-    }
-    
-    public static void initTestUsers(){
-        if(User.getUsers().isEmpty()){
-            new User("KimKling", null, null);
-            new User("SimonBengtsson", null, null);
-            new User("SimonPlanhage", null, null);
-            new User("CarolineKabat", null, null);
-        }
     }
 }

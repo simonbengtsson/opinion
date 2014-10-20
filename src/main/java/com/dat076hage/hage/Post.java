@@ -12,12 +12,10 @@ import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.Embedded;
-import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Temporal;
 /**
  *
@@ -31,19 +29,16 @@ public class Post implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Expose private long postId;
-    private String picturePath;
+    @Expose private String picturePath;
     
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date postDate;
-    private String link;
+    @Expose private Date postDate;
+    @Expose private String link;
     private ArrayList hageTagList;
-    private int[] coordinates = new int[2];
-    @Embedded
-    private GPS position;
     
-    @PersistenceContext
-    private EntityManager em;
-    private static int idCount;
+    @Embedded
+    @Expose private GPS position;
+    
     @ManyToOne
     private User user;
     
@@ -54,12 +49,10 @@ public class Post implements Serializable {
     public Post (User user, String content) {
         this.user = user;
         this.content = content;
-        this.postId = getId();
     }
     
-    
-    private int getId() {
-        return ++idCount;
+    public String getText(){
+        return content;
     }
     
     public String toString() {
