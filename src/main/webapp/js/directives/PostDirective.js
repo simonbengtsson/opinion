@@ -24,12 +24,14 @@ app.directive('hagePost', ['ModelService', 'NetworkService', function (model, ne
                         console.log('Successfully created hate on post');
                     });
                 }
-            }
+            };
             
             scope.comment = function (){              
-                console.log('Commented on post: ' + scope.newComment);
-                scope.post.comments.push(scope.newComment);
-                console.log('Comments on this post: ', scope.post.comments);
+                var comment = {text: scope.newComment, author: {username: 'testuser'}};
+                network.createComment(scope.post, comment).success(function(comment) {
+                    scope.post.comments.push(comment);
+                    scope.newComment = '';
+                });
             }
         }
     };

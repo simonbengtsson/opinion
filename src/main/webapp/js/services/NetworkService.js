@@ -2,92 +2,92 @@ var app = angular.module('hage');
 
 app.service('NetworkService', ['$http', 'API_URL', function ($http, API_URL) {
 
-    var dummyUser = {
-        username: "adalove",
-        first_name: 'Ada',
-        last_name: 'Lovelace',
-        description: 'This is a personal description',
-        posts: [],
-        picture: 'http://cpuboss.com/blog/wp-content/uploads/2013/10/Wikipedia_ada-lovelace_FullyC_001.jpg'
-    };
+        var dummyUser = {
+            username: "adalove",
+            first_name: 'Ada',
+            last_name: 'Lovelace',
+            description: 'This is a personal description',
+            posts: [],
+            picture: 'http://cpuboss.com/blog/wp-content/uploads/2013/10/Wikipedia_ada-lovelace_FullyC_001.jpg'
+        };
 
-    var dummyPosts = [
-        {text: 'Long long long long long long long long long long long long long long long long long long long long long long long hate text for testing layout for long(er) text', hatingUsers: [dummyUser], author: dummyUser, comments: [{id: 1, author: dummyUser, text: "Test comment"}]},
-        {text: "BILJETTKONTROLLANTER >:((((", hatingUsers: [], author: dummyUser, picture: 'http://www.nhs.uk/Conditions/stress-anxiety-depression/PublishingImages/E%20to%20I/expert-tips-on-child-anger_364x200_107668795.jpg', comments: [{id: 1, author: dummyUser, text: "Test comment"}]},
-        {text: "When you change to autumn jacket and forget your västtrafikkort in your summer jacket... at home", hatingUsers: [], author: dummyUser, comments: [{id: 1, author: dummyUser, text: "Test comment"}]},
-        {text: "Hello world! :D ..... not.", hatingUsers: [], author: dummyUser, comments: [{id: 1, author: dummyUser, text: "Test comment"}]}
-    ];
+        var dummyPosts = [
+            {text: 'Long long long long long long long long long long long long long long long long long long long long long long long hate text for testing layout for long(er) text', hatingUsers: [dummyUser], author: dummyUser, comments: [{id: 1, author: {username: 'testuser'}, text: "Test comment"}]},
+            {text: "BILJETTKONTROLLANTER >:((((", hatingUsers: [], author: dummyUser, picture: 'http://www.nhs.uk/Conditions/stress-anxiety-depression/PublishingImages/E%20to%20I/expert-tips-on-child-anger_364x200_107668795.jpg', comments: []},
+            {text: "When you change to autumn jacket and forget your västtrafikkort in your summer jacket... at home", hatingUsers: [], author: dummyUser, comments: []},
+            {text: "Hello world! :D ..... not.", hatingUsers: [], author: dummyUser, comments: []}
+        ];
 
-    dummyUser.posts = dummyPosts;
+        dummyUser.posts = dummyPosts;
 
-    // Temporary. Returns a dummy promise which mocks a real api result.
-    var dummyPromise = function(data) {
-        return {
-            success: function(func) {
-                func(data);
-            },
-            fail: function(func) {
-                func('Tmp error message');
+        // Temporary. Returns a dummy promise which mocks a real api result.
+        var dummyPromise = function (data) {
+            return {
+                success: function (func) {
+                    func(data);
+                },
+                fail: function (func) {
+                    func('Tmp error message');
+                }
             }
-        }
-    };
+        };
 
-    // Posts
+        // Posts
 
-    this.getPosts = function () {
-        return dummyPromise(dummyPosts);
-        //return $http.get(API_URL + '/posts');
-    };
+        this.getPosts = function () {
+            return dummyPromise(dummyPosts);
+            //return $http.get(API_URL + '/posts');
+        };
 
-    this.updatePost = function (post) {
-        return dummyPromise("Success!");
-        //return $http.put(API_URL + '/posts/' + post.id, post);
-    };
+        this.updatePost = function (post) {
+            return dummyPromise("Success!");
+            //return $http.put(API_URL + '/posts/' + post.id, post);
+        };
 
-    this.deletePost = function (post) {
-        return dummyPromise("Success!");
-        //return $http.delete(API_URL + '/posts/' + post.id);
-    };
+        this.deletePost = function (post) {
+            return dummyPromise("Success!");
+            //return $http.delete(API_URL + '/posts/' + post.id);
+        };
 
-    this.createPost = function (post) {
-        return dummyPromise("Success!");
-        //return $http.post(API_URL + '/posts/');
-    };
+        this.createPost = function (post) {
+            return dummyPromise("Success!");
+            //return $http.post(API_URL + '/posts/');
+        };
 
-    // Users
+        // Users
 
-    this.getUser = function (user) {
-        return dummyPromise(dummyUser);
-        //return $http.get(API_URL + '/users/' + user.id);
-    };
+        this.getUser = function (user) {
+            return dummyPromise(dummyUser);
+            //return $http.get(API_URL + '/users/' + user.id);
+        };
 
-    this.updateUser = function (user) {
-        return dummyPromise("Success!");
-        //return $http.put(API_URL + '/users/' + user.id, user);
-    };
+        this.updateUser = function (user) {
+            return dummyPromise("Success!");
+            //return $http.put(API_URL + '/users/' + user.id, user);
+        };
 
-    // Hates
+        // Hates
 
-    this.createHate = function(post) {
-        return dummyPromise("Success!");
-        //return $http.post(API_URL + '/hate/' + post.id);
-    };
+        this.createHate = function (post) {
+            return dummyPromise("Success!");
+            //return $http.post(API_URL + '/hate/' + post.id);
+        };
 
-    this.deleteHate = function(post) {
-        return dummyPromise("Success!");
-        //return $http.delete(API_URL + '/hate/' + post.id);
-    };
+        this.deleteHate = function (post) {
+            return dummyPromise("Success!");
+            //return $http.delete(API_URL + '/hate/' + post.id);
+        };
 
-    // Hates
+        // Hates
 
-    this.createComment = function(post) {
-        return dummyPromise("Success!");
-        //return $http.post(API_URL + '/hate/' + post.id + '/comments/');
-    };
+        this.createComment = function (post, comment) {
+            return dummyPromise("Success!");
+            //return $http.post(API_URL + '/hate/' + post.id + '/comments/');
+        };
 
-    this.deleteHate = function(post, comment) {
-        return dummyPromise("Success!");
-        return $http.delete(API_URL + '/hate/' + post.id + '/comments/' + comment.id);
-    };
+        this.deleteHate = function (post, comment) {
+            return dummyPromise("Success!");
+            return $http.delete(API_URL + '/hate/' + post.id + '/comments/' + comment.id);
+        };
 
-}]);
+    }]);
