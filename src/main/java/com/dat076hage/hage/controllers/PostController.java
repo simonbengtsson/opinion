@@ -8,11 +8,8 @@ package com.dat076hage.hage.controllers;
 
 import com.dat076hage.hage.Post;
 import com.dat076hage.hage.PostRegistry;
-import com.dat076hage.hage.User;
-import com.dat076hage.hage.UserRegistry;
 import com.google.gson.Gson;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.GsonBuilder;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -27,6 +24,8 @@ import javax.ws.rs.core.*;
 public class PostController {
     @EJB
     PostRegistry postReg;
+    
+    Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
     @GET
     @Consumes(value = MediaType.APPLICATION_FORM_URLENCODED)
