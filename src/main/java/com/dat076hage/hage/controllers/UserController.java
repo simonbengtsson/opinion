@@ -37,19 +37,19 @@ public class UserController {
 
     
     @POST
-    public String createUser(@QueryParam("cusername") String username, @QueryParam("description") String description) {
+    public String createUser(@QueryParam("username") String username, @QueryParam("description") String description) {
         
         return "create user: " + username + ", description: " + description;
     }
     
     @PUT
-    public String updateUser(@QueryParam("uusername") String username, @QueryParam("description") String description) {
+    public String updateUser(@QueryParam("username") String username, @QueryParam("description") String description) {
         
         return "update user: " + username + ", description: " + description;
     }
     
     @DELETE
-    public String deleteUser(@QueryParam("dusername") String username) {
+    public String deleteUser(@QueryParam("username") String username) {
         return "user to be deleted: " + username;
     }
         
