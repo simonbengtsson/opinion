@@ -7,13 +7,13 @@
 
         <div class="hate-btn" ng-click="hate(post)" ng-class="model.isHated(post) ? 'hated' : ''">
             <span class="hate-smiley"></span>
-            {{ post.hatingUsers.length}}
+            {{ post.hatingUsers.length }}
         </div>
 
-    </div>
-    
+    </div> 
+    {{ post.comments }}
     <div class="comments" ng-repeat="comment in post.comments" >
-       {{comment.id}}
+       {{comment.id}} 
        {{comment.text}}
        <a href="#/{{comment.author.username}}">{{comment.author.username}}</a>
     </div>
