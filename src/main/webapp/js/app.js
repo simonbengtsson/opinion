@@ -4,7 +4,7 @@ app.constant('API_URL', 'http://localhost:8080/Hage-DAT076/api');
 
 app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $routeProvider
-        .when('/profile', {
+        .when('/:username', {
             templateUrl: 'partials/profile.html',
             controller: 'ProfileCtrl'
         })
