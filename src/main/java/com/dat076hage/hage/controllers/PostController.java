@@ -43,6 +43,7 @@ public class PostController {
         }
             
     };
+  
     
     @POST
     public String createPost(@QueryParam("user") User user, @QueryParam("text") String text) {
