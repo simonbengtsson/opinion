@@ -5,49 +5,33 @@
  */
 package com.dat076hage.hage.controllers;
 
+import com.dat076hage.hage.HateRegistry;
 import com.dat076hage.hage.User;
 import com.dat076hage.hage.UserRegistry;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javax.ejb.EJB;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
  *
  * @author kim
  */
-@Path("users")
-@Produces(value = {MediaType.APPLICATION_JSON})
-@Consumes(value = {MediaType.APPLICATION_JSON})
-public class UserController {
+@Path("/hates")
+public class HateController {
     @EJB
-    UserRegistry userReg;
+    HateRegistry hateReg;
     
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
     @GET
-    @Path("{name}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public String findUser(@PathParam("name") String name  ){
-    
-        return "searched username: " + name;
-    }
-    
-    @POST
-    public String createUser(@QueryParam("username") String username, @QueryParam("desription") String description) {
+    public String findAll(){
         
-        return "create user: " + username + ", description: " + description;
-        
+        return "";
     }
-    
-    
 }

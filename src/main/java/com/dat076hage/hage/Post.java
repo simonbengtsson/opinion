@@ -62,4 +62,8 @@ public class Post implements Serializable {
         return ++idCount;
     }
     
+    public String toString() {
+        return "post content: " + content;
+    }
+    
 }

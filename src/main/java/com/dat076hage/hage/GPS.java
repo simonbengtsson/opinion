@@ -6,6 +6,7 @@
 
 package com.dat076hage.hage;
 
+import com.google.gson.annotations.Expose;
 import javax.persistence.Embeddable;
 
 /**
@@ -15,19 +16,22 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class GPS {
     
-    private double[] coordinates = new double[2];
+    @Expose private double lat;
+    @Expose private double lon;
     
     public GPS() {}
     
-    public GPS(double x, double y) {
-        this.coordinates[0] = x;
-        this.coordinates[1] = y;
+    public GPS(double lat, double lon) {
+        this.lat = lat;
+        this.lon = lon;
     }
     
-    public double[] getCoordinates() {
-        return coordinates;
+    public double getLat(){
+        return lat;
     }
     
-    
+    public double getLon(){
+        return lon;
+    }
     
 }
