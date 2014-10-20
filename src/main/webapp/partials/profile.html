@@ -2,15 +2,15 @@
 
         <!-- User info -->
             <div class="userInfo">
-                <img class="img-circle" ng-src="{{ model.user.picture}}" width="170">
+                <img class="img-circle" ng-src="{{ user.picture}}" width="170">
 
-                <h3>{{ model.user.first_name}}</h3>
-                <small>{{ model.user.description}}</small>
+                <h3>{{ user.first_name}}</h3>
+                <small>{{ user.description}}</small>
             </div>
 
         <!-- User's hages -->
         <div class="col-md-8 col-md-offset-4">
-            <hage-post ng-repeat="post in model.user.posts" hage-post="post"></hage-post>
+            <hage-post ng-repeat="post in user.posts" hage-post="post"></hage-post>
         </div>
 
 </div>

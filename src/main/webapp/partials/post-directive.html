@@ -2,7 +2,9 @@
     <div class="content">
 
         <div class="hage-content" ng-bind-html="post.text | linky"></div>
-
+        <img class="img-circle" ng-src="{{comment.author.picture}}" width="70">
+        <a href="#/{{comment.author.username}}">{{comment.author.username}}</a>
+        
         <img ng-if="post.picture" ng-src="{{ post.picture}}" style="max-width: 400px; width: 100%; margin-top: 20px;">
 
         <div class="hate-btn" ng-click="hate(post)" ng-class="model.isHated(post) ? 'hated' : ''">
@@ -13,9 +15,10 @@
     </div> 
     {{ post.comments }}
     <div class="comments" ng-repeat="comment in post.comments" >
-       {{comment.id}} 
-       {{comment.text}}
-       <a href="#/{{comment.author.username}}">{{comment.author.username}}</a>
+        <img class="img-circle" ng-src="{{comment.author.picture}}" width="50">
+        <a href="#/{{comment.author.username}}">{{comment.author.username}}</a>
+        {{comment.id}} 
+        {{comment.text}}
     </div>
 
     <div class="well">

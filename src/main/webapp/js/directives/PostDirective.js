@@ -28,7 +28,7 @@ app.directive('hagePost', ['ModelService', 'NetworkService', function (model, ne
             
             scope.comment = function (){              
                 var comment = {text: scope.newComment, author: {username: 'testuser'}};
-                network.createComment(scope.post, comment).success(function(comment) {
+                network.createComment(scope.post, comment).success(function(res) {
                     scope.post.comments.push(comment);
                     scope.newComment = '';
                 });
