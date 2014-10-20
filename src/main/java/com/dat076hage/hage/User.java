@@ -71,4 +71,8 @@ public class User implements Serializable{
     public String toString(){
         return String.format("username: %s | description: %s", username, description);
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
