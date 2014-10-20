@@ -16,6 +16,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import sun.rmi.runtime.Log;
 
 
 
@@ -44,7 +45,10 @@ public class PostController {
     };
     
     @POST
-    public String createPost(@QueryParam("text") String text) {
+    public String createPost(@QueryParam("user") User user, @QueryParam("text") String text) {
+        Post newPost = new Post(user, text);
+        postReg.create(newPost);
+        System.out.println(this.getClass().getName() + ": " + "post created: " + user.toString() + ", text: " + newPost.toString());
         return "Create new post with text: " + text;
     }
     
