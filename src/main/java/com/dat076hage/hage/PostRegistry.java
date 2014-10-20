@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author kim
  */
 @Stateless
-public class PostRegistry extends AbstractDAO<Post, String>{
+public class PostRegistry extends AbstractDAO<Post, Long>{
 
     @PersistenceContext(unitName="hage_pu")
     private EntityManager em;

@@ -8,14 +8,11 @@ package com.dat076hage.hage.controllers;
 
 import com.dat076hage.hage.Post;
 import com.dat076hage.hage.PostRegistry;
-import com.dat076hage.hage.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import sun.rmi.runtime.Log;
-
 
 
 /**
@@ -32,24 +29,16 @@ public class PostController {
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
     @GET
-    public String findAll(@QueryParam("username") String userName, @QueryParam("hagetag") String hageTag) {
-        
-        //TODO: temporary test, to be replaced
-        if(hageTag != null) { // return json with posts that are to be displayed for user and also has the following hagetag
-            return "Username: " + userName + ", searched hagetag: " + hageTag;
-        }
-        else { // return json with posts that are to be displayed for user
-            return "Username: " + userName;
-        }
-            
-    };
+    public String findAll() {
+        Post post = postReg.find(1L);
+        return gson.toJson(post);
+    }
     
     @POST
-    public String createPost(@QueryParam("user") User user, @QueryParam("text") String text) {
-        Post newPost = new Post(user, text);
-        postReg.create(newPost);
-        System.out.println(this.getClass().getName() + ": " + "post created: " + user.toString() + ", text: " + newPost.toString());
-        return "Create new post with text: " + text;
+    public String createPost(Post post) {
+        
+        postReg.create(post);
+        return gson.toJson(post);
     }
     
     @PUT
@@ -65,6 +54,6 @@ public class PostController {
     @GET
     @Path("{id}")
     public String findPost(@PathParam("id") long id) {
-        return "postId to be found: " + id;
+        return gson.toJson(postReg.find(id));
     }
 }
