@@ -55,6 +55,46 @@ public class Post implements Serializable {
         return content;
     }
     
+    public long getId(){
+        return postId;
+    }
+    
+    public GPS getPosition(){
+        return new GPS(position);
+    }
+    
+    public String getPicturePath(){
+        return picturePath;
+    }
+    
+    public Date getPostDate(){
+        return new Date(postDate.getTime());
+    }
+    
+    public String getLink(){
+        return link;
+    }
+    
+    public void setText(String text){
+        this.content = text;
+    }
+    
+    public void setPosition(GPS pos){
+        this.position = new GPS(pos);
+    }
+    
+    public void setPicturePath(String path){
+        this.picturePath = path;
+    }
+    
+    public void setPostDate(Date date){
+        this.postDate = new Date(date.getTime());
+    }
+    
+    public void setLink(String link){
+        this.link = link;
+    }
+    
     public String toString() {
         return "post content: " + content;
     }

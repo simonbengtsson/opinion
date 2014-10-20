@@ -21,6 +21,11 @@ public class GPS {
     
     public GPS() {}
     
+    public GPS(GPS pos){
+        this.lat = pos.getLat();
+        this.lon = pos.getLon();
+    }
+    
     public GPS(double lat, double lon) {
         this.lat = lat;
         this.lon = lon;
