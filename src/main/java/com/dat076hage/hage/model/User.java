@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dat076hage.hage;
+package com.dat076hage.hage.model;
 
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
@@ -38,10 +38,10 @@ public class User implements Serializable{
     
     //TODO: http://en.wikibooks.org/wiki/Java_Persistence/ManyToMany#Mapping_a_Join_Table_with_Additional_Columns
     @ManyToMany
-    @Expose private List<User> following;
+    @Expose private ArrayList<User> following;
     
     @OneToMany(mappedBy = "user") 
-    @Expose private List<Post> posts;
+    @Expose private ArrayList<Post> posts;
     
     public User(){
     }
@@ -58,8 +58,42 @@ public class User implements Serializable{
         return username;
     }
     
+    public String getDescription(){
+        return description;
+    }
+    
+    public Date getMemberDate(){
+        return new Date(memberSince.getTime());
+    }
+    
     public List<Post> getPosts(){
         return new ArrayList<>(posts);
+    }
+    
+    public List<User> getFollowedUsers(){
+        return new ArrayList<>(following);
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    public void assaignPost(Post post){
+        posts.add(post);
+    }
+    
+    public void addFollowedUsers(User user){
+        following.add(user);
+    }
+    
+    public void removeFollowedUsers(User user){
+        
+        for(int i = 0; i < following.size(); i++){
+            if(following.get(i).getUsername().equals(user.getUsername())){
+                following.remove(i);
+                break;
+            }
+        }
     }
     
     public Post createNewPost(String content){
@@ -68,11 +102,9 @@ public class User implements Serializable{
         return post;
     }
     
+    @Override
     public String toString(){
         return String.format("username: %s | description: %s", username, description);
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

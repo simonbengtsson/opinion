@@ -6,7 +6,7 @@
 
 package com.dat076hage.hage.controllers;
 
-import com.dat076hage.hage.Post;
+import com.dat076hage.hage.model.Post;
 import com.dat076hage.hage.PostRegistry;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

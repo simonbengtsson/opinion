@@ -5,6 +5,7 @@
  */
 package com.dat076hage.hage;
 
+import com.dat076hage.hage.model.User;
 import com.dat076hage.hage.persistence.AbstractDAO;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

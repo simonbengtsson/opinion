@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dat076hage.hage;
+package com.dat076hage.hage.model;
 
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
@@ -23,7 +23,7 @@ import javax.persistence.Temporal;
 public class Hate implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @Expose private long id;
     
     @ManyToOne
     @Expose private User user;
@@ -42,6 +42,26 @@ public class Hate implements Serializable {
         this.user = user;
         this.post = post;
         this.dateTime = new Date();
+    }
+    
+    public long getId(){
+        return id;
+    }
+    
+    public User getUser(){
+        return user;
+    }
+    
+    public Post getPost(){
+        return post;
+    }
+    
+    /**
+     * Creates a copy of the date and time, and returns it.
+     * @return Date dateTime
+     */
+    public Date getCreatedDate(){
+        return new Date(dateTime.getTime());
     }
     
 }
