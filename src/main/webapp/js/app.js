@@ -1,4 +1,4 @@
-var app = angular.module('hage', ['ui.bootstrap', 'ngRoute', 'ngSanitize', 'monospaced.elastic']);
+var app = angular.module('hage', ['ui.bootstrap', 'ngRoute', 'ngSanitize', 'monospaced.elastic', 'angularMoment']);
 
 app.constant('API_URL', 'http://localhost:8080/Hage-DAT076/api');
 

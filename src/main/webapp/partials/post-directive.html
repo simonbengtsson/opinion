@@ -1,34 +1,43 @@
-<div class="post">
+<article class="post">
     <div class="content">
 
-        <div class="hage-content" ng-bind-html="post.text | linky"></div>
-        <img class="img-circle" ng-src="{{comment.author.picture}}" width="70">
-        <a href="#/{{comment.author.username}}">{{comment.author.username}}</a>
-        
-        <img ng-if="post.picture" ng-src="{{ post.picture}}" style="max-width: 400px; width: 100%; margin-top: 20px;">
+        <section class="post-info-section">
+            <img class="profile-pic" ng-src="{{post.author.picture}}" width="40">
+            <div class="post-author-desc">
+                <div class="username">Simon Bengtsson</div>
+                <div class="time-ago" am-time-ago="post.time"></div>
+            </div>
+            <div class="pull-right">
+                <div class="hate-btn" ng-click="hate(post)" ng-class="model.isHated(post) ? 'hated' : ''">
+                    <span class="hate-smiley"></span>
+                    {{ post.hatingUsers.length}}
+                </div>
+            </div>
+        </section>
 
-        <div class="hate-btn" ng-click="hate(post)" ng-class="model.isHated(post) ? 'hated' : ''">
-            <span class="hate-smiley"></span>
-            {{ post.hatingUsers.length }}
-        </div>
+        <p class="hage-content" ng-class="isPostLong(post) ? 'long' : ''" ng-bind-html="post.text | linky"></p>
 
-    </div> 
-    {{ post.comments }}
-    <div class="comments" ng-repeat="comment in post.comments" >
-        <img class="img-circle" ng-src="{{comment.author.picture}}" width="50">
-        <a href="#/{{comment.author.username}}">{{comment.author.username}}</a>
-        {{comment.id}} 
-        {{comment.text}}
     </div>
 
-    <div class="well">
+    <img ng-if="post.picture" ng-src="{{ post.picture}}" style="width: 100%; margin-top: 20px;">
+    
+    <hr ng-hide="post.picture" style="margin: 0;">
+
+    <section class="comments">
+        <div class="comment" ng-repeat="comment in post.comments">
+            <div class="comment-info">
+                <img class="img-circle" ng-src="{{comment.author.picture}}" width="40">
+                <a href="#/{{comment.author.username}}">{{comment.author.username}}</a>
+            </div>
+            <p>{{comment.text}}</p>
+        </div>
+        
         <form role="form">
             <div class="form-group">
-                <textarea ng-model="newComment" class="form-control" rows="1"></textarea>
+                <textarea ng-model="newComment" msd-elastic class="form-control" rows="1"></textarea>
             </div>
             <button type="submit" ng-click="comment()" class="btn btn-primary">Comment</button>
         </form>
-    </div>
+    </section>
 
-
-</div>
+    <article>

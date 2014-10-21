@@ -26,6 +26,10 @@ app.directive('hagePost', ['ModelService', 'NetworkService', function (model, ne
                 }
             };
             
+            scope.isPostLong = function(post) {
+                return post.text.length > 180;
+            };
+            
             scope.comment = function (){              
                 var comment = {text: scope.newComment, author: {username: 'testuser'}};
                 network.createComment(scope.post, comment).success(function(res) {

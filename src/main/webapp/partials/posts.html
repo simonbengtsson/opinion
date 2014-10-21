@@ -1,8 +1,8 @@
 <div ng-controller="PostCtrl" class="container">
     <div class="col-sm-4">
-        <h4>Featured haters</h4>
+        <h4>Featured</h4>
     </div>
     <div class="col-sm-8">
-        <hage-post ng-repeat="post in model.posts" hage-post="post"></hage-post>
+        <hage-post ng-repeat="post in model.posts | filter: search" hage-post="post"></hage-post>
     </div>
 </div>
