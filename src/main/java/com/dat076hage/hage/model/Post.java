@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.dat076hage.hage;
+package com.dat076hage.hage.model;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
