@@ -24,6 +24,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -48,14 +49,17 @@ public class ApiKeyController {
         String password = json.get("password").getAsString();
         
         User user = userReg.find(username);
+        
         // Validate password
-        //if( somFunction( password ) . equals( user.getHash() ) )
+        if(BCrypt.checkpw(password, user.getHash())){
+            ApiKey apiKey = new ApiKey(user);
+            apiKeyReg.create(apiKey);
+            return gson.toJson(apiKey);
+        }else{
+            return "{'error': 'Password didn't match username'}";
+        }
         
-        ApiKey apiKey = new ApiKey(user);
         
-        apiKeyReg.create(apiKey);
-        
-        return gson.toJson(apiKey);
     }
     
     @DELETE
