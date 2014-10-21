@@ -54,12 +54,18 @@ public class User implements Serializable{
         this.hash = hash;
     }
     
+    // GETTERS
+    
     public String getUsername(){
         return username;
     }
     
     public String getDescription(){
         return description;
+    }
+    
+    public String getHash(){
+        return hash;
     }
     
     public Date getMemberDate(){
@@ -78,10 +84,28 @@ public class User implements Serializable{
         this.description = description;
     }
     
+    // ACTIONS WITH POSTS
+    
     public void assaignPost(Post post){
         posts.add(post);
     }
     
+    public void removePost(Post post){
+        for(int i = 0; i < posts.size(); i++){
+            if(posts.get(i).getId() == post.getId()){
+                posts.remove(i);
+                break;
+            }
+        }
+    }
+    
+    public Post createNewPost(String content){
+        Post post = new Post(this, content);
+        posts.add(post);
+        return post;
+    }
+    
+    // ACTIONS WITH FOLLOWED USERS
     public void addFollowedUsers(User user){
         following.add(user);
     }
@@ -94,12 +118,6 @@ public class User implements Serializable{
                 break;
             }
         }
-    }
-    
-    public Post createNewPost(String content){
-        Post post = new Post(this, content);
-        posts.add(post);
-        return post;
     }
     
     @Override

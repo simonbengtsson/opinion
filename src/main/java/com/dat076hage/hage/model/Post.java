@@ -51,6 +51,15 @@ public class Post implements Serializable {
         this.content = content;
     }
     
+    public Post(User user, String text, String picturePath, String link, ArrayList hageTags, GPS pos){
+        this.user = user;
+        this.content = text;
+        this.picturePath = picturePath;
+        this.link = link;
+        this.hageTagList = new ArrayList(hageTags);
+        this.position = pos;
+    }
+    
     public String getText(){
         return content;
     }
