@@ -21,6 +21,7 @@ public class ApplicationConfig extends Application {
     
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.dat076hage.hage.auth.AuthFilter.class);
+        resources.add(com.dat076hage.hage.controllers.ApiKeyController.class);
         resources.add(com.dat076hage.hage.controllers.HateController.class);
         resources.add(com.dat076hage.hage.controllers.PostController.class);
         resources.add(com.dat076hage.hage.controllers.UserController.class);
