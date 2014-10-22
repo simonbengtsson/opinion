@@ -2,9 +2,11 @@
     <div class="content">
 
         <section class="post-info-section">
-            <img class="profile-pic" ng-src="{{post.author.picture}}" width="40">
+            <a href="#/{{ post.author.username}}">
+                <img class="profile-pic" ng-src="{{post.author.picture}}" width="40">
+            </a>
             <div class="post-author-desc">
-                <div class="username">Simon Bengtsson</div>
+                <div class="username">{{ post.author.username}}</div>
                 <div class="time-ago" am-time-ago="post.time"></div>
             </div>
             <div class="pull-right">
@@ -19,24 +21,30 @@
 
     </div>
 
-    <img ng-if="post.picture" ng-src="{{ post.picture}}" style="width: 100%; margin-top: 20px;">
-    
+    <img ng-if="post.picture" ng-src="{{ post.picture}}" style="width: 100%;">
+
     <hr ng-hide="post.picture" style="margin: 0;">
 
     <section class="comments">
         <div class="comment" ng-repeat="comment in post.comments">
+            <a href="#/{{comment.author.username}}">
+                <img class="profile-pic" ng-src="{{comment.author.picture}}">
+            </a>
             <div class="comment-info">
-                <img class="img-circle" ng-src="{{comment.author.picture}}" width="40">
-                <a href="#/{{comment.author.username}}">{{comment.author.username}}</a>
+                <span class="comment-author-username">{{ comment.author.username }}</span>
+                <span class="time-ago" am-time-ago="comment.time"></span>
+                <p>{{comment.text}}</p>
             </div>
-            <p>{{comment.text}}</p>
         </div>
-        
-        <form role="form">
-            <div class="form-group">
-                <textarea ng-model="newComment" msd-elastic class="form-control" rows="1"></textarea>
+
+        <form role="form" ng-submit="comment();commentFormOpen = false" 
+              class="comment-form" ng-class="commentFormOpen ? 'open' : ''">
+            <textarea ng-click="commentFormOpen = true" ng-model="newComment" msd-elastic class="form-control" placeholder="Write comment..."></textarea>
+            <div ng-show="commentFormOpen">
+                <button type="button" ng-click="commentFormOpen = false;
+                    newComment = ''" class="btn btn-default">Cancel</button>
+                <button type="submit" class="btn btn-primary">Comment</button>
             </div>
-            <button type="submit" ng-click="comment()" class="btn btn-primary">Comment</button>
         </form>
     </section>
 

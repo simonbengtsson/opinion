@@ -1,6 +1,6 @@
 var app = angular.module('hage');
 
-app.service('NetworkService', ['$http', 'API_URL', function ($http, API_URL) {
+app.service('NetworkService', ['$http', 'API_URL', 'ModelService', function ($http, API_URL, model) {
 
         var dummyUser = {
             username: "adalove",
@@ -21,17 +21,17 @@ app.service('NetworkService', ['$http', 'API_URL', function ($http, API_URL) {
         var dummyPosts = [
             {
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-                hatingUsers: [angular.copy(dummyUser), angular.copy(dummyUser2)],
+                hatingUsers: [angular.copy(dummyUser2)],
                 author: angular.copy(dummyUser),
                 time: new Date(2013, 2, 1, 1, 10),
-                comments: [{id: 1, author: angular.copy(dummyUser2), text: "Test comment"}]
+                comments: [{id: 1, author: angular.copy(dummyUser2), text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt", time: new Date()}]
             },
             {
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim adminse incididunt ut labore incididunt ut labo.',
                 hatingUsers: [angular.copy(dummyUser), angular.copy(dummyUser2)],
                 author: angular.copy(dummyUser),
-                time: new Date(2013, 2, 1, 1, 10),
-                comments: [{id: 1, author: angular.copy(dummyUser2), text: "Test comment"}]
+                time: new Date(2014, 2, 1, 1, 10),
+                comments: [{id: 1, author: angular.copy(dummyUser2), text: "Test comment", time: new Date()}]
             },
             {
                 text: "BILJETTKONTROLLANTER >:((((",
@@ -105,12 +105,26 @@ app.service('NetworkService', ['$http', 'API_URL', function ($http, API_URL) {
         };
 
         // Users
+        
+        this.getLoggedInUser = function (username) {
+            return dummyPromise(dummyUser);
+            //return $http.get(API_URL + '/users/' + user.id);
+        };
+        
+        this.getFeaturedUsers = function (username) {
+            return dummyPromise([dummyUser, dummyUser2]);
+            //return $http.get(API_URL + '/users/' + user.id);
+        };
 
         this.getUser = function (username) {
-            if (username === 'adalove')
+            if (username === 'adalove') {
                 return dummyPromise(dummyUser);
-            else
+            } else if(username === 'test123') {
                 return dummyPromise(dummyUser2);
+            } else {
+                console.log(username);
+            }
+                
             //return $http.get(API_URL + '/users/' + user.id);
         };
 
@@ -134,7 +148,13 @@ app.service('NetworkService', ['$http', 'API_URL', function ($http, API_URL) {
         // Comments
 
         this.createComment = function (post, comment) {
-            return dummyPromise("Success!");
+            var c = {
+                id: 15,
+                text: comment,
+                time: new Date(),
+                author: model.user
+            };
+            return dummyPromise(c);
             //return $http.post(API_URL + '/hate/' + post.id + '/comments/');
         };
 
