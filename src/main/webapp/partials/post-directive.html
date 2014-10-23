@@ -1,34 +1,51 @@
-<div class="post">
+<article class="post">
     <div class="content">
 
-        <div class="hage-content" ng-bind-html="post.text | linky"></div>
-        <img class="img-circle" ng-src="{{comment.author.picture}}" width="70">
-        <a href="#/{{comment.author.username}}">{{comment.author.username}}</a>
-        
-        <img ng-if="post.picture" ng-src="{{ post.picture}}" style="max-width: 400px; width: 100%; margin-top: 20px;">
+        <section class="post-info-section">
+            <a href="#/{{ post.author.username}}">
+                <img class="profile-pic" ng-src="{{post.author.picture}}" width="40">
+            </a>
+            <div class="post-author-desc">
+                <div class="username">{{ post.author.username}}</div>
+                <div class="time-ago" am-time-ago="post.time"></div>
+            </div>
+            <div class="pull-right">
+                <div class="hate-btn" ng-click="hate(post)" ng-class="model.isHated(post) ? 'hated' : ''">
+                    <span class="hate-smiley"></span>
+                    {{ post.hatingUsers.length}}
+                </div>
+            </div>
+        </section>
 
-        <div class="hate-btn" ng-click="hate(post)" ng-class="model.isHated(post) ? 'hated' : ''">
-            <span class="hate-smiley"></span>
-            {{ post.hatingUsers.length }}
+        <p class="hage-content" ng-class="isPostLong(post) ? 'long' : ''" ng-bind-html="post.text | linky"></p>
+
+    </div>
+
+    <img ng-if="post.picture" ng-src="{{ post.picture}}" style="width: 100%;">
+
+    <hr ng-hide="post.picture" style="margin: 0;">
+
+    <section class="comments">
+        <div class="comment" ng-repeat="comment in post.comments">
+            <a href="#/{{comment.author.username}}">
+                <img class="profile-pic" ng-src="{{comment.author.picture}}">
+            </a>
+            <div class="comment-info">
+                <span class="comment-author-username">{{ comment.author.username }}</span>
+                <span class="time-ago" am-time-ago="comment.time"></span>
+                <p>{{comment.text}}</p>
+            </div>
         </div>
 
-    </div> 
-    {{ post.comments }}
-    <div class="comments" ng-repeat="comment in post.comments" >
-        <img class="img-circle" ng-src="{{comment.author.picture}}" width="50">
-        <a href="#/{{comment.author.username}}">{{comment.author.username}}</a>
-        {{comment.id}} 
-        {{comment.text}}
-    </div>
-
-    <div class="well">
-        <form role="form">
-            <div class="form-group">
-                <textarea ng-model="newComment" class="form-control" rows="1"></textarea>
+        <form role="form" ng-submit="comment();commentFormOpen = false" 
+              class="comment-form" ng-class="commentFormOpen ? 'open' : ''">
+            <textarea ng-click="commentFormOpen = true" ng-model="newComment" msd-elastic class="form-control" placeholder="Write comment..."></textarea>
+            <div ng-show="commentFormOpen">
+                <button type="button" ng-click="commentFormOpen = false;
+                    newComment = ''" class="btn btn-default">Cancel</button>
+                <button type="submit" class="btn btn-primary">Comment</button>
             </div>
-            <button type="submit" ng-click="comment()" class="btn btn-primary">Comment</button>
         </form>
-    </div>
+    </section>
 
-
-</div>
+    <article>

@@ -7,8 +7,8 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
     network.getPosts().success(function (data) {
         model.posts = data;
     });
-
-    network.getUser().success(function (data) {
+    
+    network.getLoggedInUser().success(function (data) {
         model.user = data;
     });
 

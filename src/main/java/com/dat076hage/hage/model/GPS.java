@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.dat076hage.hage;
+package com.dat076hage.hage.model;
 
 import com.google.gson.annotations.Expose;
 import javax.persistence.Embeddable;
@@ -20,6 +20,11 @@ public class GPS {
     @Expose private double lon;
     
     public GPS() {}
+    
+    public GPS(GPS pos){
+        this.lat = pos.getLat();
+        this.lon = pos.getLon();
+    }
     
     public GPS(double lat, double lon) {
         this.lat = lat;

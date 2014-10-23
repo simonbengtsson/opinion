@@ -5,7 +5,7 @@
  */
 package com.dat076hage.hage;
 
-import com.dat076hage.hage.model.Hate;
+import com.dat076hage.hage.auth.ApiKey;
 import com.dat076hage.hage.persistence.AbstractDAO;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,13 +16,13 @@ import javax.persistence.PersistenceContext;
  * @author kim
  */
 @Stateless
-public class HateRegistry extends AbstractDAO<Hate, String>{
+public class ApiKeyRegistry extends AbstractDAO<ApiKey, String>{
 
     @PersistenceContext(unitName="hage_pu")
     private EntityManager em;
     
-    public HateRegistry() {
-        super(Hate.class);
+    public ApiKeyRegistry() {
+        super(ApiKey.class);
     }
     
     @Override

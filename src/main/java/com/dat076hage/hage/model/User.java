@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dat076hage.hage;
+package com.dat076hage.hage.model;
 
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
@@ -12,11 +12,9 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -40,10 +38,10 @@ public class User implements Serializable{
     
     //TODO: http://en.wikibooks.org/wiki/Java_Persistence/ManyToMany#Mapping_a_Join_Table_with_Additional_Columns
     @ManyToMany
-    @Expose private List<User> following;
+    @Expose private ArrayList<User> following;
     
     @OneToMany(mappedBy = "user") 
-    @Expose private List<Post> posts;
+    @Expose private ArrayList<Post> posts;
     
     public User(){
     }
@@ -56,8 +54,49 @@ public class User implements Serializable{
         this.hash = hash;
     }
     
+    // GETTERS
+    
+    public String getUsername(){
+        return username;
+    }
+    
+    public String getDescription(){
+        return description;
+    }
+    
+    public String getHash(){
+        return hash;
+    }
+    
+    public Date getMemberDate(){
+        return new Date(memberSince.getTime());
+    }
+    
     public List<Post> getPosts(){
         return new ArrayList<>(posts);
+    }
+    
+    public List<User> getFollowedUsers(){
+        return new ArrayList<>(following);
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    // ACTIONS WITH POSTS
+    
+    public void assaignPost(Post post){
+        posts.add(post);
+    }
+    
+    public void removePost(Post post){
+        for(int i = 0; i < posts.size(); i++){
+            if(posts.get(i).getId() == post.getId()){
+                posts.remove(i);
+                break;
+            }
+        }
     }
     
     public Post createNewPost(String content){
@@ -66,7 +105,24 @@ public class User implements Serializable{
         return post;
     }
     
-    public String toString(){
-        return String.format("username:%s", username);
+    // ACTIONS WITH FOLLOWED USERS
+    public void addFollowedUsers(User user){
+        following.add(user);
     }
+    
+    public void removeFollowedUsers(User user){
+        
+        for(int i = 0; i < following.size(); i++){
+            if(following.get(i).getUsername().equals(user.getUsername())){
+                following.remove(i);
+                break;
+            }
+        }
+    }
+    
+    @Override
+    public String toString(){
+        return String.format("username: %s | description: %s", username, description);
+    }
+
 }

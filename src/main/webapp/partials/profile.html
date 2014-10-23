@@ -1,4 +1,4 @@
-<div ng-controller="ProfileCtrl" class="container">
+<div class="container">
 
         <!-- User info -->
             <div class="userInfo">
@@ -10,7 +10,7 @@
 
         <!-- User's hages -->
         <div class="col-md-8 col-md-offset-4">
-            <hage-post ng-repeat="post in user.posts" hage-post="post"></hage-post>
+            <hage-post ng-repeat="post in user.posts  | filter: search" hage-post="post"></hage-post>
         </div>
 
 </div>

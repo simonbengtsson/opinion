@@ -1,8 +1,14 @@
-<div ng-controller="PostCtrl" class="container">
+<div class="container">
     <div class="col-sm-4">
-        <h4>Featured haters</h4>
+        <h4>Featured</h4>
+        <div ng-repeat="user in featuredUsers" class="featured-box">
+            <a href="#/{{ post.author.username}}">
+                <img src="{{ user.picture}}" class="profile-pic">
+            </a>
+            {{ user.username}}
+        </div>
     </div>
     <div class="col-sm-8">
-        <hage-post ng-repeat="post in model.posts" hage-post="post"></hage-post>
+        <hage-post ng-repeat="post in model.posts| filter: search" hage-post="post"></hage-post>
     </div>
 </div>
