@@ -17,7 +17,7 @@
             </div>
         </section>
 
-        <p class="hage-content" ng-class="isPostLong(post) ? 'long' : ''" ng-bind-html="post.text | linky"></p>
+        <p class="hage-content" ng-class="isPostLong(post) ? 'long' : ''" ng-bind-html="post.text | linky | hashTags"></p>
 
     </div>
 

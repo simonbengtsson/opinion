@@ -1,10 +1,6 @@
 <div class="container">
-    
-    <div class="col-md-12" ng-hide="user">
-        <h1>User not found</h1>
-    </div>
 
-    <div class="user-box col-md-4" ng-show="user">
+    <div class="user-box col-md-4">
         <img class="img-circle" ng-src="{{ user.picture}}" width="170">
 
         <h4 class="name">
@@ -14,8 +10,16 @@
         <div class="desc">{{ user.description}}</div>
         <a ng-show="viewingSelf()" ng-click="logout()" href="#/">Logout</a> -
         <a ng-show="viewingSelf()" ng-click="openEditModal()">Edit</a>
+         
+    <div ng-show="!viewingSelf()">
+        <button type="button" class="btn btn-default" ng-click="followUser()" > 
+            <span class="glyphicon glyphicon-plus"></span>  
+            Follow
+        </button>
     </div>
-
+        
+    </div>
+    
     <div class="col-md-8">
         <hage-post ng-repeat="post in user.posts| filter: search" hage-post="post"></hage-post>
     </div>
