@@ -1,19 +1,21 @@
 var app = angular.module('hage');
 
 app.service('NetworkService', ['$http', 'API_URL', 'ModelService', function ($http, API_URL, model) {
+        
+        $http.defaults.headers.common.Authorization = localStorage.getItem('authKey');
 
         var dummyUser = {
             username: "adalove",
-            first_name: 'Ada',
-            last_name: 'Lovelace',
-            description: 'This is a personal description',
+            firstName: 'Ada',
+            lastName: 'Lovelace',
+            description: 'This is a personal description that is pretty long, but not TLDR',
             picture: 'https://lh4.googleusercontent.com/-q-IPv9Ub8eY/AAAAAAAAAAI/AAAAAAAAAb4/36Ea1HIRW0c/photo.jpg'
         };
         
         var dummyUser2 = {
             username: "test123",
-            first_name: 'Testare',
-            last_name: 'TestTest',
+            firstName: 'Testare',
+            lastName: 'TestTest',
             description: 'This is a personal test description',
             picture: 'http://www.horizon-properties.com/assets/test-user-7bc7f39edf559e62535e37437b232f46.png'
         };
@@ -100,7 +102,13 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', function ($ht
         };
 
         this.createPost = function (post) {
-            return dummyPromise("Success!");
+            return dummyPromise({
+                text: post.text,
+                hatingUsers: [],
+                author: angular.copy(model.user),
+                time: new Date(),
+                comments: []
+            });
             //return $http.post(API_URL + '/posts/');
         };
 

@@ -1,16 +1,19 @@
 <div class="container">
 
-        <!-- User info -->
-            <div class="userInfo">
-                <img class="img-circle" ng-src="{{ user.picture}}" width="170">
+    <div class="user-box col-md-4">
+        <img class="img-circle" ng-src="{{ user.picture}}" width="170">
 
-                <h3>{{ user.first_name}}</h3>
-                <small>{{ user.description}}</small>
-            </div>
+        <h4 class="name">
+            {{ user.firstName}} {{ user.lastName}}
+            <span style="color: #999;">@{{ user.username}}</span>
+        </h4>
+        <div class="desc">{{ user.description}}</div>
+        <a ng-show="viewingSelf()" ng-click="logout()" href="#/">Logout</a> -
+        <a ng-show="viewingSelf()" ng-click="openEditModal()">Edit</a>
+    </div>
 
-        <!-- User's hages -->
-        <div class="col-md-8 col-md-offset-4">
-            <hage-post ng-repeat="post in user.posts  | filter: search" hage-post="post"></hage-post>
-        </div>
+    <div class="col-md-8">
+        <hage-post ng-repeat="post in user.posts| filter: search" hage-post="post"></hage-post>
+    </div>
 
 </div>

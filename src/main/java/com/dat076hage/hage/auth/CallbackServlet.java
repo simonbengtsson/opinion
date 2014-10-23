@@ -10,7 +10,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.brickred.socialauth.AuthProvider;
 import org.brickred.socialauth.Profile;
@@ -48,22 +47,19 @@ public class CallbackServlet extends HttpServlet {
 
         request.getSession().invalidate();
 
-        Cookie cookie = new Cookie("key", ag.getKey());
-        cookie.setMaxAge(24 * 60 * 60);
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
-        response.sendRedirect("");
+        String script = "<script>localStorage.setItem('authKey', '"
+                + ag.getKey() + "'); location.href = '/Hage-DAT076'; </script>";
+        response.getWriter().write(script);
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -74,10 +70,10 @@ public class CallbackServlet extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
