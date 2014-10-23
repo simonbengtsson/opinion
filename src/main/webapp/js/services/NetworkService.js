@@ -170,10 +170,5 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', function ($ht
             return dummyPromise("Success!");
             return $http.delete(API_URL + '/hate/' + post.id + '/comments/' + comment.id);
         };
-        
-        this.followUser = function (user){
-            return dummyPromise("Success!");
-            // put user to users following list
-        };
 
     }]);
