@@ -49,7 +49,7 @@ public class UserController {
         String password = json.get("password").getAsString();
         String passHash = BCrypt.hashpw(password, BCrypt.gensalt());
         
-        User user = new User(username, description, passHash);
+        User user = new User(username, description, passHash, "");
         //TODO: Exceptions not caught?
         try{
             userReg.create(user);

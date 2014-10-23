@@ -1,9 +1,15 @@
 package com.dat076hage.hage.auth;
 
+import com.dat076hage.hage.ApiKeyRegistry;
+import com.dat076hage.hage.UserRegistry;
+import com.dat076hage.hage.model.User;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -22,7 +28,16 @@ import org.brickred.socialauth.util.SocialAuthUtil;
  */
 @WebServlet(name = "CallbackServlet", urlPatterns = {"/callback"})
 public class CallbackServlet extends HttpServlet {
+    
+    @PersistenceContext(unitName="hage_pu")
+    private EntityManager em;
 
+    @EJB
+    UserRegistry userReg;
+    
+    @EJB
+    ApiKeyRegistry apiKeyReg;
+    
     private static final Logger LOG = Logger.getLogger(CallbackServlet.class.getSimpleName());
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -30,26 +45,49 @@ public class CallbackServlet extends HttpServlet {
 
         LOG.log(Level.INFO, "*** CallbackServlet");
         AccessGrant ag;
-
+        String username = "";
+        String description = "";
+;
         try {
             // Must use same manager as used for login
             SocialAuthManager manager = (SocialAuthManager) request.getSession().getAttribute("authManager");
             Map<String, String> paramsMap = SocialAuthUtil.getRequestParametersMap(request);
             AuthProvider provider = manager.connect(paramsMap);
             Profile profile = provider.getUserProfile();
-            System.out.println("*** Name " + profile.getFirstName());
-            LOG.log(Level.INFO, "*** Name " + profile.getFirstName());
+            username = profile.getFullName();
+            description = profile.getLastName();
+            System.out.println("*** Name " + username);
+            LOG.log(Level.INFO, "*** Name " + username);
             ag = provider.getAccessGrant();
         } catch (Exception ex) {
             response.sendRedirect("");
             return;
         }
+        
+        if(!username.equals("")){
+            User searchedUser = userReg.find(username);
+            if(searchedUser == null){
+                User user = new User(username, description, "", ag.getKey());
+                em.persist(user);
+                
+                ApiKey apiKey = new ApiKey(user);
+                
+                String script = "<script>localStorage.setItem('authKey', '" + 
+                        apiKey.getKey() + "'); location.href = '/Hage-DAT076'; </script>";
+                response.getWriter().write(script);
+            }else{
+                
+                ApiKey apiKey = new ApiKey(searchedUser);
+                
+                String script = "<script>localStorage.setItem('authKey', '" + 
+                        apiKey.getKey() + "'); location.href = '/Hage-DAT076'; </script>";
+                response.getWriter().write(script);
+            }
+        }else{
+            response.getWriter().write("Not a valid username");
+        }
 
         request.getSession().invalidate();
-
-        String script = "<script>localStorage.setItem('authKey', '"
-                + ag.getKey() + "'); location.href = '/Hage-DAT076'; </script>";
-        response.getWriter().write(script);
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

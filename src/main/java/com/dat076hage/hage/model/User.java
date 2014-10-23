@@ -14,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,7 +25,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "users")
-public class User implements Serializable{
+public class User implements Serializable {
     @Id
     @Column(nullable = false, updatable = false, length = 50)
     @Expose private String username;
@@ -34,8 +35,6 @@ public class User implements Serializable{
     @Temporal(javax.persistence.TemporalType.DATE)
     @Expose private Date memberSince;
     
-    private String hash;
-    
     //TODO: http://en.wikibooks.org/wiki/Java_Persistence/ManyToMany#Mapping_a_Join_Table_with_Additional_Columns
     @ManyToMany
     @Expose private ArrayList<User> following;
@@ -43,18 +42,23 @@ public class User implements Serializable{
     @OneToMany(mappedBy = "user") 
     @Expose private ArrayList<Post> posts;
     
+    private String twitterApiHash;
+    private String passwordHash;
+    
     public User(){
     }
     
-    public User(String username, String description, String hash){
-        posts = new ArrayList<>();
-        following = new ArrayList<>();
+    public User(String username, String description, String passwordHash, String twitterApiHash){
         this.username = username;
         this.description = description;
-        this.hash = hash;
+        this.passwordHash = passwordHash;
+        this.twitterApiHash = twitterApiHash;
+        
+        memberSince = new Date();
+        following = new ArrayList<>();
+        posts = new ArrayList<>();
+        
     }
-    
-    // GETTERS
     
     public String getUsername(){
         return username;
@@ -64,9 +68,6 @@ public class User implements Serializable{
         return description;
     }
     
-    public String getHash(){
-        return hash;
-    }
     
     public Date getMemberDate(){
         return new Date(memberSince.getTime());
@@ -78,6 +79,14 @@ public class User implements Serializable{
     
     public List<User> getFollowedUsers(){
         return new ArrayList<>(following);
+    }
+    
+    public String getHash(){
+        return passwordHash;
+    }
+    
+    public String getTwitterApiHash(){
+        return twitterApiHash;
     }
     
     public void setDescription(String description) {
@@ -124,5 +133,5 @@ public class User implements Serializable{
     public String toString(){
         return String.format("username: %s | description: %s", username, description);
     }
-
+    
 }
