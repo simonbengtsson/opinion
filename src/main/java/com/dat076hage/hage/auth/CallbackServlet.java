@@ -29,9 +29,6 @@ import org.brickred.socialauth.util.SocialAuthUtil;
 @WebServlet(name = "CallbackServlet", urlPatterns = {"/callback"})
 public class CallbackServlet extends HttpServlet {
     
-    @PersistenceContext(unitName="hage_pu")
-    private EntityManager em;
-
     @EJB
     UserRegistry userReg;
     
@@ -56,7 +53,6 @@ public class CallbackServlet extends HttpServlet {
             Profile profile = provider.getUserProfile();
             username = profile.getFullName();
             description = profile.getLastName();
-            System.out.println("*** Name " + username);
             LOG.log(Level.INFO, "*** Name " + username);
             ag = provider.getAccessGrant();
         } catch (Exception ex) {
@@ -68,7 +64,7 @@ public class CallbackServlet extends HttpServlet {
             User searchedUser = userReg.find(username);
             if(searchedUser == null){
                 User user = new User(username, description, "", ag.getKey());
-                em.persist(user);
+                userReg.create(user);
                 
                 ApiKey apiKey = new ApiKey(user);
                 

@@ -14,7 +14,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -36,11 +35,11 @@ public class User implements Serializable {
     @Expose private Date memberSince;
     
     //TODO: http://en.wikibooks.org/wiki/Java_Persistence/ManyToMany#Mapping_a_Join_Table_with_Additional_Columns
-    @ManyToMany
-    @Expose private ArrayList<User> following;
+    /*@ManyToMany
+    @Expose private ArrayList<User> following;*/
     
-    @OneToMany(mappedBy = "user") 
-    @Expose private ArrayList<Post> posts;
+    /*@OneToMany(mappedBy = "user") 
+    @Expose private ArrayList<Post> posts;*/
     
     private String twitterApiHash;
     private String passwordHash;
@@ -55,8 +54,8 @@ public class User implements Serializable {
         this.twitterApiHash = twitterApiHash;
         
         memberSince = new Date();
-        following = new ArrayList<>();
-        posts = new ArrayList<>();
+        //following = new ArrayList<>();
+        //posts = new ArrayList<>();
         
     }
     
@@ -73,13 +72,13 @@ public class User implements Serializable {
         return new Date(memberSince.getTime());
     }
     
-    public List<Post> getPosts(){
+    /*public List<Post> getPosts(){
         return new ArrayList<>(posts);
-    }
+    }*/
     
-    public List<User> getFollowedUsers(){
+    /*public List<User> getFollowedUsers(){
         return new ArrayList<>(following);
-    }
+    }*/
     
     public String getHash(){
         return passwordHash;
@@ -95,7 +94,7 @@ public class User implements Serializable {
     
     // ACTIONS WITH POSTS
     
-    public void assaignPost(Post post){
+    /*public void assaignPost(Post post){
         posts.add(post);
     }
     
@@ -112,14 +111,14 @@ public class User implements Serializable {
         Post post = new Post(this, content);
         posts.add(post);
         return post;
-    }
+    }*/
     
     // ACTIONS WITH FOLLOWED USERS
-    public void addFollowedUsers(User user){
+    /*public void addFollowedUsers(User user){
         following.add(user);
-    }
+    }*/
     
-    public void removeFollowedUsers(User user){
+    /*public void removeFollowedUsers(User user){
         
         for(int i = 0; i < following.size(); i++){
             if(following.get(i).getUsername().equals(user.getUsername())){
@@ -127,7 +126,7 @@ public class User implements Serializable {
                 break;
             }
         }
-    }
+    }*/
     
     @Override
     public String toString(){

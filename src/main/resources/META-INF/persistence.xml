@@ -4,7 +4,7 @@
     <jta-data-source>jdbc/hage</jta-data-source>
     <class>com.dat076hage.hage.model.Hate</class>
     <class>com.dat076hage.hage.model.Post</class>
-    <class>com.dat076hage.hage.model.PasswordUser</class>
+    <class>com.dat076hage.hage.model.User</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
