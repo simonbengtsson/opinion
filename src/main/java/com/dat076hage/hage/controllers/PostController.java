@@ -35,28 +35,39 @@ public class PostController {
     @EJB
     UserRegistry userReg;
     
+    
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    
     
     @GET
     public String findAll() {
         ArrayList<Post> postList = new ArrayList<>();
+        
         for(long l = 0; l < postReg.count(); l++) {
             postList.add(postReg.find(l));
         }
+        
+        
         
         return gson.toJson(postList);
     }
     
     @POST
-    public Response createPost(@PathParam("username") String username, String contentBody) {
+    @Path("{username}")
+    public String createPost(@PathParam("username") String username, String contentBody) {
+        
+        // test purposes
+        User testUser = new User("simonp", "cool grabb", "sdgsdfdsf");
+        //userReg.create(testUser);
         
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
         String content = json.get("content").getAsString();
-        User user = userReg.find(username);
-        Post newPost = new Post(user, content);
+        //User user = userReg.find(username);
+        Post newPost = new Post(testUser, content);
         
-        postReg.create(newPost);
-        return Response.created(URI.create("/posts/" + newPost.getId())).build();
+        //postReg.create(newPost);
+        //return Response.created(URI.create("/posts/" + newPost.getId())).build();
+        return "user: " + username + ", content: " + newPost.getText();    
     }
     
     @PUT

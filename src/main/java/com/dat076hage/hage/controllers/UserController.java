@@ -44,6 +44,7 @@ public class UserController {
     public Response createUser(String contentBody) {
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
         
+        
         String username = json.get("username").getAsString();
         String description = json.get("description").getAsString();
         String password = json.get("password").getAsString();
@@ -60,6 +61,7 @@ public class UserController {
         }
         
         return Response.created(URI.create("/users/" + username)).build();
+        //return json.get("username").getAsString();
     }
     
     @PUT
