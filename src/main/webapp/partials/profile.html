@@ -11,12 +11,14 @@
         <a ng-show="viewingSelf()" ng-click="logout()" href="#/">Logout</a> -
         <a ng-show="viewingSelf()" ng-click="openEditModal()">Edit</a>
         
-        <div>
-            <button type="button" class="btn btn-default" > 
-                <span class="glyphicon glyphicon-plus"></span>       
+        <div ng-show="!viewingSelf()">
+            
+            <button type="button" class="btn btn-default" ng-click="followUser()" > 
+                   <span class="glyphicon glyphicon-plus"></span>  
                  Follow
             </button>
         </div>
+        
     </div>
 
     <div class="col-md-8">
