@@ -71,7 +71,7 @@ public class UserController {
         
         User user = userReg.find(username);
         user.setDescription(description);
-        
+            
         userReg.update(user);
         
         return Response.created(URI.create("/users/" + username)).build();

@@ -6,10 +6,15 @@
 
 package com.dat076hage.hage.controllers;
 
-import com.dat076hage.hage.model.Post;
 import com.dat076hage.hage.PostRegistry;
+import com.dat076hage.hage.UserRegistry;
+import com.dat076hage.hage.model.Post;
+import com.dat076hage.hage.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import java.net.URI;
+import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -26,34 +31,58 @@ public class PostController {
     @EJB
     PostRegistry postReg;
     
+    @EJB
+    UserRegistry userReg;
+    
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
     @GET
     public String findAll() {
-        Post post = postReg.find(1L);
-        return gson.toJson(post);
+        ArrayList<Post> postList = new ArrayList<>();
+        for(long l = 0; l < postReg.count(); l++) {
+            postList.add(postReg.find(l));
+        }
+        
+        return gson.toJson(postList);
     }
     
     @POST
-    public String createPost(Post post) {
+    public Response createPost(@PathParam("username") String username, String contentBody) {
         
-        postReg.create(post);
-        return gson.toJson(post);
+        JsonObject json = gson.fromJson(contentBody, JsonObject.class);
+        String content = json.get("content").getAsString();
+        User user = userReg.find(username);
+        Post newPost = new Post(user, content);
+        
+        postReg.create(newPost);
+        return Response.created(URI.create("/posts/" + newPost.getId())).build();
     }
     
     @PUT
-    public String updatePost(@QueryParam("id") long postId, @QueryParam("text") String newText) {
-        return "postId: " + postId + ", text: " + newText;
+    @Path("{id}")
+    public Response updatePost(@PathParam("id") long postId, String contentBody) {
+        
+        JsonObject json = gson.fromJson(contentBody, JsonObject.class);
+        String newContent = json.get("content").getAsString();
+        Post p = postReg.find(postId);
+        p.setText(newContent);
+        postReg.update(p);
+        
+        return Response.created(URI.create("/posts/" + postId)).build();
+        
     }
     
     @DELETE
-    public String deletePost(@QueryParam("id") long postId) {
-        return "post should be deleted: " + postId;
+    @Path("{id}")
+    public Response deletePost(@PathParam("id") long postId) {
+        postReg.delete(postId);
+        return Response.noContent().build();
     }
     
     @GET
     @Path("{id}")
-    public String findPost(@PathParam("id") long id) {
-        return gson.toJson(postReg.find(id));
+    public String findPost(@PathParam("id") long postId) {
+        Post post = postReg.find(postId);
+        return gson.toJson(post);
     }
 }
