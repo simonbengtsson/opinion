@@ -35,12 +35,12 @@ public class User implements Serializable {
     @Expose private Date memberSince;
     
     //TODO: http://en.wikibooks.org/wiki/Java_Persistence/ManyToMany#Mapping_a_Join_Table_with_Additional_Columns
-    /*@ManyToMany
-    @Expose private ArrayList<User> following;*/
+    @ManyToMany
+    @Expose private List<User> following;
     
-    /*@OneToMany(mappedBy = "user") 
-    @Expose private ArrayList<Post> posts;*/
-    
+    @OneToMany(mappedBy = "user") 
+    @Expose private List<Post> posts;
+
     private String twitterApiHash;
     private String passwordHash;
     
@@ -48,6 +48,9 @@ public class User implements Serializable {
     }
     
     public User(String username, String description, String passwordHash, String twitterApiHash){
+
+       // posts = new ArrayList<>();
+       // following = new ArrayList<>();
         this.username = username;
         this.description = description;
         this.passwordHash = passwordHash;
@@ -75,8 +78,9 @@ public class User implements Serializable {
     /*public List<Post> getPosts(){
         return new ArrayList<>(posts);
     }*/
-    
+
     /*public List<User> getFollowedUsers(){
+
         return new ArrayList<>(following);
     }*/
     
@@ -87,7 +91,7 @@ public class User implements Serializable {
     public String getTwitterApiHash(){
         return twitterApiHash;
     }
-    
+   
     public void setDescription(String description) {
         this.description = description;
     }
@@ -112,12 +116,14 @@ public class User implements Serializable {
         posts.add(post);
         return post;
     }*/
+
     
     // ACTIONS WITH FOLLOWED USERS
     /*public void addFollowedUsers(User user){
         following.add(user);
     }*/
     
+
     /*public void removeFollowedUsers(User user){
         
         for(int i = 0; i < following.size(); i++){

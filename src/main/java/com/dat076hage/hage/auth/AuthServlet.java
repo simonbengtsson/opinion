@@ -21,7 +21,7 @@ import org.brickred.socialauth.SocialAuthManager;
 public class AuthServlet extends HttpServlet {
 
     private static final Logger LOG = Logger.getLogger(AuthServlet.class.getSimpleName());
-    protected final String callbackUrl = "http://localhost:8080/Hage-DAT076/callback";
+    protected final String callbackUrl = "http://localhost:8080/callback";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

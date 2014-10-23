@@ -18,6 +18,8 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class UserRegistry extends AbstractDAO<User, String> {
     
+    
+    
     @PersistenceContext(unitName="hage_pu")
     private EntityManager em;
             
