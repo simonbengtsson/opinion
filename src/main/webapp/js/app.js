@@ -3,8 +3,16 @@ var app = angular.module('hage', ['ui.bootstrap', 'ngRoute', 'ngSanitize', 'mono
 app.constant('API_URL', 'http://localhost:8080/api');
 
 app.config(['$routeProvider', '$locationProvider',
-    function ($routeProvider, $locationProvider) {
+    function ($routeProvider) {
         $routeProvider
+                .when('/hashtags/:hashtag', {
+                    templateUrl: 'partials/posts.html',
+                    controller: 'PostCtrl'
+                })
+                .when('/search/:searchTerm', {
+                    templateUrl: 'partials/posts.html',
+                    controller: 'PostCtrl'
+                })
                 .when('/:username', {
                     templateUrl: 'partials/profile.html',
                     controller: 'ProfileCtrl'
@@ -19,9 +27,3 @@ app.config(['$routeProvider', '$locationProvider',
                 });
     }
 ]);
-
-app.filter('hashTags', function () {
-    return function (input) {
-        return input.replace(/#(\S+)/g, '<a href="http://twitter.com/hashtag/$1">#$1</a>');
-    };
-});

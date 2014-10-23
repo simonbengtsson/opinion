@@ -4,24 +4,17 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
     function ($scope, model, network, $http, $modal, $location) {
         
         $scope.model = model;
-        $scope.updating = true;
 
-        network.getPosts().success(function (data) {
-            model.posts = data;
-            $scope.updating = false;
-        });
-
-        network.getLoggedInUser().success(function (data) {
+        network.getLoggedInUser().then(function (data) {
             model.user = data;
         });
-
 
         $scope.openCreateModal = function () {
             var mi = $modal.open({
                 templateUrl: 'partials/create-modal.html',
                 controller: function ($scope) {
                     $scope.create = function () {
-                        network.createPost($scope.post).success(function (post) {
+                        network.createPost($scope.post).then(function (post) {
                             $scope.$close(post);
                         });
                     };

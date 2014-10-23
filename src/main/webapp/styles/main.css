@@ -266,7 +266,7 @@ a {
     font-size: 20px;
     display: inline-block;
     text-align: center;
-    width: 24%;
+    width: 33%;
     color: #555;
 }
 
@@ -327,4 +327,11 @@ a {
         transform: translateY(-20px);
         box-shadow: 0 40px 0px #16A085;
     }
+}
+
+.search-term-display {
+    background: #1ABC9C;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
 }

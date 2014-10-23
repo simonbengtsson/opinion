@@ -1,6 +1,7 @@
 var app = angular.module('hage');
 
-app.service('NetworkService', ['$http', 'API_URL', 'ModelService', function ($http, API_URL, model) {
+app.service('NetworkService', ['$http', 'API_URL', 'ModelService', '$q', '$timeout',
+    function ($http, API_URL, model, $q, $timeout) {
         
         $http.defaults.headers.common.Authorization = localStorage.getItem('authKey');
 
@@ -74,20 +75,19 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', function ($ht
 
         // Temporary. Returns a dummy promise which mocks a real api result.
         var dummyPromise = function (data) {
-            return {
-                success: function (func) {
-                    func(data);
-                },
-                fail: function (func) {
-                    func('Tmp error message');
-                }
-            };
+            var deferred = $q.defer();
+            
+            $timeout(function() {
+                deferred.resolve(data);
+            }, 500);
+            
+            return deferred.promise;
         };
 
         // Posts
 
-        this.getPosts = function () {
-            return dummyPromise(dummyPosts);
+        this.getPosts = function (page, type, coords) {
+            return dummyPromise(angular.copy(dummyPosts));
             //return $http.get(API_URL + '/posts');
         };
 
@@ -175,5 +175,12 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', function ($ht
             return dummyPromise("Success!");
             // put user to users following list
         };
+        
+        // Meta
+        
+        this.getTrendingHashtags = function() {
+            return dummyPromise(['awesome', 'bp15', 'Lamela', 'Gothenburg', 'Ullevi', 'awesome', 'bp15', 'Lamela', 'Gothenburg', 'Ullevi']);
+        };
 
-    }]);
+    }
+]);

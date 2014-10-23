@@ -1,51 +1,76 @@
 var app = angular.module('hage');
 
-app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$timeout', function ($scope, network, model, $timeout) {
+app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$location', '$timeout', '$routeParams',
+    function ($scope, network, model, $location, $timeout, $routeParams) {
 
+        $scope.trendingHashtags = [];
         $scope.featuredUsers = [];
         $scope.loadingPosts = false;
-        $scope.postTypes = 'world';
+        $scope.postType = 'world';
+        $scope.searchTerm = '';
+        model.posts = [];
         
-        if(location.href.indexOf('hage') !== -1) {
-            location.href = '/';
+        if($routeParams.hashtag) {
+            $scope.searchTerm = '#' + $routeParams.hashtag;
+            network.getPosts().then(function (data) {
+                model.posts = data; 
+            });
+        } else if($routeParams.searchTerm) {
+            $scope.searchTerm = $routeParams.searchTerm;
+            network.getPosts().then(function (data) {
+                model.posts = data;
+            });
+        } else {
+            network.getPosts().then(function (data) {
+                model.posts = data;
+            });
         }
 
-        network.getFeaturedUsers().success(function (res) {
+        var page = 0;
+
+        network.getFeaturedUsers().then(function (res) {
             $scope.featuredUsers = res;
         });
 
-        $scope.loadMorePosts = function () {
-            if ($scope.loadingPosts) return;
-            $scope.loadingPosts = true;
-            
-            $timeout(function() {
-                model.posts.push({
-                    text: 'Loading more number ' + model.posts.length,
-                    hatingUsers: [],
-                    author: {
-                        username: "adalove",
-                        firstName: 'Ada',
-                        lastName: 'Lovelace',
-                        description: 'This is a personal description that is pretty long, but not TLDR',
-                        picture: 'https://lh4.googleusercontent.com/-q-IPv9Ub8eY/AAAAAAAAAAI/AAAAAAAAAb4/36Ea1HIRW0c/photo.jpg'
-                    },
-                    time: new Date(2013, 2, 1, 1, 10),
-                    comments: []
-                });
-                model.posts.push({
-                    text: 'Loading more number ' + model.posts.length,
-                    hatingUsers: [],
-                    author: {
-                        username: "adalove",
-                        firstName: 'Ada',
-                        lastName: 'Lovelace',
-                        description: 'This is a personal description that is pretty long, but not TLDR',
-                        picture: 'https://lh4.googleusercontent.com/-q-IPv9Ub8eY/AAAAAAAAAAI/AAAAAAAAAb4/36Ea1HIRW0c/photo.jpg'
-                    },
-                    time: new Date(2014, 2, 1, 1, 10),
-                    comments: []
-                });
-                $scope.loadingPosts = false;
-            }, 1000);
+        network.getTrendingHashtags().then(function (res) {
+            $scope.trendingHashtags = res;
+        });
+
+        $scope.changePostType = function (type) {
+            $scope.postType = type;
+            page = 0;
+            model.posts = [];
+            $scope.loadMorePosts();
         };
-    }]);
+
+        $scope.loadMorePosts = function () {
+            $scope.loadingError = '';
+            if ($scope.loadingPosts)
+                return;
+            $scope.loadingPosts = true;
+
+            if ($scope.postType === 'city') {
+                navigator.geolocation.getCurrentPosition(function (geo) {
+                    network.getPosts(page, $scope.postType, geo.coords).then(function (res) {
+                        $timeout(function () {
+                            model.posts = model.posts.concat(res);
+                            page++;
+                            $scope.loadingPosts = false;
+                        });
+                    });
+                }, function () {
+                    $timeout(function () {
+                        $scope.loadingError = "Couldn't load local posts";
+                        $scope.loadingPosts = false;
+                    });
+                });
+            } else {
+                network.getPosts(page, $scope.postType).then(function (res) {
+                    model.posts = model.posts.concat(res);
+                    page++;
+                    $scope.loadingPosts = false;
+                });
+            }
+        };
+    }
+]);

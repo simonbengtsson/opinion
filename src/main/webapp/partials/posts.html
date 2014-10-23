@@ -7,33 +7,27 @@
             </a>
             {{ user.username}}
         </div>
-        <h6>Popular</h6>
-        <div ng-repeat="user in featuredUsers" class="featured-box">
-            <a href="#/{{ user.username}}">
-                <img ng-src="{{ user.picture}}" class="profile-pic">
-            </a>
-            {{ user.username}}
+        <h6>Trending</h6>
+        <div class="featured-box">
+            <a ng-repeat="hashtag in trendingHashtags track by $index" href="#/hashtags/{{hashtag}}"> #{{ hashtag}} </a> 
         </div>
     </div>
     <div class="col-sm-8" infinite-scroll="loadMorePosts()" >
-        <div class="area-selector">
-            <a class="area" ng-class="postTypes === 'world' ? 'active' : ''" ng-click="postTypes = 'world'">
+        <div ng-hide="searchTerm" class="area-selector">
+            <a class="area" ng-class="postType === 'world' ? 'active' : ''" ng-click="changePostType('world')">
                 <span class="glyphicon glyphicon-globe"></span> 
-                World
+                Global
             </a>
-            <a class="area" ng-class="postTypes === 'country' ? 'active' : ''" ng-click="postTypes = 'country'">
-                <span class="glyphicon glyphicon-flag"></span>
-                Sweden
-            </a>
-            <a class="area" ng-class="postTypes === 'city' ? 'active' : ''" ng-click="postTypes = 'city'">
+            <a class="area" ng-class="postType === 'city' ? 'active' : ''" ng-click="changePostType('city')">
                 <span class="glyphicon glyphicon-home"></span> 
-                Gothenburg
+                Local
             </a>
-            <a class="area" ng-class="postTypes === 'following' ? 'active' : ''" ng-click="postTypes = 'following'">
+            <a class="area" ng-class="postType === 'following' ? 'active' : ''" ng-click="changePostType('following')">
                 <span class="glyphicon glyphicon-user"></span> 
                 Following
             </a>
         </div>
+        <h5 ng-show="searchTerm" class="search-term-display">{{ searchTerm }}</h5>
         <hage-post ng-repeat="post in model.posts| filter: search" hage-post="post"></hage-post>
         <div class="loader-cont" style="height: 100px;" ng-show="loadingPosts">
             <div ng-cloak class="loading">
@@ -45,6 +39,7 @@
                 <div class="dot"></div>
             </div>
         </div>
+        <h4 style="text-align: center;" ng-show="loadingError">{{ loadingError }}</h4>
     </div>
 
 
