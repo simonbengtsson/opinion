@@ -130,7 +130,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', function ($ht
             } else if(username === 'test123') {
                 return dummyPromise(dummyUser2);
             } else {
-                return dummyPromise(null)
+                console.log(username);
             }
                 
             return $http.get(API_URL + '/users/' + user.username);
@@ -169,6 +169,11 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', function ($ht
         this.deleteHate = function (post, comment) {
             return dummyPromise("Success!");
             return $http.delete(API_URL + '/hate/' + post.id + '/comments/' + comment.id);
+        };
+        
+        this.followUser = function (user){
+            return dummyPromise("Success!");
+            // put user to users following list
         };
 
     }]);
