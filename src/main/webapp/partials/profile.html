@@ -1,6 +1,10 @@
 <div class="container">
+    
+    <div class="col-md-12" ng-hide="user">
+        <h1>User not found</h1>
+    </div>
 
-    <div class="user-box col-md-4">
+    <div class="user-box col-md-4" ng-show="user">
         <img class="img-circle" ng-src="{{ user.picture}}" width="170">
 
         <h4 class="name">

@@ -2,15 +2,20 @@ var app = angular.module('hage', ['ui.bootstrap', 'ngRoute', 'ngSanitize', 'mono
 
 app.constant('API_URL', 'http://localhost:8080/Hage-DAT076/api');
 
-app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-    $routeProvider
-        .when('/:username', {
-            templateUrl: 'partials/profile.html',
-            controller: 'ProfileCtrl'
-        })
-        .when('/', {
-            templateUrl: 'partials/posts.html',
-            controller: 'PostCtrl'
-        });
-
-}]);
+app.config(['$routeProvider', '$locationProvider',
+    function ($routeProvider, $locationProvider) {
+        $routeProvider
+                .when('/:username', {
+                    templateUrl: 'partials/profile.html',
+                    controller: 'ProfileCtrl'
+                })
+                .when('/', {
+                    templateUrl: 'partials/posts.html',
+                    controller: 'PostCtrl'
+                })
+                .otherwise({
+                    templateUrl: 'partials/404.html',
+                    redirectTo: '/404'
+                });
+    }
+]);

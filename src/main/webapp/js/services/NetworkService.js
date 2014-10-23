@@ -130,7 +130,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', function ($ht
             } else if(username === 'test123') {
                 return dummyPromise(dummyUser2);
             } else {
-                console.log(username);
+                return dummyPromise(null)
             }
                 
             //return $http.get(API_URL + '/users/' + user.id);
