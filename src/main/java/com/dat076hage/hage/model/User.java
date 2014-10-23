@@ -38,17 +38,17 @@ public class User implements Serializable{
     
     //TODO: http://en.wikibooks.org/wiki/Java_Persistence/ManyToMany#Mapping_a_Join_Table_with_Additional_Columns
     @ManyToMany
-    @Expose private ArrayList<User> following;
+    @Expose private List<User> following;
     
     @OneToMany(mappedBy = "user") 
-    @Expose private ArrayList<Post> posts;
+    @Expose private List<Post> posts;
     
     public User(){
     }
     
     public User(String username, String description, String hash){
-        posts = new ArrayList<>();
-        following = new ArrayList<>();
+       // posts = new ArrayList<>();
+       // following = new ArrayList<>();
         this.username = username;
         this.description = description;
         this.hash = hash;
@@ -76,10 +76,11 @@ public class User implements Serializable{
         return new ArrayList<>(posts);
     }
     
+   
     public List<User> getFollowedUsers(){
         return new ArrayList<>(following);
     }
-    
+   
     public void setDescription(String description) {
         this.description = description;
     }
@@ -104,11 +105,13 @@ public class User implements Serializable{
         posts.add(post);
         return post;
     }
+  
     
     // ACTIONS WITH FOLLOWED USERS
     public void addFollowedUsers(User user){
         following.add(user);
     }
+    
     
     public void removeFollowedUsers(User user){
         
