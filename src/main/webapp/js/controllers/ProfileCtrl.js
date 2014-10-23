@@ -15,6 +15,14 @@ app.controller('ProfileCtrl', ['$scope', '$routeParams', '$http', 'API_URL', '$m
             return model.user && model.user.username === $scope.user.username;
         };
         
+         $scope.followUser = function() {
+            //Add to following list.
+            console.log("I want to follow you " + $scope.user.username);
+            network.followUser($scope.user.username).success(function (res) {
+           
+            });
+        };
+        
         $scope.openEditModal = function () {
             $modal.open({
                 templateUrl: 'partials/edit-profile-modal.html',
