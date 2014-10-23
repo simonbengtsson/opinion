@@ -5,6 +5,10 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$timeou
         $scope.featuredUsers = [];
         $scope.loadingPosts = false;
         $scope.postTypes = 'world';
+        
+        if(location.href.indexOf('hage') !== -1) {
+            location.href = '/';
+        }
 
         network.getFeaturedUsers().success(function (res) {
             $scope.featuredUsers = res;

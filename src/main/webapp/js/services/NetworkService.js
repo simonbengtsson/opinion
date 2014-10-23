@@ -22,7 +22,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', function ($ht
         
         var dummyPosts = [
             {
-                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. #awesome #test',
                 hatingUsers: [angular.copy(dummyUser2)],
                 author: angular.copy(dummyUser),
                 time: new Date(2013, 2, 1, 1, 10),
@@ -133,7 +133,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', function ($ht
                 return dummyPromise(null)
             }
                 
-            //return $http.get(API_URL + '/users/' + user.id);
+            return $http.get(API_URL + '/users/' + user.username);
         };
 
         this.updateUser = function (user) {
