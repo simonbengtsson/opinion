@@ -10,7 +10,7 @@
                 <div class="time-ago" am-time-ago="post.time"></div>
             </div>
             <div class="pull-right">
-                <div class="hate-btn" ng-click="hate(post)" ng-class="model.isHated(post) ? 'hated' : ''">
+                <div ng-show="model.user" class="hate-btn" ng-click="hate(post)" ng-class="model.isHated(post) ? 'hated' : ''">
                     <span class="hate-smiley"></span>
                     {{ post.hatingUsers.length}}
                 </div>
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <form role="form" ng-submit="comment();commentFormOpen = false" 
+        <form role="form" ng-submit="comment();commentFormOpen = false" ng-show="model.user"  
               class="comment-form" ng-class="commentFormOpen ? 'open' : ''">
             <textarea ng-click="commentFormOpen = true" ng-model="newComment" msd-elastic class="form-control" placeholder="Write comment..."></textarea>
             <div ng-show="commentFormOpen">
@@ -48,4 +48,4 @@
         </form>
     </section>
 
-    <article>
+    </article>

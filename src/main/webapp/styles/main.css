@@ -38,7 +38,7 @@
 }
 
 .navbar .item:hover {
-    background: #444;
+    color: #aaa;
 }
 
 .navbar a {
@@ -155,7 +155,7 @@
 }
 
 .hate-btn:hover .hate-smiley {
-    background: url(../assets/angry_red.png);
+    opacity: 0.6;
 }
 
 .time-ago {
@@ -170,9 +170,19 @@
     }
 }
 
-.userInfo {
-    position: fixed;
+.user-box {
     text-align: center;
+    margin-bottom: 20px;
+}
+
+.user-box .name {
+    font-size: 20px;
+}
+
+.user-box .desc {
+    font-size: 16px;
+    line-height: 20px;
+    margin-bottom: 10px;
 }
 
 textarea {
@@ -183,16 +193,14 @@ textarea {
     position: relative;
 }
 
-.search-cont:hover .search, .search-cont .search:focus {
+.search-cont:hover .search, .search-cont .search:focus, .search-cont .search.visible {
     opacity:1;
-}
-
-.search-cont .search.visible {
-    opacity: 1;
+    width: 200px;
 }
 
 .search-cont .search {
     opacity:0;
+    width: 100px;
     transition:opacity 0.2s linear;
 }
 
@@ -231,4 +239,92 @@ hr {
     box-shadow: 0 0 5px #ddd;
     margin-bottom: 20px;
     padding: 10px;
+}
+
+.modal-content {
+    border-radius: 0;
+}
+
+.modal-body {
+    padding: 15px 0;
+}
+
+.modal-header {
+    margin-bottom: 10px;
+}
+
+a {
+    cursor: pointer;
+}
+
+.area-selector  {
+    margin-bottom: 10px;
+    margin-top: -10px;
+}
+
+.area-selector .area {
+    font-size: 20px;
+    display: inline-block;
+    text-align: center;
+    width: 24%;
+    color: #555;
+}
+
+.area .glyphicon {
+    line-height: 55px;
+}
+
+.area.active {
+    color: #1ABC9C;
+}
+
+.loading {
+    position: relative; 
+    margin: 0 auto;
+    margin-top: 50px;
+    width: 140px;
+    height: 20px;
+}
+.loading .dot {
+    position: absolute;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    background: #1ABC9C;
+    -webkit-animation: spin .5s 0s infinite alternate both;
+}
+.loading .dot:nth-child(0) {
+    -webkit-animation: spin 0.5s 0ms infinite alternate both;
+    left: 0px;
+}
+.loading .dot:nth-child(1) {
+    -webkit-animation: spin 0.5s 80ms infinite alternate both;
+    left: 24px;
+}
+.loading .dot:nth-child(2) {
+    -webkit-animation: spin 0.5s 160ms infinite alternate both;
+    left: 48px;
+}
+.loading .dot:nth-child(3) {
+    -webkit-animation: spin 0.5s 240ms infinite alternate both;
+    left: 72px;
+}
+.loading .dot:nth-child(4) {
+    -webkit-animation: spin 0.5s 320ms infinite alternate both;
+    left: 96px;
+}
+.loading .dot:nth-child(5) {
+    -webkit-animation: spin 0.5s 400ms infinite alternate both;
+    left: 120px;
+}
+
+@-webkit-keyframes spin {
+    from {
+        transform: translateY(0);
+        box-shadow: 0 0 0 #1ABC9C;
+    }
+    to {
+        transform: translateY(-20px);
+        box-shadow: 0 40px 0px #16A085;
+    }
 }

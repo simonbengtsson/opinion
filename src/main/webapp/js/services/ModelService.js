@@ -6,7 +6,7 @@ app.service('ModelService', [function () {
     this.user = null;
 
     this.isHated = function(post) {
-        return this.indexOfUser(post.hatingUsers, this.user) !== -1;
+        return this.user && this.indexOfUser(post.hatingUsers, this.user) !== -1;
     };
 
     this.indexOfUser = function(usersArr, user) {

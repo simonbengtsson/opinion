@@ -68,10 +68,12 @@ public class UserController {
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
         
         String description = json.get("description").getAsString();
+
         
         User user = userReg.find(username);
         user.setDescription(description);
             
+
         userReg.update(user);
         
         return Response.created(URI.create("/users/" + username)).build();
