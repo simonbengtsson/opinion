@@ -61,7 +61,6 @@ public class UserController {
         }
         
         return Response.created(URI.create("/users/" + username)).build();
-        //return json.get("username").getAsString();
     }
     
     @PUT

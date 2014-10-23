@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import java.net.URI;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
@@ -36,38 +37,33 @@ public class PostController {
     UserRegistry userReg;
     
     
+    
+    
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
     
     @GET
     public String findAll() {
-        ArrayList<Post> postList = new ArrayList<>();
         
-        for(long l = 0; l < postReg.count(); l++) {
-            postList.add(postReg.find(l));
-        }
-        
-        
-        
-        return gson.toJson(postList);
+        return gson.toJson(postReg);
     }
     
     @POST
     @Path("{username}")
-    public String createPost(@PathParam("username") String username, String contentBody) {
-        
-        // test purposes
-        User testUser = new User("simonp", "cool grabb", "sdgsdfdsf");
-        //userReg.create(testUser);
+    public Response createPost(@PathParam("username") String username, String contentBody) {
         
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
         String content = json.get("content").getAsString();
-        //User user = userReg.find(username);
-        Post newPost = new Post(testUser, content);
+        User user = userReg.find(username);
+        Post newPost = new Post(user, content);
         
-        //postReg.create(newPost);
-        //return Response.created(URI.create("/posts/" + newPost.getId())).build();
-        return "user: " + username + ", content: " + newPost.getText();    
+        try {
+            postReg.create(newPost);
+        } catch (Exception e) { // duplicate posts in database, TODO: generate unique postIds
+            return Response.notAcceptable(null).build();
+        }
+        
+        return Response.created(URI.create("/posts/" + newPost.getId())).build();
     }
     
     @PUT
