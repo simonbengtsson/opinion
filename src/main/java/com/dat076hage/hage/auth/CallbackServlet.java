@@ -1,6 +1,7 @@
 package com.dat076hage.hage.auth;
 
 import com.dat076hage.hage.ApiKeyRegistry;
+import com.dat076hage.hage.Tools;
 import com.dat076hage.hage.UserRegistry;
 import com.dat076hage.hage.model.User;
 import java.io.IOException;
@@ -8,11 +9,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -67,13 +65,15 @@ public class CallbackServlet extends HttpServlet {
                 userReg.create(user);
                 
                 ApiKey apiKey = new ApiKey(user);
+                apiKeyReg.create(apiKey);
                 
                 String script = "<script>localStorage.setItem('authKey', '" + 
-                        apiKey.getKey() + "'); location.href = '/Hage-DAT076'; </script>";
+                        apiKey.getKey() + "'); location.href = '" + Tools.URL_FOLDER + "'; </script>";
                 response.getWriter().write(script);
             }else{
                 
                 ApiKey apiKey = new ApiKey(searchedUser);
+                apiKeyReg.create(apiKey);
                 
                 String script = "<script>localStorage.setItem('authKey', '" + 
                         apiKey.getKey() + "'); location.href = '/Hage-DAT076'; </script>";
