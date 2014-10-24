@@ -3,6 +3,8 @@ var app = angular.module('hage');
 app.service('ModelService', [function () {
 
     this.posts = [];
+    this.trendingHashtags = [];
+    this.featuredUsers = [];
     this.user = null;
 
     this.isHated = function(post) {

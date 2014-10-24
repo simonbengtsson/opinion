@@ -3,8 +3,6 @@ var app = angular.module('hage');
 app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$location', '$timeout', '$routeParams',
     function ($scope, network, model, $location, $timeout, $routeParams) {
 
-        $scope.trendingHashtags = [];
-        $scope.featuredUsers = [];
         $scope.loadingPosts = false;
         $scope.postType = 'world';
         $scope.searchTerm = '';
@@ -29,11 +27,11 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
         var page = 0;
 
         network.getFeaturedUsers().then(function (res) {
-            $scope.featuredUsers = res;
+            model.featuredUsers = res;
         });
 
         network.getTrendingHashtags().then(function (res) {
-            $scope.trendingHashtags = res;
+            model.trendingHashtags = res;
         });
 
         $scope.changePostType = function (type) {

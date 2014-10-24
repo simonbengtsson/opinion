@@ -1,10 +1,10 @@
 <div class="container" style="padding: 0;">
     <div class="col-sm-4">
         <h6>Featured</h6>
-        <hage-user-badge ng-repeat="user in featuredUsers" hage-user="user"></hage-user-badge>
+        <hage-user-badge ng-repeat="user in model.featuredUsers" hage-user="user"></hage-user-badge>
         <h6>Trending</h6>
         <div class="trending-box">
-            <a ng-repeat="hashtag in trendingHashtags track by $index" href="#/hashtags/{{hashtag}}"> #{{ hashtag}} </a> 
+            <a ng-repeat="hashtag in model.trendingHashtags track by $index" href="#/hashtags/{{hashtag}}"> #{{ hashtag}} </a> 
         </div>
     </div>
     <div class="col-sm-8" infinite-scroll="loadMorePosts()" >
@@ -22,7 +22,10 @@
                 Following
             </a>
         </div>
-        <h5 ng-show="searchTerm" class="search-term-display">{{ searchTerm }}</h5>
+        <h5 ng-show="searchTerm" class="search-term-display">
+            {{ searchTerm }}
+            <a href="#/" class="close pull-right" ng-click="$dismiss()">&times;</a>
+        </h5>
         <hage-post ng-repeat="post in model.posts| filter: search" hage-post="post"></hage-post>
         <div class="loader-cont" style="height: 100px;" ng-show="loadingPosts">
             <div ng-cloak class="loading">

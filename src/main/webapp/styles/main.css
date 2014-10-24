@@ -361,3 +361,14 @@ a {
     border-radius: 5px;
     color: white;
 }
+
+.search-term-display .close {
+    color: #fff;
+    margin-right: 10px;
+    margin-top: 2px;
+    opacity: 0.7;
+}
+
+.search-term-display .close:hover {
+    opacity: 1;
+}
