@@ -7,6 +7,8 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', '$q', '$timeo
 
         var dummyUser = {
             username: "adalove",
+            followers: [],
+            following: [],
             firstName: 'Ada',
             lastName: 'Lovelace',
             description: 'This is a personal description that is pretty long, but not TLDR',
@@ -15,11 +17,15 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', '$q', '$timeo
         
         var dummyUser2 = {
             username: "test123",
+            followers: [dummyUser],
+            following: [],
             firstName: 'Testare',
             lastName: 'TestTest',
             description: 'This is a personal test description',
             picture: 'http://www.horizon-properties.com/assets/test-user-7bc7f39edf559e62535e37437b232f46.png'
         };
+        
+        dummyUser.following.push(angular.copy(dummyUser2));
         
         var dummyPosts = [
             {

@@ -1,14 +1,9 @@
 <div class="container" style="padding: 0;">
     <div class="col-sm-4">
         <h6>Featured</h6>
-        <div ng-repeat="user in featuredUsers" class="featured-box">
-            <a href="#/{{ user.username}}">
-                <img ng-src="{{ user.picture}}" class="profile-pic">
-            </a>
-            {{ user.username}}
-        </div>
+        <hage-user-badge ng-repeat="user in featuredUsers" hage-user="user"></hage-user-badge>
         <h6>Trending</h6>
-        <div class="featured-box">
+        <div class="trending-box">
             <a ng-repeat="hashtag in trendingHashtags track by $index" href="#/hashtags/{{hashtag}}"> #{{ hashtag}} </a> 
         </div>
     </div>
@@ -41,6 +36,4 @@
         </div>
         <h4 style="text-align: center;" ng-show="loadingError">{{ loadingError }}</h4>
     </div>
-
-
 </div>

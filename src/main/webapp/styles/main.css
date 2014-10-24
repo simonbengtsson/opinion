@@ -175,8 +175,14 @@
     margin-bottom: 20px;
 }
 
+.user-box .follow-row {
+    color: #555;
+    font-size: 14px;
+}
+
 .user-box .name {
     font-size: 20px;
+    margin-bottom: 0;
 }
 
 .user-box .desc {
@@ -234,11 +240,31 @@ hr {
     border-color: #ddd;
 }
 
-.featured-box {
+.trending-box {
     background: #f5f5f5;
     box-shadow: 0 0 5px #ddd;
     margin-bottom: 20px;
+    padding: 10px;  
+}
+
+.user-badge {
+    background: #f5f5f5;
+    box-shadow: 0 0 5px #ddd;
+    margin-bottom: 20px;
+    max-height: 60px;   
     padding: 10px;
+    transition: all 0.5s ease;
+    overflow: hidden;
+}
+
+.user-badge .desc {
+    font-size: 14px;
+    line-height: 18px;
+    margin-top: 5px;
+}
+
+.user-badge:hover {
+    max-height: 300px;
 }
 
 .modal-content {

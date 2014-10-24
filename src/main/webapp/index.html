@@ -25,7 +25,7 @@
             <a href="#/"><img class="logo" alt="App logo" src="assets/logo.png"></a>
                 
             <ul class="nav-right nav-section">
-                <li ng-cloak ng-show="model.user" class="item" ng-click="openCreateModal()"><span><span class="glyphicon glyphicon-comment"></span></span></li>
+                <li ng-cloak ng-show="model.user" class="item" ng-click="openCreateModal()"><span><span class="glyphicon glyphicon-comment" style="transform: scale(-1, 1);"></span></span></li>
                 <li ng-cloak ng-show="model.user"><a href="#/{{ model.user.username }}"><img class="profile-pic" style="padding-left: 5px;padding-top: 8px;" ng-src="{{ model.user.picture }}"></a></li>
                 <li ng-cloak ng-hide="model.user">
                     <a href="/auth" class="btn-info btn btn-sm" style="margin-top: 7px; margin-left: 10px;">
@@ -59,6 +59,7 @@
 <script src="js/services/ModelService.js"></script>
 <script src="js/services/NetworkService.js"></script>
 <script src="js/directives/PostDirective.js"></script>
+<script src="js/directives/user-badge-directive.js"></script>
 <script src="js/filters/hashtag-filter.js"></script>
 
 </body>

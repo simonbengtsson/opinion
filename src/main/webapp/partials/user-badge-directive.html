@@ -1,0 +1,16 @@
+<div class="user-badge">
+    <div class="clearfix">
+        <a href="#/{{ user.username}}" class="item pull-left" style="padding-right: 10px;">
+            <img ng-src="{{ user.picture}}" class="profile-pic">
+        </a>
+        <div class="item pull-left" style="line-height: 20px; font-size: 16px;">
+            {{ user.username}} <br> {{ user.firstName}} {{ user.lastName}}
+        </div>
+        <div class="item pull-right">
+            <div class="btn btn-primary">Follow</div>
+        </div>
+    </div>
+    <div class="desc">
+        {{ user.description}}
+    </div>
+</div>
