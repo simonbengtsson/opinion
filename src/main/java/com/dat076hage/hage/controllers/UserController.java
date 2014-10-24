@@ -81,8 +81,8 @@ public class UserController {
     // Working
     @PUT
     @Path("/me")
-    public Response updateUser(@HeaderParam("Authentication") String authentication, String contentBody) {
-        User askingUser = validateApiKey(authentication);
+    public Response updateUser(@HeaderParam("Authorization") String authorization, String contentBody) {
+        User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
             //return "{\"error\": \"401, Not authorized\"}";
@@ -98,8 +98,8 @@ public class UserController {
     
     @DELETE
     @Path("/me")
-    public Response deleteUser(@HeaderParam("Authentication") String authentication) {
-        User askingUser = validateApiKey(authentication);
+    public Response deleteUser(@HeaderParam("Authorization") String authorization) {
+        User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
             //return "{\"error\": \"401, Not authorized\"}";
@@ -111,8 +111,8 @@ public class UserController {
     // Working
     @GET
     @Path("/me")
-    public String findMe(@HeaderParam("Authentication") String authentication){
-        User askingUser = validateApiKey(authentication);
+    public String findMe(@HeaderParam("Authorization") String authorization){
+        User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             //return Response.status(401).build();
             return "{\"error\": \"401, Not authorized\"}";
@@ -122,8 +122,8 @@ public class UserController {
     
     @GET
     @Path("{username}")
-    public String findUser(@HeaderParam("Authentication") String authentication, @PathParam("username") String username){
-        User askingUser = validateApiKey(authentication);
+    public String findUser(@HeaderParam("Authorization") String authorization, @PathParam("username") String username){
+        User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             //return Response.status(401).build();
             return "{\"error\": \"401, Not authorized\"}";

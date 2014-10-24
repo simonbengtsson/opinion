@@ -51,8 +51,8 @@ public class PostController {
     }
     
     @GET
-    public String findAll(@HeaderParam("Authentication") String authentication) {
-        User askingUser = validateApiKey(authentication);
+    public String findAll(@HeaderParam("Authorization") String authorization) {
+        User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             //return Response.status(401).build();v
             return "{\"error\": \"401, Not authorized\"}";
@@ -65,8 +65,8 @@ public class PostController {
     
     // Working
     @POST
-    public Response createPost(@HeaderParam("Authentication") String authentication, String contentBody) {
-        User askingUser = validateApiKey(authentication);
+    public Response createPost(@HeaderParam("Authorization") String authorization, String contentBody) {
+        User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
             //return "{\"error\": \"401, Not authorized\"}";
@@ -88,8 +88,8 @@ public class PostController {
     // Working
     @PUT
     @Path("{id}")
-    public Response updatePost(@HeaderParam("Authentication") String authentication, @PathParam("id") long postId, String contentBody) {
-        User askingUser = validateApiKey(authentication);
+    public Response updatePost(@HeaderParam("Authorization") String authorization, @PathParam("id") long postId, String contentBody) {
+        User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
             //return "{\"error\": \"401, Not authorized\"}";
@@ -104,14 +104,13 @@ public class PostController {
         postReg.update(p);
         
         return Response.created(URI.create("/posts/" + postId)).build();
-        
     }
     
     // Working
     @DELETE
     @Path("{id}")
-    public Response deletePost(@HeaderParam("Authentication") String authentication, @PathParam("id") long postId) {
-        User askingUser = validateApiKey(authentication);
+    public Response deletePost(@HeaderParam("Authorization") String authorization, @PathParam("id") long postId) {
+        User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
             //return "{\"error\": \"401, Not authorized\"}";
@@ -123,8 +122,8 @@ public class PostController {
     // Working
     @GET
     @Path("{id}")
-    public String findPost(@HeaderParam("Authentication") String authentication, @PathParam("id") long postId) {
-        User askingUser = validateApiKey(authentication);
+    public String findPost(@HeaderParam("Authorization") String authorization, @PathParam("id") long postId) {
+        User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             //return Response.status(401).build();
             return "{\"error\": \"401, Not authorized\"}";
