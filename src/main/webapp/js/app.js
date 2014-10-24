@@ -1,6 +1,6 @@
 var app = angular.module('hage', ['ui.bootstrap', 'ngRoute', 'ngSanitize', 'monospaced.elastic', 'angularMoment', 'infinite-scroll', 'angularFileUpload']);
 
-app.constant('API_URL', 'http://localhost:8080/hage/api');
+app.constant('API_URL', 'http://localhost:8080/api');
 
 app.config(['$routeProvider', '$locationProvider',
     function ($routeProvider) {

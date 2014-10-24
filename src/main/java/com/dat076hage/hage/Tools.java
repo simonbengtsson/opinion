@@ -16,7 +16,7 @@ import java.util.Comparator;
  */
 public class Tools {
     
-    public static final String URL_FOLDER = "/hage";
+    public static final String URL_FOLDER = "/";
     
     public static ArrayList<Post> sortPosts(ArrayList<Post> posts){
         ArrayList<Post> shallowCopy = new ArrayList<>(posts);
