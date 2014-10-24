@@ -42,7 +42,8 @@ public class CallbackServlet extends HttpServlet {
         AccessGrant ag;
         String username = "";
         String description = "";
-;
+        String picture = "";
+
         try {
             // Must use same manager as used for login
             SocialAuthManager manager = (SocialAuthManager) request.getSession().getAttribute("authManager");
@@ -51,6 +52,8 @@ public class CallbackServlet extends HttpServlet {
             Profile profile = provider.getUserProfile();
             username = profile.getDisplayName();
             description = profile.getLastName();
+            picture = profile.getProfileImageURL();
+            picture = picture.replaceAll("_normal", "_bigger");
             LOG.log(Level.INFO, "*** Name " + username);
             ag = provider.getAccessGrant();
         } catch (Exception ex) {
@@ -61,7 +64,7 @@ public class CallbackServlet extends HttpServlet {
         if(!username.equals("")){
             User searchedUser = userReg.find(username);
             if(searchedUser == null){
-                User user = new User(username, description, "", ag.getKey());
+                User user = new User(username, description, "", ag.getKey(), picture);
                 userReg.create(user);
                 
                 ApiKey apiKey = new ApiKey(user);

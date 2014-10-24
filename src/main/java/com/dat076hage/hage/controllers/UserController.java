@@ -46,7 +46,10 @@ public class UserController {
     
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
-    public User validateApiKey(String key){
+    public User validateApiKey(String key) {
+        if(key == null) {
+            return null;
+        }
         ApiKey apiKey = apiKeyReg.find(key);
         if(apiKey != null){
             return apiKey.getUser();
@@ -65,7 +68,7 @@ public class UserController {
         String password = json.get("password").getAsString();
         String passHash = BCrypt.hashpw(password, BCrypt.gensalt());
         
-        User user = new User(username, description, passHash, "");
+        User user = new User(username, description, passHash, "", "");
         //TODO: Exceptions not caught?
         try{
             userReg.create(user);
@@ -111,13 +114,13 @@ public class UserController {
     // Working
     @GET
     @Path("/me")
-    public String findMe(@HeaderParam("Authorization") String authorization){
+    public Response findMe(@HeaderParam("Authorization") String authorization){
         User askingUser = validateApiKey(authorization);
         if(askingUser == null){
-            //return Response.status(401).build();
-            return "{\"error\": \"401, Not authorized\"}";
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
-        return gson.toJson(askingUser);
+        String json = gson.toJson(askingUser);
+        return Response.ok(json, MediaType.APPLICATION_JSON).build(); 
     }
     
     @GET

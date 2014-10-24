@@ -41,13 +41,15 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user") 
     @Expose private List<Post> posts;
 
+    @Expose private String picture;
+
     private String twitterApiHash;
     private String passwordHash;
-    
+
     public User(){
     }
-    
-    public User(String username, String description, String passwordHash, String twitterApiHash){
+
+    public User(String username, String description, String passwordHash, String twitterApiHash, String picture){
 
        // posts = new ArrayList<>();
        // following = new ArrayList<>();
@@ -55,6 +57,7 @@ public class User implements Serializable {
         this.description = description;
         this.passwordHash = passwordHash;
         this.twitterApiHash = twitterApiHash;
+        this.picture = picture;
         
         memberSince = new Date();
         //following = new ArrayList<>();

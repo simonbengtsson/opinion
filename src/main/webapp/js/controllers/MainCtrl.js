@@ -6,6 +6,10 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
         $scope.model = model;
 
         network.getLoggedInUser().then(function (data) {
+            data = data.data;
+            if(!data.picture) {
+                data.picture = "assets/no-picture.png";
+            }
             model.user = data;
         });
 

@@ -121,9 +121,8 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', '$q', '$timeo
 
         // Users
         
-        this.getLoggedInUser = function (username) {
-            return dummyPromise(dummyUser);
-            //return $http.get(API_URL + '/users/' + user.id);
+        this.getLoggedInUser = function () {
+            return $http.get(API_URL + '/users/me');
         };
         
         this.getFeaturedUsers = function (username) {
