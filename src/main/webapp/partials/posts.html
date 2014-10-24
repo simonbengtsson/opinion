@@ -24,7 +24,7 @@
         </div>
         <h5 ng-show="searchTerm" class="search-term-display">
             {{ searchTerm }}
-            <a href="#/" class="close pull-right" ng-click="$dismiss()">&times;</a>
+            <a href="#/" class="close close-bright pull-right" ng-click="$dismiss()">&times;</a>
         </h5>
         <hage-post ng-repeat="post in model.posts| filter: search" hage-post="post"></hage-post>
         <div class="loader-cont" style="height: 100px;" ng-show="loadingPosts">

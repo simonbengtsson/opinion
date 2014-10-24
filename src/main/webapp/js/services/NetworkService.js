@@ -110,6 +110,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', '$q', '$timeo
         this.createPost = function (post) {
             return dummyPromise({
                 text: post.text,
+                picture: post.picture,
                 hatingUsers: [],
                 author: angular.copy(model.user),
                 time: new Date(),
