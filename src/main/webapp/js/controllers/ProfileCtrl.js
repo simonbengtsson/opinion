@@ -3,9 +3,13 @@ var app = angular.module('hage');
 app.controller('ProfileCtrl', ['$scope', '$routeParams', '$modal', 'ModelService', 'NetworkService', '$route',
     function ($scope, $routeParams, $modal, model, network, $route) {
 
-        network.getUser($routeParams.username).then(function (user) {
-            $scope.user = user;
-        });
+        if (model.user && $routeParams.username === model.user.username) {
+            $scope.user = model.user;
+        } else {
+            network.getUser($routeParams.username).then(function (user) {
+                $scope.user = user;
+            });
+        }
 
         $scope.logout = function () {
             model.user = null;

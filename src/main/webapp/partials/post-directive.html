@@ -33,7 +33,7 @@
             <div class="comment-info">
                 <span class="comment-author-username">{{ comment.author.username }}</span>
                 <span class="time-ago" am-time-ago="comment.time"></span>
-                <p>{{comment.text}}</p>
+                <p ng-bind-html='comment.text | linky | hashTags'></p>
             </div>
         </div>
 

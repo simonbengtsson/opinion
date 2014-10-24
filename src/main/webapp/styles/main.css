@@ -68,6 +68,10 @@
     padding: 20px;
 }
 
+.comment-info p {
+    white-space: pre-wrap;
+}
+
 .post-info-section .username {
     font-weight: bold;
 }
@@ -126,6 +130,7 @@
 
 .hage-content {
     color: #555;
+    white-space: pre-wrap;
     margin: 0;
 }
 
@@ -371,4 +376,19 @@ a {
 
 .search-term-display .close:hover {
     opacity: 1;
+}
+
+.drop-zone {
+    border: dashed #ddd 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.drop-zone.nv-file-over {
+    border: dashed #1ABC9C 5px;
+}
+
+.drop-zone em {
+    font-size: 24px; 
+    margin: 0 10px;
 }

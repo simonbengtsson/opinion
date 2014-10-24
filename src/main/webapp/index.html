@@ -1,67 +1,70 @@
 <!DOCTYPE html>
 <html ng-app="hage" id="hage">
 
-<head>
-    <title>Hage</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="bower_components/flat-ui/dist/css/flat-ui.css">
-    <link rel="stylesheet" type="text/css" href="styles/main.css">
-</head>
+    <head>
+        <title>Hage</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="bower_components/flat-ui/dist/css/flat-ui.css">
+        <link rel="stylesheet" type="text/css" href="styles/main.css">
+    </head>
 
-<body ng-controller="MainCtrl">
+    <body ng-controller="MainCtrl">
 
-<nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-        <div>
-            <ul class="nav-left nav-section">
-                <li class="search-cont item">
-                    <span class="glyphicon glyphicon-search"></span>
-                    <input type="text" ng-model="search.text" class="search form-control" placeholder="Search" ng-class="search.text ? 'visible' : ''">
-                </li>
-            </ul>
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div>
+                    <ul class="nav-left nav-section">
+                        <li class="search-cont item">
+                            <span class="glyphicon glyphicon-search"></span>
+                            <input type="text" ng-model="search.text" class="search form-control" placeholder="Search" ng-class="search.text ? 'visible' : ''">
+                        </li>
+                    </ul>
 
-            <a href="#/"><img class="logo" alt="App logo" src="assets/logo.png"></a>
-                
-            <ul class="nav-right nav-section">
-                <li ng-cloak ng-show="model.user" class="item" ng-click="openCreateModal()"><span><span class="glyphicon glyphicon-comment" style="transform: scale(-1, 1);"></span></span></li>
-                <li ng-cloak ng-show="model.user"><a href="#/{{ model.user.username }}"><img class="profile-pic" style="padding-left: 5px;padding-top: 8px;" ng-src="{{ model.user.picture }}"></a></li>
-                <li ng-cloak ng-hide="model.user">
-                    <a href="/auth" class="btn-info btn btn-sm" style="margin-top: 7px; margin-left: 10px;">
-                        <span class="fui-twitter" style="margin-right: 5px;"></span>
-                        Sign in
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+                    <a href="#/"><img class="logo" alt="App logo" src="assets/logo.png"></a>
 
-<div ng-view autoscroll="true"></div>
+                    <ul class="nav-right nav-section">
+                        <li ng-cloak ng-show="model.user" class="item" ng-click="openCreateModal()"><span><span class="glyphicon glyphicon-comment" style="transform: scale(-1, 1);"></span></span></li>
+                        <li ng-cloak ng-show="model.user"><a href="#/{{ model.user.username}}"><img class="profile-pic" style="padding-left: 5px;padding-top: 8px;" ng-src="{{ model.user.picture}}"></a></li>
+                        <li ng-cloak ng-hide="model.user">
+                            <a href="/auth" class="btn-info btn btn-sm" style="margin-top: 7px; margin-left: 10px;">
+                                <span class="fui-twitter" style="margin-right: 5px;"></span>
+                                Sign in
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-<script src="bower_components/jquery/dist/jquery.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-<script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-route/angular-route.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-<script src="bower_components/angular-elastic/elastic.js"></script>
-<script src="bower_components/moment/moment.js"></script>
-<script src="bower_components/angular-moment/angular-moment.js"></script>
-<script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+        <div ng-view autoscroll="true"></div>
 
-<script src="js/app.js"></script>
-<script src="js/controllers/MainCtrl.js"></script>
-<script src="js/controllers/ProfileCtrl.js"></script>
-<script src="js/controllers/PostCtrl.js"></script>
-<script src="js/services/ModelService.js"></script>
-<script src="js/services/NetworkService.js"></script>
-<script src="js/directives/PostDirective.js"></script>
-<script src="js/directives/user-badge-directive.js"></script>
-<script src="js/filters/hashtag-filter.js"></script>
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="bower_components/angular-elastic/elastic.js"></script>
+        <script src="bower_components/moment/moment.js"></script>
+        <script src="bower_components/angular-moment/angular-moment.js"></script>
+        <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+        <script src="bower_components/flat-ui/dist/js/flat-ui.js"></script>
+        <script src="bower_components/angular-file-upload/angular-file-upload.js"></script>
 
-</body>
+        <script src="js/app.js"></script>
+        <script src="js/controllers/MainCtrl.js"></script>
+        <script src="js/controllers/ProfileCtrl.js"></script>
+        <script src="js/controllers/PostCtrl.js"></script>
+        <script src="js/services/ModelService.js"></script>
+        <script src="js/services/NetworkService.js"></script>
+        <script src="js/directives/PostDirective.js"></script>
+        <script src="js/directives/user-badge-directive.js"></script>
+        <script src="js/filters/hashtag-filter.js"></script>
+        <script src="js/directives/switch-directive.js"></script>
+
+    </body>
 
 </html>

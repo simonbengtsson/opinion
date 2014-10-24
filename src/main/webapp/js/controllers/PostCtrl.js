@@ -8,12 +8,12 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
         $scope.searchTerm = '';
         model.posts = [];
         
-        if($routeParams.hashtag) {
+        if ($routeParams.hashtag) {
             $scope.searchTerm = '#' + $routeParams.hashtag;
             network.getPosts().then(function (data) {
-                model.posts = data; 
+                model.posts = data;
             });
-        } else if($routeParams.searchTerm) {
+        } else if ($routeParams.searchTerm) {
             $scope.searchTerm = $routeParams.searchTerm;
             network.getPosts().then(function (data) {
                 model.posts = data;
@@ -70,5 +70,6 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
                 });
             }
         };
+        
     }
 ]);

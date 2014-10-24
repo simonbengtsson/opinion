@@ -1,6 +1,6 @@
-<div class="modal-content container-fluid">
+<div class="modal-content container-fluid" nv-file-drop uploader="uploader">
     <div class="modal-header col-sm-12">
-      <h4 class="modal-title">Hating something today?</h4>
+        <h4 class="modal-title">Hating something today?</h4>
     </div>
     <div class="modal-body">
         <form class="col-sm-12">
@@ -8,10 +8,17 @@
                 <label>Write your mind clean</label>
                 <textarea ng-model="post.text" msd-elastic class="form-control"></textarea>
             </div>
+            <div class='drop-zone' nv-file-over uploader="uploader">
+                Drop image here <em>or</em> <input type="file" nv-file-select uploader="uploader">
+            </div>
         </form>
     </div>
     <div class="modal-footer col-sm-12">
-      <button type="button" class="btn btn-default" ng-click="$dismiss()">Close</button>
-      <button type="button" class="btn btn-primary" ng-click="create()">Create</button>
+        <div class='pull-left'>
+        <input type="checkbox" hage-switch ng-model="localPost" switch-on-text="Local" switch-off-text="World">
+        {{ posMessage }}
+        </div>
+        <button type="button" class="btn btn-default" ng-click="$dismiss()">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="create()">Create</button>
     </div>
 </div>
