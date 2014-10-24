@@ -6,7 +6,6 @@
 
 package com.dat076hage.hage.model;
 
-import com.dat076hage.hage.UserRegistry;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import com.google.gson.annotations.Expose;
@@ -18,7 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
-import com.dat076hage.hage.UserRegistry;
+import java.util.List;
 /**
  *
  * @author stek
@@ -36,7 +35,7 @@ public class Post implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     @Expose private Date postDate;
     @Expose private String link;
-    private ArrayList hageTagList;
+    @Expose private List hageTagList;
     
     @Embedded
     @Expose private GPS position;
@@ -51,7 +50,6 @@ public class Post implements Serializable {
     public Post (User user, String content) {
         this.user = user;
         this.content = content;
-        this.postId = content.hashCode();
     }
     
     public Post(User user, String text, String picturePath, String link, ArrayList hageTags, GPS pos){
@@ -85,6 +83,10 @@ public class Post implements Serializable {
     
     public String getLink(){
         return link;
+    }
+    
+    public List getHageTags(){
+        return hageTagList;
     }
     
     public void setText(String text){

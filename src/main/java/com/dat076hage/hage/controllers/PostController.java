@@ -7,16 +7,16 @@
 package com.dat076hage.hage.controllers;
 
 
+import com.dat076hage.hage.ApiKeyRegistry;
 import com.dat076hage.hage.PostRegistry;
 import com.dat076hage.hage.UserRegistry;
+import com.dat076hage.hage.auth.ApiKey;
 import com.dat076hage.hage.model.Post;
 import com.dat076hage.hage.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import java.net.URI;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -36,39 +36,66 @@ public class PostController {
     @EJB
     UserRegistry userReg;
     
-    
-    
+    @EJB
+    ApiKeyRegistry apiKeyReg;
     
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
-    
-    @GET
-    public String findAll() {
-        
-        return gson.toJson(postReg);
+    public User validateApiKey(String key){
+        ApiKey apiKey = apiKeyReg.find(key);
+        if(apiKey != null){
+            return apiKey.getUser();
+        }else{
+            return null;
+        }
     }
     
+    @GET
+    public String findAll(@HeaderParam("Authentication") String authentication) {
+        User askingUser = validateApiKey(authentication);
+        if(askingUser == null){
+            //return Response.status(401).build();v
+            return "{\"error\": \"401, Not authorized\"}";
+        }
+        
+        // Get the most recent 30 (?) posts from the followed users...
+        
+        return gson.toJson("");
+    }
+    
+    // Working
     @POST
-    @Path("{username}")
-    public Response createPost(@PathParam("username") String username, String contentBody) {
+    public Response createPost(@HeaderParam("Authentication") String authentication, String contentBody) {
+        User askingUser = validateApiKey(authentication);
+        if(askingUser == null){
+            return Response.status(401).build();
+            //return "{\"error\": \"401, Not authorized\"}";
+        }
         
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
         String content = json.get("content").getAsString();
-        User user = userReg.find(username);
-        Post newPost = new Post(user, content);
+        Post newPost = new Post(askingUser, content);
         
         try {
             postReg.create(newPost);
-        } catch (Exception e) { // duplicate posts in database, TODO: generate unique postIds
+        } catch (Exception e) { // duplicate posts in database
             return Response.notAcceptable(null).build();
         }
         
         return Response.created(URI.create("/posts/" + newPost.getId())).build();
     }
     
+    // Working
     @PUT
     @Path("{id}")
-    public Response updatePost(@PathParam("id") long postId, String contentBody) {
+    public Response updatePost(@HeaderParam("Authentication") String authentication, @PathParam("id") long postId, String contentBody) {
+        User askingUser = validateApiKey(authentication);
+        if(askingUser == null){
+            return Response.status(401).build();
+            //return "{\"error\": \"401, Not authorized\"}";
+        }
+        
+        //TODO: Validate if this user should be able to edit post...
         
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
         String newContent = json.get("content").getAsString();
@@ -80,16 +107,28 @@ public class PostController {
         
     }
     
+    // Working
     @DELETE
     @Path("{id}")
-    public Response deletePost(@PathParam("id") long postId) {
+    public Response deletePost(@HeaderParam("Authentication") String authentication, @PathParam("id") long postId) {
+        User askingUser = validateApiKey(authentication);
+        if(askingUser == null){
+            return Response.status(401).build();
+            //return "{\"error\": \"401, Not authorized\"}";
+        }
         postReg.delete(postId);
         return Response.noContent().build();
     }
     
+    // Working
     @GET
     @Path("{id}")
-    public String findPost(@PathParam("id") long postId) {
+    public String findPost(@HeaderParam("Authentication") String authentication, @PathParam("id") long postId) {
+        User askingUser = validateApiKey(authentication);
+        if(askingUser == null){
+            //return Response.status(401).build();
+            return "{\"error\": \"401, Not authorized\"}";
+        }
         Post post = postReg.find(postId);
         return gson.toJson(post);
     }

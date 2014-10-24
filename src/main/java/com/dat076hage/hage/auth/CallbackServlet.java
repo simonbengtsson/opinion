@@ -49,7 +49,7 @@ public class CallbackServlet extends HttpServlet {
             Map<String, String> paramsMap = SocialAuthUtil.getRequestParametersMap(request);
             AuthProvider provider = manager.connect(paramsMap);
             Profile profile = provider.getUserProfile();
-            username = profile.getFullName();
+            username = profile.getDisplayName();
             description = profile.getLastName();
             LOG.log(Level.INFO, "*** Name " + username);
             ag = provider.getAccessGrant();
@@ -76,7 +76,7 @@ public class CallbackServlet extends HttpServlet {
                 apiKeyReg.create(apiKey);
                 
                 String script = "<script>localStorage.setItem('authKey', '" + 
-                        apiKey.getKey() + "'); location.href = '/Hage-DAT076'; </script>";
+                        apiKey.getKey() + "'); location.href = '" + Tools.URL_FOLDER + "'; </script>";
                 response.getWriter().write(script);
             }
         }else{

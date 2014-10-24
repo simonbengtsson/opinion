@@ -46,6 +46,15 @@ public class UserController {
     
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
+    public User validateApiKey(String key){
+        ApiKey apiKey = apiKeyReg.find(key);
+        if(apiKey != null){
+            return apiKey.getUser();
+        }else{
+            return null;
+        }
+    }
+    
     @POST
     public Response createUser(String contentBody) {
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
@@ -69,41 +78,56 @@ public class UserController {
         return Response.created(URI.create("/users/" + username)).build();
     }
     
+    // Working
     @PUT
-    @Path("{username}")
-    public Response updateUser(@PathParam("name") String username, String contentBody) {
+    @Path("/me")
+    public Response updateUser(@HeaderParam("Authentication") String authentication, String contentBody) {
+        User askingUser = validateApiKey(authentication);
+        if(askingUser == null){
+            return Response.status(401).build();
+            //return "{\"error\": \"401, Not authorized\"}";
+        }
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
         
         String description = json.get("description").getAsString();
-
+        askingUser.setDescription(description);
+        userReg.update(askingUser);
         
-        User user = userReg.find(username);
-        user.setDescription(description);
-            
-
-        userReg.update(user);
-        
-        return Response.created(URI.create("/users/" + username)).build();
+        return Response.created(URI.create("/users/" + askingUser.getUsername())).build();
     }
     
     @DELETE
-    @Path("{username}")
-    public Response deleteUser(@PathParam("username") String username) {
-        userReg.delete(username);
+    @Path("/me")
+    public Response deleteUser(@HeaderParam("Authentication") String authentication) {
+        User askingUser = validateApiKey(authentication);
+        if(askingUser == null){
+            return Response.status(401).build();
+            //return "{\"error\": \"401, Not authorized\"}";
+        }
+        userReg.delete(askingUser.getUsername());
         return Response.noContent().build();
     }
     
+    // Working
     @GET
     @Path("/me")
     public String findMe(@HeaderParam("Authentication") String authentication){
-        ApiKey apiKey = apiKeyReg.find(authentication);
-        User user = apiKey.getUser();
-        return gson.toJson(user);
+        User askingUser = validateApiKey(authentication);
+        if(askingUser == null){
+            //return Response.status(401).build();
+            return "{\"error\": \"401, Not authorized\"}";
+        }
+        return gson.toJson(askingUser);
     }
     
     @GET
     @Path("{username}")
-    public String findUser(@PathParam("username") String username){
+    public String findUser(@HeaderParam("Authentication") String authentication, @PathParam("username") String username){
+        User askingUser = validateApiKey(authentication);
+        if(askingUser == null){
+            //return Response.status(401).build();
+            return "{\"error\": \"401, Not authorized\"}";
+        }
         User user = userReg.find(username);
         return gson.toJson(user);
     }
