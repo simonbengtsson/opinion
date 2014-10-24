@@ -12,12 +12,25 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
         $scope.openCreateModal = function () {
             var mi = $modal.open({
                 templateUrl: 'partials/create-modal.html',
-                controller: ['$scope', '$timeout', 'FileUploader', function ($scope, $timeout, FileUploader) {
+                controller: ['$scope', '$timeout', '$upload', function ($scope, $timeout, $upload) {
                         
                         $scope.posMessage = '';
+                        $scope.post = {};
                         var coords = null;
                         
-                        $scope.uploader = new FileUploader();
+                        $scope.onFileSelect = function(file) {
+                            $scope.upload = $upload.upload({
+                                url: '/uploads',
+                                //headers: {'Authenication': 'header-value'},
+                                file: file
+                            }).success(function (data, status, headers, config) {
+                                $scope.post.picture = '/uploads/' + data.filename;
+                            });
+                        };
+                        
+                        $scope.removeImage = function() {
+                            $scope.post.picture = '';
+                        };
                         
                         $scope.$watch('localPost', function (newVal) {
                             $scope.posMessage = '';
