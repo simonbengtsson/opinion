@@ -5,6 +5,7 @@
     <class>com.dat076hage.hage.model.Hate</class>
     <class>com.dat076hage.hage.model.Post</class>
     <class>com.dat076hage.hage.model.User</class>
+    <class>com.dat076hage.hage.auth.ApiKey</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>

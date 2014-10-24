@@ -5,8 +5,10 @@
  */
 package com.dat076hage.hage.controllers;
 
+import com.dat076hage.hage.ApiKeyRegistry;
 import com.dat076hage.hage.model.User;
 import com.dat076hage.hage.UserRegistry;
+import com.dat076hage.hage.auth.ApiKey;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -17,6 +19,7 @@ import javax.persistence.PersistenceException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -37,6 +40,9 @@ import org.mindrot.jbcrypt.BCrypt;
 public class UserController {
     @EJB
     UserRegistry userReg;
+    
+    @EJB
+    ApiKeyRegistry apiKeyReg;
     
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
@@ -85,6 +91,14 @@ public class UserController {
     public Response deleteUser(@PathParam("username") String username) {
         userReg.delete(username);
         return Response.noContent().build();
+    }
+    
+    @GET
+    @Path("/me")
+    public String findMe(@HeaderParam("Authentication") String authentication){
+        ApiKey apiKey = apiKeyReg.find(authentication);
+        User user = apiKey.getUser();
+        return gson.toJson(user);
     }
     
     @GET

@@ -1,6 +1,7 @@
 package com.dat076hage.hage.auth;
 
 
+import com.dat076hage.hage.Tools;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -21,7 +22,7 @@ import org.brickred.socialauth.SocialAuthManager;
 public class AuthServlet extends HttpServlet {
 
     private static final Logger LOG = Logger.getLogger(AuthServlet.class.getSimpleName());
-    protected final String callbackUrl = "http://localhost:8080/callback";
+    protected final String callbackUrl = "http://localhost:8080" + Tools.URL_FOLDER + "/callback";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
