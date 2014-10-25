@@ -51,8 +51,8 @@ public class User implements Serializable {
 
     public User(String username, String description, String passwordHash, String twitterApiHash, String picture){
 
-       // posts = new ArrayList<>();
-       // following = new ArrayList<>();
+        posts = new ArrayList<>();
+        following = new ArrayList<>();
         this.username = username;
         this.description = description;
         this.passwordHash = passwordHash;
@@ -78,14 +78,18 @@ public class User implements Serializable {
         return new Date(memberSince.getTime());
     }
     
-    /*public List<Post> getPosts(){
+    public List<Post> getPosts(){
         return new ArrayList<>(posts);
-    }*/
+    }
+    
+    public List<Post> getPostsRange(int fromIndex, int toIndex) {
+        return posts.subList(fromIndex, toIndex);
+    }
 
-    /*public List<User> getFollowedUsers(){
+    public List<User> getFollowedUsers(){
 
         return new ArrayList<>(following);
-    }*/
+    }
     
     public String getHash(){
         return passwordHash;
@@ -101,7 +105,7 @@ public class User implements Serializable {
     
     // ACTIONS WITH POSTS
     
-    /*public void assaignPost(Post post){
+    public void assaignPost(Post post){
         posts.add(post);
     }
     
@@ -116,15 +120,18 @@ public class User implements Serializable {
     
     public Post createNewPost(String content){
         Post post = new Post(this, content);
+        if(posts == null) {
+            posts = new ArrayList<Post>();
+        }
         posts.add(post);
         return post;
-    }*/
+    }
 
     
     // ACTIONS WITH FOLLOWED USERS
-    /*public void addFollowedUsers(User user){
+    public void addFollowedUsers(User user){
         following.add(user);
-    }*/
+    }
     
 
     /*public void removeFollowedUsers(User user){

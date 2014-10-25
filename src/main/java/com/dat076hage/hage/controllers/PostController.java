@@ -17,6 +17,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -51,16 +54,49 @@ public class PostController {
     }
     
     @GET
-    public String findAll(@HeaderParam("Authorization") String authorization) {
+    public String findAll(@HeaderParam("Authorization") String authorization, 
+            @DefaultValue("1000") @QueryParam("lat") long lat, @DefaultValue("1000") @QueryParam("lon") long lon,
+            @DefaultValue("global") @QueryParam("posttype") String postType, 
+            @QueryParam("from") int fromIndex, @QueryParam("to") int toIndex) {
+        
+
+        List<Post> postList = new ArrayList();
         User askingUser = validateApiKey(authorization);
         if(askingUser == null){
-            //return Response.status(401).build();v
-            return "{\"error\": \"401, Not authorized\"}";
+            askingUser = new User("StekUser", "descdesc", "dfdsfs", "sdfdsf", null);
+            
+            User testUser = new User("TestUser", "descriptionTEST", "sdfsdf", "sfdsdf", null);
+            testUser.createNewPost("blabla1");
+            testUser.createNewPost("blablbla2");
+            testUser.createNewPost("blblabl3");
+            
+            askingUser.addFollowedUsers(testUser);
+            //return Response.status(401).build();
+            //return "{\"error\": \"401, Not authorized\"}";
         }
         
-        // Get the most recent 30 (?) posts from the followed users...
+        if ((lat != 1000L) && (lon != 1000L)) {
+            // search with coordinates lat+- 0.5, lon 1
+        }
         
-        return gson.toJson("");
+        if (postType.equals("following")) {
+            List<User> userList = askingUser.getFollowedUsers();
+            for(User u : userList) {
+                postList.addAll(u.getPosts());
+            }
+            return gson.toJson(postList.subList(fromIndex, toIndex));
+        }
+        
+        if (postType.equals("global")) {
+            ArrayList<Post> globalList = new ArrayList();   
+        }
+       
+        
+        
+        
+        // Get the most recent 10  posts from the followed users...
+        
+        return gson.toJson(postList.subList(fromIndex, toIndex));
     }
     
     // Working
