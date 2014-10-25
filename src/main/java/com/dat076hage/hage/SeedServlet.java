@@ -47,13 +47,13 @@ public class SeedServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        User kim = new User("kim", "My name is Kim Kling", "", "", "");
-        User simonB = new User("simonb", "My name is Simon Bengtsson", "", "", "");
-        User simonP = new User("simonh", "My name is Simon Planhage", "", "", "");
-        User caroline = new User("caroline", "My name is Caroline Kabat", "", "", "");
+        User kim = new User("kim", "My name is Kim Kling","sdfdsf", "sdfdsf", null);
+        User simonB = new User("simonb", "My name is Simon Bengtsson","sdfdsf", "sdfdsf", null);
+        User simonp = new User("simonp", "My name is Simon Planhage","sdfdsf", "sdfdsf", null);
+        User caroline = new User("caroline", "My name is Caroline Kabat","sdfdsf", "sdfdsf", null);
         userReg.create(kim);
         userReg.create(simonB);
-        userReg.create(simonP);
+        userReg.create(simonp);
         userReg.create(caroline);
         
         List<String> tags = new ArrayList<>();
@@ -66,9 +66,9 @@ public class SeedServlet extends HttpServlet {
         Post simonBPost1 = new Post(simonB, "This is my first, simple Post!");
         Post simonBPost2 = new Post(simonB, "This is my second post, with link and position!", "", "http://feber.se", new ArrayList(), new GPS(57.689470, 11.973038));
         Post simonBPost3 = new Post(simonB, "This is my third, #awesome post with #hashtags!", "", "", tags, null);
-        Post simonPPost1 = new Post(simonP, "This is my first, simple Post!");
-        Post simonPPost2 = new Post(simonP, "This is my second post, with link and position!", "", "http://feber.se", new ArrayList(), new GPS(57.689470, 11.973038));
-        Post simonPPost3 = new Post(simonP, "This is my third, #awesome post with #hashtags!", "", "", tags, null);
+        Post simonPPost1 = new Post(simonp, "This is my first, simple Post!");
+        Post simonPPost2 = new Post(simonp, "This is my second post, with link and position!", "", "http://feber.se", new ArrayList(), new GPS(57.689470, 11.973038));
+        Post simonPPost3 = new Post(simonp, "This is my third, #awesome post with #hashtags!", "", "", tags, null);
         Post carolinePost1 = new Post(caroline, "This is my first, simple Post!");
         Post carolinePost2 = new Post(caroline, "This is my second post, with link and position!", "", "http://feber.se", new ArrayList(), new GPS(57.689470, 11.973038));
         Post carolinePost3 = new Post(caroline, "This is my third, #awesome post with #hashtags!", "", "", tags, null);
@@ -84,6 +84,10 @@ public class SeedServlet extends HttpServlet {
         postReg.create(carolinePost1);
         postReg.create(carolinePost2);
         postReg.create(carolinePost3);
+        
+        simonp.addFollowedUsers(kim);
+        simonp.addFollowedUsers(caroline);
+        simonp.addFollowedUsers(simonB);
         
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {

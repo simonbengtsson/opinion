@@ -46,6 +46,8 @@ public class PostController {
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
     public User validateApiKey(String key){
+        if (key==null)
+            key="ddsfs";
         ApiKey apiKey = apiKeyReg.find(key);
         if(apiKey != null){
             return apiKey.getUser();
@@ -62,19 +64,16 @@ public class PostController {
         
 
         List<Post> postList = new ArrayList();
+        User askingUser = userReg.find("simonp");
+        /**
         User askingUser = validateApiKey(authorization);
         if(askingUser == null){
-            askingUser = new User("StekUser", "descdesc", "dfdsfs", "sdfdsf", null);
+            askingUser = userReg.find("simonh");
             
-            User testUser = new User("TestUser", "descriptionTEST", "sdfsdf", "sfdsdf", null);
-            testUser.createNewPost("blabla1");
-            testUser.createNewPost("blablbla2");
-            testUser.createNewPost("blblabl3");
-            
-            askingUser.addFollowedUsers(testUser);
             //return Response.status(401).build();
-            //return "{\"error\": \"401, Not authorized\"}";
+            return "{\"error\": \"401, Not authorized\"}";
         }
+        */
         
         if ((lat != 1000L) && (lon != 1000L)) {
             // search with coordinates lat+- 0.5, lon 1
