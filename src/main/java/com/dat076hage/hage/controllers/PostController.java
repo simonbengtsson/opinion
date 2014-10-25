@@ -80,7 +80,7 @@ public class PostController {
         }
         
         if (postType.equals("following")) {
-            List<User> userList = askingUser.getFollowedUsers();
+            List<User> userList = askingUser.getUsersIAmFollowing();
             for(User u : userList) {
                 postList.addAll(u.getPosts());
             }

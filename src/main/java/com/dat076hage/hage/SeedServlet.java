@@ -89,9 +89,6 @@ public class SeedServlet extends HttpServlet {
             postReg.create(carolinePost3);
 
             
-            simonP.addFollowedUsers(kim);
-            simonP.addFollowedUsers(caroline);
-            simonP.addFollowedUsers(simonB);
         }
 
         
