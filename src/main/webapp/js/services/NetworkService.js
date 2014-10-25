@@ -181,7 +181,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
         };
         
         this.initTestData = function() {
-            return $http.get(BASE_URL + '/seed-database/');
+            return $http.get(BASE_URL + 'seed-database');
         };
 
     }
