@@ -9,6 +9,7 @@ package com.dat076hage.hage.controllers;
 
 import com.dat076hage.hage.ApiKeyRegistry;
 import com.dat076hage.hage.PostRegistry;
+import com.dat076hage.hage.Tools;
 import com.dat076hage.hage.UserRegistry;
 import com.dat076hage.hage.auth.ApiKey;
 import com.dat076hage.hage.model.Post;
@@ -118,7 +119,7 @@ public class PostController {
             return Response.notAcceptable(null).build();
         }
         
-        return Response.created(URI.create("/posts/" + newPost.getId())).build();
+        return Response.created(URI.create(Tools.URL_FOLDER + "/api/posts/" + newPost.getId())).build();
     }
     
     // Working

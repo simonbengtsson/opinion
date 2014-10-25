@@ -386,9 +386,10 @@ a {
 }
 
 .drop-zone {
-    border: dashed #ddd 5px;
+    border: dashed #f5f5f5 5px;
     padding: 10px;
     margin-bottom: 20px;
+    color: #aaa;
 }
 
 .drop-zone.dragover {
@@ -430,7 +431,6 @@ a {
 }
 
 .uploaded-image .info-bar .filename {
-    padding: 10px;
     padding: 7px 10px;
     position: absolute;
     color: #ddd;

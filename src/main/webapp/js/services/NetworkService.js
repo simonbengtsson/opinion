@@ -1,7 +1,7 @@
 var app = angular.module('hage');
 
-app.service('NetworkService', ['$http', 'API_URL', 'ModelService', '$q', '$timeout',
-    function ($http, API_URL, model, $q, $timeout) {
+app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '$q', '$timeout',
+    function ($http, API_URL, BASE_URL, model, $q, $timeout) {
         
         $http.defaults.headers.common.Authorization = localStorage.getItem('authKey');
 
@@ -131,15 +131,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', '$q', '$timeo
         };
 
         this.getUser = function (username) {
-            if (username === 'adalove') {
-                return dummyPromise(dummyUser);
-            } else if(username === 'test123') {
-                return dummyPromise(dummyUser2);
-            } else {
-                console.log(username);
-            }
-                
-            return $http.get(API_URL + '/users/' + user.username);
+            return $http.get(API_URL + '/users/' + username);
         };
 
         this.updateUser = function (user) {
@@ -186,6 +178,10 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', '$q', '$timeo
         
         this.getTrendingHashtags = function() {
             return dummyPromise(['awesome', 'bp15', 'Lamela', 'Gothenburg', 'Ullevi', 'awesome', 'bp15', 'Lamela', 'Gothenburg', 'Ullevi']);
+        };
+        
+        this.initTestData = function() {
+            return $http.get(BASE_URL + '/seed-database/');
         };
 
     }

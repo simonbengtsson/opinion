@@ -125,13 +125,13 @@ public class UserController {
     
     @GET
     @Path("{username}")
-    public String findUser(@HeaderParam("Authorization") String authorization, @PathParam("username") String username){
-        User askingUser = validateApiKey(authorization);
-        if(askingUser == null){
-            //return Response.status(401).build();
-            return "{\"error\": \"401, Not authorized\"}";
-        }
+    public Response findUser(@PathParam("username") String username){
         User user = userReg.find(username);
-        return gson.toJson(user);
+        //System.out.println(user);
+        if(user == null) {
+            return Response.status(404).build();
+        }
+        String json = gson.toJson(user);
+        return Response.ok(json, MediaType.APPLICATION_JSON).build();
     }
 }
