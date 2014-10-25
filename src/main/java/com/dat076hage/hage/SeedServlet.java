@@ -51,7 +51,7 @@ public class SeedServlet extends HttpServlet {
           
             User kim = new User("kim", "My name is Kim Kling", "", "", "");
             User simonB = new User("simonb", "My name is Simon Bengtsson", "", "", "");
-            User simonP = new User("simonh", "My name is Simon Planhage", "", "", "");
+            User simonP = new User("simonp", "My name is Simon Planhage", "", "", "");
             User caroline = new User("caroline", "My name is Caroline Kabat", "", "", "");
             userReg.create(kim);
             userReg.create(simonB);
