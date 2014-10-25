@@ -4,13 +4,13 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
     function ($scope, model, network, $http, $modal, $location) {
 
         $scope.model = model;
-        
+
         network.initTestData().then(function(res) {
             console.log('Seeded!');
         });
 
-        network.getLoggedInUser().then(function (data) {
-            data = data.data;
+        network.getLoggedInUser().then(function (res) {
+            var data = res.data;
             if(!data.picture) {
                 data.picture = "assets/no-picture.png";
             }
@@ -60,15 +60,16 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
                         });
 
                         $scope.create = function () {
-                            network.createPost($scope.post).then(function (post) {
-                                $scope.$close(post);
+                            network.createPost($scope.post).then(function (res) {
+                                $scope.$close(res.data);
                             });
                         };
                     }]
             });
 
-            mi.result.then(function (res) {
-                model.posts.unshift(res);
+            mi.result.then(function (post) {
+                model.posts.unshift(post);
+                model.user.posts.unshift(post);
             });
         };
 

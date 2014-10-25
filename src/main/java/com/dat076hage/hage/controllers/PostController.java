@@ -69,8 +69,7 @@ public class PostController {
     public Response createPost(@HeaderParam("Authorization") String authorization, String contentBody) {
         User askingUser = validateApiKey(authorization);
         if(askingUser == null){
-            return Response.status(401).build();
-            //return "{\"error\": \"401, Not authorized\"}";
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
@@ -82,8 +81,12 @@ public class PostController {
         } catch (Exception e) { // duplicate posts in database
             return Response.notAcceptable(null).build();
         }
-        
-        return Response.created(URI.create(Tools.URL_FOLDER + "/api/posts/" + newPost.getId())).build();
+
+        Response.ResponseBuilder res = Response.status(Response.Status.CREATED);
+        res.entity(gson.toJson(newPost));
+        res.contentLocation(URI.create(Tools.URL_FOLDER + "/api/posts/" + newPost.getId()));
+
+        return res.build();
     }
     
     // Working

@@ -84,7 +84,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
             var deferred = $q.defer();
             
             $timeout(function() {
-                deferred.resolve(data);
+                deferred.resolve({data: data});
             }, 500);
             
             return deferred.promise;
@@ -108,15 +108,27 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
         };
 
         this.createPost = function (post) {
-            return dummyPromise({
-                text: post.text,
-                picture: post.picture,
-                hatingUsers: [],
-                author: angular.copy(model.user),
-                time: new Date(),
-                comments: []
+            if(!post.content) {
+                post.content = post.text;
+            }
+            var d = $q.defer();
+            
+            $http.post(API_URL + '/posts/', post).then(function(res) {
+                if (!res.data.hatingUsers) {
+                    res.data.hatingUsers = [];
+                }
+                if(!res.data.text) {
+                    res.data.text = res.data.content;
+                }
+                if(!res.data.author) {
+                    res.data.author = model.user;
+                }
+                d.resolve(res);
+            }, function(res) {
+                d.reject(res);
             });
-            //return $http.post(API_URL + '/posts/');
+            
+            return d.promise;
         };
 
         // Users
@@ -166,7 +178,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
 
         this.deleteHate = function (post, comment) {
             return dummyPromise("Success!");
-            return $http.delete(API_URL + '/hate/' + post.id + '/comments/' + comment.id);
+            //return $http.delete(API_URL + '/hate/' + post.id + '/comments/' + comment.id);
         };
         
         this.followUser = function (user){
