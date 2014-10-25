@@ -4,6 +4,10 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
     function ($scope, model, network, $http, $modal, $location) {
 
         $scope.model = model;
+        
+        network.initTestData().then(function(res) {
+            console.log('success')
+        });
 
         network.getLoggedInUser().then(function (data) {
             data = data.data;

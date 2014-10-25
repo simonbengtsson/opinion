@@ -127,7 +127,7 @@ public class UserController {
     @Path("{username}")
     public Response findUser(@PathParam("username") String username){
         User user = userReg.find(username);
-        System.out.println(user);
+        //System.out.println(user);
         if(user == null) {
             return Response.status(404).build();
         }

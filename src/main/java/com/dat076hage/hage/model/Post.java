@@ -18,11 +18,17 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import java.util.List;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 /**
  *
  * @author stek
  */
 @Entity
+@NamedQueries({
+    //@NamedQuery(name="Post.trending", query="SELECT c FROM Country c"),
+    //@NamedQuery(name="Post.findByName", query="SELECT c FROM Country c WHERE c.name = :name"),
+})
 public class Post implements Serializable {
     
     @Expose private String content;
@@ -35,7 +41,7 @@ public class Post implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     @Expose private Date postDate;
     @Expose private String link;
-    @Expose private List hageTagList;
+    @Expose private List<String> hageTagList;
     
     @Embedded
     @Expose private GPS position;
@@ -52,12 +58,12 @@ public class Post implements Serializable {
         this.content = content;
     }
     
-    public Post(User user, String text, String picturePath, String link, ArrayList hageTags, GPS pos){
+    public Post(User user, String text, String picturePath, String link, List<String> hageTags, GPS pos){
         this.user = user;
         this.content = text;
         this.picturePath = picturePath;
         this.link = link;
-        this.hageTagList = new ArrayList(hageTags);
+        this.hageTagList = new ArrayList<>(hageTags);
         this.position = pos;
     }
     

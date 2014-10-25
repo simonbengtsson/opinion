@@ -7,6 +7,7 @@
 package com.dat076hage.hage.model;
 
 import com.google.gson.annotations.Expose;
+import java.io.Serializable;
 import javax.persistence.Embeddable;
 
 /**
@@ -14,7 +15,7 @@ import javax.persistence.Embeddable;
  * @author stek
  */
 @Embeddable
-public class GPS {
+public class GPS implements Serializable {
     
     @Expose private double lat;
     @Expose private double lon;

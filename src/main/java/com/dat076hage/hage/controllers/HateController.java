@@ -28,7 +28,7 @@ import javax.ws.rs.core.Response;
  *
  * @author kim
  */
-@Path("/hates")
+@Path("hates")
 @Produces(value = {MediaType.APPLICATION_JSON})
 @Consumes(value = {MediaType.APPLICATION_JSON})
 public class HateController {
