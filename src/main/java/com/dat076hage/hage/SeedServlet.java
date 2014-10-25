@@ -87,6 +87,7 @@ public class SeedServlet extends HttpServlet {
             postReg.create(carolinePost1);
             postReg.create(carolinePost2);
             postReg.create(carolinePost3);
+
             
             simonP.addFollowedUsers(kim);
             simonP.addFollowedUsers(caroline);
@@ -95,6 +96,7 @@ public class SeedServlet extends HttpServlet {
 
         
         
+
         
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {

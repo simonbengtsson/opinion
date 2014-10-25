@@ -13,6 +13,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -34,9 +36,15 @@ public class User implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     @Expose private Date memberSince;
     
-    //TODO: http://en.wikibooks.org/wiki/Java_Persistence/ManyToMany#Mapping_a_Join_Table_with_Additional_Columns
+    /*@JoinTable(name = "stalkers", joinColumns = {
+        @JoinColumn(name = "stalker", referencedColumnName = "username", nullable = false)
+    }, inverseJoinColumns = {
+        @JoinColumn(name = "target", referencedColumnName = "username", nullable = false)})*/
     @ManyToMany
-    @Expose private List<User> following;
+    @Expose private List<User> usersIAmFollowing;
+    
+    @ManyToMany(mappedBy = "usersIAmFollowing")
+    @Expose private List<User> usersWhoArefollowersOfMe;
     
     @OneToMany(mappedBy = "user") 
     @Expose private List<Post> posts;
@@ -51,8 +59,6 @@ public class User implements Serializable {
 
     public User(String username, String description, String passwordHash, String twitterApiHash, String picture){
 
-        posts = new ArrayList<>();
-        following = new ArrayList<>();
         this.username = username;
         this.description = description;
         this.passwordHash = passwordHash;
@@ -60,8 +66,9 @@ public class User implements Serializable {
         this.picture = picture;
         
         memberSince = new Date();
-        //following = new ArrayList<>();
-        //posts = new ArrayList<>();
+        posts = new ArrayList<>();
+        usersIAmFollowing = new ArrayList<>();
+        usersWhoArefollowersOfMe = new ArrayList<>();
         
     }
     
@@ -86,9 +93,14 @@ public class User implements Serializable {
         return posts.subList(fromIndex, toIndex);
     }
 
-    public List<User> getFollowedUsers(){
 
-        return new ArrayList<>(following);
+    public List<User> getUsersIAmFollowing(){
+
+        return new ArrayList<>(usersIAmFollowing);
+    }
+    
+    public List<User> getUsersWhoArefollowersOfMe(){
+        return new ArrayList<>(usersWhoArefollowersOfMe);
     }
     
     public String getHash(){
@@ -129,20 +141,37 @@ public class User implements Serializable {
 
     
     // ACTIONS WITH FOLLOWED USERS
-    public void addFollowedUsers(User user){
-        following.add(user);
+
+    public void follow(User user){
+        user.usersWhoArefollowersOfMe.add(this);
+        usersIAmFollowing.add(user);
     }
     
 
-    /*public void removeFollowedUsers(User user){
+    public void unfollow(User user){
         
-        for(int i = 0; i < following.size(); i++){
-            if(following.get(i).getUsername().equals(user.getUsername())){
-                following.remove(i);
+        for(int i = 0; i < usersIAmFollowing.size(); i++){
+            if(usersIAmFollowing.get(i).getUsername().equals(user.getUsername())){
+                usersIAmFollowing.remove(i);
                 break;
             }
         }
-    }*/
+        
+        for(int i = 0; i < user.usersWhoArefollowersOfMe.size(); i++){
+            if(user.usersWhoArefollowersOfMe.get(i).getUsername().equals(user.getUsername())){
+                user.usersWhoArefollowersOfMe.remove(i);
+                break;
+            }
+        }
+    }
+    
+    public void emptyUsersIAmFollowing(){
+        usersIAmFollowing.clear();
+    }
+    
+    public void emptyUsersWhoArefollowersOfMe(){
+        usersWhoArefollowersOfMe.clear();
+    }
     
     @Override
     public String toString(){

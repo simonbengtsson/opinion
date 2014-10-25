@@ -13,11 +13,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import java.net.URI;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.persistence.EntityExistsException;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -127,11 +129,76 @@ public class UserController {
     @Path("{username}")
     public Response findUser(@PathParam("username") String username){
         User user = userReg.find(username);
-        //System.out.println(user);
         if(user == null) {
             return Response.status(404).build();
         }
         String json = gson.toJson(user);
         return Response.ok(json, MediaType.APPLICATION_JSON).build();
     }
+    
+    @POST
+    @Path("{username}/followers")
+    public Response addToFollowers(@HeaderParam("Authorization") String authorization, @PathParam("username") String username){
+        User askingUser = validateApiKey(authorization);
+        if(askingUser == null){
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        User user = userReg.find(username);
+        if(user == null) {
+            return Response.status(404).build();
+        }
+        askingUser.follow(user);
+        userReg.update(askingUser);
+        userReg.update(user);
+        
+        System.out.println("*** Add new Follower ***");
+        System.out.println("Asking user " + askingUser.getUsername() + " followers: " + askingUser.getUsersWhoArefollowersOfMe()+ " following: " + askingUser.getUsersIAmFollowing());
+        System.out.println("User " + user.getUsername() + " followers: " + user.getUsersWhoArefollowersOfMe() + " following: " + user.getUsersIAmFollowing());
+        
+        return Response.ok(askingUser.getUsername() + " now follows " + user.getUsername()).build();
+    }
+    
+    @GET
+    @Path("{username}/followers")
+    public Response getFollowers(@HeaderParam("Authorization") String authorization, @PathParam("username") String username){
+        User askingUser = validateApiKey(authorization);
+        if(askingUser == null){
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        User user = userReg.find(username);
+        //System.out.println(user);
+        if(user == null) {
+            return Response.status(404).build();
+        }
+        List<User> users = user.getUsersWhoArefollowersOfMe();
+        for(User listedUser : users){
+            listedUser.emptyUsersIAmFollowing(); // To prevent circular arrays in gson. This wont be saved in DB.
+            listedUser.emptyUsersWhoArefollowersOfMe();
+        }
+        String json = gson.toJson(users);
+        
+        System.out.println("*** GET Followers ***");
+        System.out.println("Asking user " + askingUser.getUsername() + " followers: " + askingUser.getUsersWhoArefollowersOfMe()+ " following: " + askingUser.getUsersIAmFollowing());
+        System.out.println("User " + user.getUsername() + " followers: " + user.getUsersWhoArefollowersOfMe() + " following: " + user.getUsersIAmFollowing());
+        
+        return Response.ok(json, MediaType.APPLICATION_JSON).build();
+    }
+    
+    @DELETE
+    @Path("{username}/followers/me")
+    public Response removeMeAsFollower(@HeaderParam("Authorization") String authorization, @PathParam("username") String username){
+        User askingUser = validateApiKey(authorization);
+        if(askingUser == null){
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        User user = userReg.find(username);
+        //System.out.println(user);
+        if(user == null) {
+            return Response.status(404).build();
+        }
+        askingUser.unfollow(user);
+        userReg.update(askingUser);
+        return Response.ok(askingUser.getUsername() + " have unfollowed " + user.getUsername()).build();
+    }
+    
 }
