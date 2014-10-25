@@ -19,7 +19,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
@@ -80,7 +79,7 @@ public class PostController {
         }
         
         if (postType.equals("following")) {
-            List<User> userList = askingUser.getFollowedUsers();
+            List<User> userList = askingUser.getUsersIAmFollowing();
             for(User u : userList) {
                 postList.addAll(u.getPosts());
             }

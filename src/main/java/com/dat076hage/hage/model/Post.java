@@ -19,7 +19,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import java.util.List;
 import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 /**
  *
  * @author stek
