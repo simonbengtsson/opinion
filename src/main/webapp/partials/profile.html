@@ -9,14 +9,15 @@
                 <span style="color: #999;">@{{ user.username}}</span>
             </h4>
             <div class="follow-row">
-                Followers: {{ user.followers.length }} 
+                Opinions: {{user.posts.length}} | 
+                Followers: {{ user.followers.length }} |  
                 Following: {{ user.following.length }} 
             </div>
             <div class="desc">{{ user.description}}</div>
             <a ng-show="viewingSelf()" ng-click="logout()" href="#/">Logout -</a>
             <a ng-show="viewingSelf()" ng-click="openEditModal()">Edit</a>
             
-            <div ng-hide="viewingSelf()">
+            <div ng-show="!viewingSelf() && model.user">
                 <button type="button" class="btn btn-primary" ng-click="model.follow(user)" > 
                     <span class="glyphicon glyphicon-plus"></span>  
                     Follow
