@@ -131,15 +131,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'ModelService', '$q', '$timeo
         };
 
         this.getUser = function (username) {
-            if (username === 'adalove') {
-                return dummyPromise(dummyUser);
-            } else if(username === 'test123') {
-                return dummyPromise(dummyUser2);
-            } else {
-                console.log(username);
-            }
-                
-            return $http.get(API_URL + '/users/' + user.username);
+            return $http.get(API_URL + '/users/' + username);
         };
 
         this.updateUser = function (user) {

@@ -33,6 +33,7 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
                         };
                         
                         $scope.removeImage = function() {
+                            angular.element('.drop-zone :file')[0].value = null;
                             $scope.post.picture = '';
                         };
                         
