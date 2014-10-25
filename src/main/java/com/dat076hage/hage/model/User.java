@@ -13,8 +13,6 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -58,6 +56,7 @@ public class User implements Serializable {
     }
 
     public User(String username, String description, String passwordHash, String twitterApiHash, String picture){
+
         this.username = username;
         this.description = description;
         this.passwordHash = passwordHash;
@@ -87,6 +86,11 @@ public class User implements Serializable {
     public List<Post> getPosts(){
         return new ArrayList<>(posts);
     }
+    
+    public List<Post> getPostsRange(int fromIndex, int toIndex) {
+        return posts.subList(fromIndex, toIndex);
+    }
+
 
     public List<User> getUsersIAmFollowing(){
 
@@ -126,12 +130,16 @@ public class User implements Serializable {
     
     public Post createNewPost(String content){
         Post post = new Post(this, content);
+        if(posts == null) {
+            posts = new ArrayList<Post>();
+        }
         posts.add(post);
         return post;
     }
 
     
     // ACTIONS WITH FOLLOWED USERS
+
     public void follow(User user){
         user.usersWhoArefollowersOfMe.add(this);
         usersIAmFollowing.add(user);

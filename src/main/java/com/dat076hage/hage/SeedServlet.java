@@ -47,6 +47,7 @@ public class SeedServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+
         if(userReg.find("kim") == null){
           
             User kim = new User("kim", "My name is Kim Kling", "", "", "");
@@ -86,7 +87,15 @@ public class SeedServlet extends HttpServlet {
             postReg.create(carolinePost1);
             postReg.create(carolinePost2);
             postReg.create(carolinePost3);
+
+            simonP.follow(kim);
+            simonP.follow(caroline);
+            simonP.follow(simonB);
         }
+
+        
+        
+
         
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
