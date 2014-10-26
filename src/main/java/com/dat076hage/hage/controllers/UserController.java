@@ -206,8 +206,7 @@ public class UserController {
         }
         List<User> users = user.getFollowers();
         for(User listedUser : users){
-            listedUser.emptyUsersIAmFollowing(); // To prevent circular arrays in gson. This wont be saved in DB.
-            listedUser.emptyUsersWhoArefollowersOfMe();
+            listedUser.emptyRelations(); // To prevent circular arrays in gson. This wont be saved in DB.
         }
         String json = gson.toJson(users);
         
