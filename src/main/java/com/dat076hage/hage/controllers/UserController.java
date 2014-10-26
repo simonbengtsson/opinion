@@ -20,6 +20,7 @@ import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.persistence.EntityExistsException;
 import javax.persistence.PersistenceException;
+import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -42,6 +43,10 @@ import org.mindrot.jbcrypt.BCrypt;
 @Produces(value = {MediaType.APPLICATION_JSON})
 @Consumes(value = {MediaType.APPLICATION_JSON})
 public class UserController {
+
+    @javax.ws.rs.core.Context
+    ServletContext context;
+    
     @EJB
     UserRegistry userReg;
     

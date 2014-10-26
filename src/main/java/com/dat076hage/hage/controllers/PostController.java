@@ -18,7 +18,7 @@ import javax.ejb.EJB;
 
 import javax.ejb.EJBException;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletContext;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -28,8 +28,8 @@ import javax.ws.rs.core.*;
 @Produces(value = MediaType.APPLICATION_JSON)
 public class PostController {
 
-    @EJB
-    HttpServletRequest request;
+    @javax.ws.rs.core.Context
+    ServletContext context;
     
     @EJB
     PostRegistry postReg;
@@ -196,7 +196,7 @@ public class PostController {
 
         Response.ResponseBuilder res = Response.status(Response.Status.CREATED);
         res.entity(gson.toJson(newPost));
-        res.contentLocation(URI.create(request.getServletContext() + "/api/posts/" + newPost.getId()));
+        res.contentLocation(URI.create(context.getContextPath() + "/api/posts/" + newPost.getId()));
 
         return res.build();
     }
