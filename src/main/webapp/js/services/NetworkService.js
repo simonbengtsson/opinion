@@ -166,7 +166,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
         // Meta
         
         this.getTrendingHashtags = function() {
-            return dummyPromise(['awesome', 'bp15', 'Lamela', 'Gothenburg', 'Ullevi', 'awesome', 'bp15', 'Lamela', 'Gothenburg', 'Ullevi']);
+            return $http.get(API_URL + "/hashtags");
         };
         
         this.initTestData = function() {
