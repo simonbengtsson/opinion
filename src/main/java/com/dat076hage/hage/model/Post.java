@@ -38,8 +38,14 @@ public class Post implements Serializable {
     @Expose private String link;
     
     @Expose private List<String> hageTagList;
-    @Expose private List<String> comments = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "post")
+    @Expose private List<Comment> comments = new ArrayList<>();
+    
+    @ManyToMany
     @Expose private List<User> agreeingUsers = new ArrayList<>();
+    
+    @ManyToMany
     @Expose private List<User> disagreeingUsers = new ArrayList<>();
 
     @Embedded
@@ -49,7 +55,6 @@ public class Post implements Serializable {
     private User user;
     
     public Post(){
-        
     } 
     
     public Post (User user, String text) {
@@ -93,6 +98,18 @@ public class Post implements Serializable {
     
     public List getHageTags(){
         return hageTagList;
+    }
+    
+    public List<Comment> getComments(){
+        return comments;
+    }
+    
+    public List<User> getAgreeingUsers(){
+        return agreeingUsers;
+    }
+    
+    public List<User> getDisagreeingUsers(){
+        return disagreeingUsers;
     }
     
     public void setText(String text){

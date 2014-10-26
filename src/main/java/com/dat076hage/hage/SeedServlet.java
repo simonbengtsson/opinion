@@ -5,6 +5,7 @@
  */
 package com.dat076hage.hage;
 
+import com.dat076hage.hage.model.Comment;
 import com.dat076hage.hage.model.GPS;
 import com.dat076hage.hage.model.Post;
 import com.dat076hage.hage.model.User;
@@ -35,6 +36,9 @@ public class SeedServlet extends HttpServlet {
     @EJB
     PostRegistry postReg;
     
+    @EJB
+    CommentRegistry commentReg;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -54,11 +58,11 @@ public class SeedServlet extends HttpServlet {
             User simonB = new User("simonb", "My name is Simon Bengtsson", "", "", "", "");
             User simonP = new User("simonp", "My name is Simon Planhage", "", "", "", "");
             User caroline = new User("caroline", "My name is Caroline Kabat", "", "", "", "");
-            userReg.create(kim);
-            userReg.create(simonB);
-            userReg.create(simonP);
-            userReg.create(caroline);
 
+            simonP.follow(kim);
+            simonP.follow(caroline);
+            simonP.follow(simonB);
+            
             List<String> tags = new ArrayList<>();
             tags.add("awesome");
             tags.add("hashtags");
@@ -75,6 +79,17 @@ public class SeedServlet extends HttpServlet {
             Post carolinePost1 = new Post(caroline, "This is my first, simple Post!");
             Post carolinePost2 = new Post(caroline, "This is my second post, with link and position!", "", "http://feber.se", new ArrayList(), new GPS(57.689470, 11.973038));
             Post carolinePost3 = new Post(caroline, "This is my third, #awesome post with #hashtags!", "", "", tags, null);
+            
+            Comment kimOnSimonBPost1 = new Comment(kim, simonBPost1, "This is a comment by kim on Post 1 by simonb.");
+            Comment simonbOnSimonPPost2 = new Comment(simonB, simonPPost2, "This is a comment by simonb on Post 2 by simonp.");
+            Comment simonpOnCarolinePost3 = new Comment(simonP, carolinePost3, "This is a comment by simonp on Post 3 by caroline.");
+            Comment carolineOnSimonPPost2 = new Comment(caroline, simonPPost2, "This is a comment by caroline on Post 2 by simonp.");
+            
+            userReg.create(kim);
+            userReg.create(simonB);
+            userReg.create(simonP);
+            userReg.create(caroline);
+            
             postReg.create(kimPost1);
             postReg.create(kimPost2);
             postReg.create(kimPost3);
@@ -87,10 +102,11 @@ public class SeedServlet extends HttpServlet {
             postReg.create(carolinePost1);
             postReg.create(carolinePost2);
             postReg.create(carolinePost3);
-
-            simonP.follow(kim);
-            simonP.follow(caroline);
-            simonP.follow(simonB);
+            
+            commentReg.create(kimOnSimonBPost1);
+            commentReg.create(simonbOnSimonPPost2);
+            commentReg.create(simonpOnCarolinePost3);
+            commentReg.create(carolineOnSimonPPost2);
         }
 
         
