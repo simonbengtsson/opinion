@@ -12,10 +12,12 @@ import com.dat076hage.hage.PostRegistry;
 import com.dat076hage.hage.Tools;
 import com.dat076hage.hage.UserRegistry;
 import com.dat076hage.hage.auth.ApiKey;
+import com.dat076hage.hage.model.GPS;
 import com.dat076hage.hage.model.Post;
 import com.dat076hage.hage.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.net.URI;
 import java.util.ArrayList;
@@ -62,7 +64,7 @@ public class PostController {
             @QueryParam("from") int fromIndex, @QueryParam("to") int toIndex) {
         
 
-        List<Post> postList = new ArrayList();
+        List<Post> postList = new ArrayList<>();
         User askingUser = userReg.find("simonp");
         /**
         User askingUser = validateApiKey(authorization);
@@ -79,7 +81,7 @@ public class PostController {
         }
         
         if (postType.equals("following")) {
-            List<User> userList = askingUser.getUsersIAmFollowing();
+            List<User> userList = askingUser.getFollowing();
             for(User u : userList) {
                 postList.addAll(u.getPosts());
             }
@@ -87,7 +89,7 @@ public class PostController {
         }
         
         if (postType.equals("global")) {
-            ArrayList<Post> globalList = new ArrayList();   
+            ArrayList<Post> globalList = new ArrayList<>();   
         }
        
         
@@ -98,7 +100,6 @@ public class PostController {
         return gson.toJson(postList.subList(fromIndex, toIndex));
     }
     
-    // Working
     @POST
     public Response createPost(@HeaderParam("Authorization") String authorization, String contentBody) {
         User askingUser = validateApiKey(authorization);
@@ -107,9 +108,23 @@ public class PostController {
         }
         
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
-        String content = json.get("content").getAsString();
-        Post newPost = new Post(askingUser, content);
+        String text = json.get("text").getAsString();
         
+        JsonElement picObj = json.get("picture");
+        String picture = null;
+        if(picObj != null) {
+            picture = picObj.getAsString();
+        }
+        JsonElement latObj = json.get("lat");
+        JsonElement lonObj = json.get("lon");
+        GPS gps = null;
+        
+        if (latObj != null && lonObj != null) {
+            gps = new GPS(latObj.getAsDouble(), lonObj.getAsDouble());
+        }
+
+        Post newPost = new Post(askingUser, text, picture, "", new ArrayList<String>(), gps);
+
         try {
             postReg.create(newPost);
         } catch (Exception e) { // duplicate posts in database

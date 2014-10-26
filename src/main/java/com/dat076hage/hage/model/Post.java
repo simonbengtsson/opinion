@@ -7,18 +7,14 @@
 package com.dat076hage.hage.model;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
+import javax.persistence.*;
+
 import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Embedded;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
 import java.util.List;
-import javax.persistence.NamedQueries;
+
 /**
  *
  * @author stek
@@ -30,18 +26,22 @@ import javax.persistence.NamedQueries;
 })
 public class Post implements Serializable {
     
-    @Expose private String content;
+    @Expose private String text;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Expose private long postId;
-    @Expose private String picturePath;
+    @Expose private String picture;
     
     @Temporal(javax.persistence.TemporalType.DATE)
     @Expose private Date postDate;
     @Expose private String link;
-    @Expose private List<String> hageTagList;
     
+    @Expose private List<String> hageTagList;
+    @Expose private List<String> comments = new ArrayList<>();
+    @Expose private List<User> agreeingUsers = new ArrayList<>();
+    @Expose private List<User> disagreeingUsers = new ArrayList<>();
+
     @Embedded
     @Expose private GPS position;
     
@@ -50,24 +50,25 @@ public class Post implements Serializable {
     
     public Post(){
         
-    }
+    } 
     
-    public Post (User user, String content) {
+    public Post (User user, String text) {
         this.user = user;
-        this.content = content;
+        this.text = text;
+        this.postDate = new Date();
     }
     
     public Post(User user, String text, String picturePath, String link, List<String> hageTags, GPS pos){
         this.user = user;
-        this.content = text;
-        this.picturePath = picturePath;
+        this.text = text;
+        this.picture = picturePath;
         this.link = link;
         this.hageTagList = new ArrayList<>(hageTags);
         this.position = pos;
     }
     
     public String getText(){
-        return content;
+        return text;
     }
     
     public long getId(){
@@ -79,7 +80,7 @@ public class Post implements Serializable {
     }
     
     public String getPicturePath(){
-        return picturePath;
+        return picture;
     }
     
     public Date getPostDate(){
@@ -95,7 +96,7 @@ public class Post implements Serializable {
     }
     
     public void setText(String text){
-        this.content = text;
+        this.text = text;
     }
     
     public void setPosition(GPS pos){
@@ -103,7 +104,7 @@ public class Post implements Serializable {
     }
     
     public void setPicturePath(String path){
-        this.picturePath = path;
+        this.picture = path;
     }
     
     public void setPostDate(Date date){
@@ -114,8 +115,17 @@ public class Post implements Serializable {
         this.link = link;
     }
     
+    @Override
     public String toString() {
-        return "post content: " + content;
+        return "Post{" +
+                "text='" + text + '\'' +
+                ", postId=" + postId +
+                ", picturePath='" + picture + '\'' +
+                ", postDate=" + postDate +
+                ", link='" + link + '\'' +
+                ", hageTagList=" + hageTagList +
+                ", position=" + position +
+                ", user=" + user +
+                '}';
     }
-    
 }
