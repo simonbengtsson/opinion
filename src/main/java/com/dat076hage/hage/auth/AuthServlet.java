@@ -21,7 +21,10 @@ public class AuthServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String callbackUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + "/callback";
+        String host = request.getHeader("Host");
+        String server = host == null ? request.getServerName() + ":" + request.getServerPort() : host;
+        String callbackUrl = "http://" + server + "/callback";
+        
         SocialAuthConfig config = SocialAuthConfig.getDefault();
         SocialAuthManager manager = new SocialAuthManager();
         String url;
