@@ -1,6 +1,10 @@
 var app = angular.module('opinion');
 
-app.directive('opinionPost', ['ModelService', 'NetworkService', function (model, network) {
+/**
+ * An opinion post for display on profile and post page.
+ */
+app.directive('opinionPost', ['ModelService', 'NetworkService',
+    function (model, network) {
 
         return {
             restrict: 'E',
@@ -10,14 +14,14 @@ app.directive('opinionPost', ['ModelService', 'NetworkService', function (model,
             templateUrl: 'partials/post-directive.html',
             link: function (scope) {
                 scope.model = model;
-                
+
                 var busy = false;
 
                 scope.opine = function (post) {
-                    if(busy) return;
+                    if (busy) return;
                     busy = true;
                 };
- 
+
                 scope.isPostLong = function (post) {
                     return post.text.length > 180;
                 };

@@ -3,8 +3,8 @@ var app = angular.module('opinion', ['ui.bootstrap', 'ngRoute', 'ngSanitize', 'm
 app.constant('BASE_URL', '/');
 app.constant('API_URL', '' + '/api');
 
-app.config(['$routeProvider', '$locationProvider',
-    function ($routeProvider, $locationProvider) {
+app.config(['$routeProvider',
+    function ($routeProvider) {
         $routeProvider
             .when('/hashtags/:hashtag', {
                 templateUrl: 'partials/posts.html',
@@ -23,6 +23,10 @@ app.config(['$routeProvider', '$locationProvider',
                 resolve: {
                     user: ['ModelService', 'NetworkService', '$q', '$route', '$location',
                         function (model, network, $q, $route, $location) {
+                            
+                            // Checking if the user exist before going to it's profile page.
+                            // If not found, load a 404 page
+                            
                             var deferred = $q.defer();
 
                             var username = $route.current.params.username;

@@ -7,7 +7,7 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
         $scope.postType = 'world';
         $scope.searchTerm = '';
         model.posts = [];
-        
+
         if ($routeParams.hashtag) {
             $scope.searchTerm = '#' + $routeParams.hashtag;
             network.getPosts().then(function (res) {
@@ -27,8 +27,7 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
         var page = 0;
 
         network.getFeaturedUsers().then(function (res) {
-            var data = res.data;
-            model.featuredUsers = data;
+            model.featuredUsers = res.data;
         });
 
         network.getTrendingHashtags().then(function (res) {
@@ -51,6 +50,7 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
             if ($scope.postType === 'city') {
                 navigator.geolocation.getCurrentPosition(function (geo) {
                     var params = {
+                        page: page,
                         type: 'local',
                         lat: geo.latitude,
                         lon: geo.longitude
@@ -72,13 +72,13 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
                 var params = {
                     type: $scope.postType
                 };
-                network.getPosts().then(function (res) {
+                network.getPosts(params).then(function (res) {
                     model.posts = model.posts.concat(res.data);
                     page++;
                     $scope.loadingPosts = false;
                 });
             }
         };
-        
+
     }
 ]);

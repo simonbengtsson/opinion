@@ -1,5 +1,8 @@
 var app = angular.module('opinion');
 
+/**
+ * A service that keeps the model that is needed across the app.
+ */
 app.service('ModelService', [
     function () {
 
@@ -7,16 +10,6 @@ app.service('ModelService', [
         this.trendingHashtags = [];
         this.featuredUsers = [];
         this.user = null;
-
-        this.indexOfUser = function (usersArr, user) {
-            if(!usersArr) return -1; 
-            for (var i = 0; i < usersArr.length; i++) {
-                if (usersArr[i].username === user.username) {
-                    return i;
-                }
-            }
-            return -1;
-        };
 
     }
 ]);

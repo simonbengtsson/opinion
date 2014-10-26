@@ -3,22 +3,24 @@
         <h6>Featured</h6>
         <opinion-user-badge ng-repeat="user in model.featuredUsers" opinion-user="user"></opinion-user-badge>
         <h6>Trending</h6>
+
         <div class="trending-box">
-            <a ng-repeat="hashtag in model.trendingHashtags track by $index" href="#/hashtags/{{hashtag}}"> #{{ hashtag}} </a> 
+            <a ng-repeat="hashtag in model.trendingHashtags track by $index" href="#/hashtags/{{hashtag}}"> #{{
+                hashtag}} </a>
         </div>
     </div>
-    <div class="col-sm-8" infinite-scroll="loadMorePosts()" >
+    <div class="col-sm-8" infinite-scroll="loadMorePosts()">
         <div ng-hide="searchTerm" class="area-selector">
             <a class="area" ng-class="postType === 'world' ? 'active' : ''" ng-click="changePostType('world')">
-                <span class="glyphicon glyphicon-globe"></span> 
+                <span class="glyphicon glyphicon-globe"></span>
                 Global
             </a>
             <a class="area" ng-class="postType === 'city' ? 'active' : ''" ng-click="changePostType('city')">
-                <span class="glyphicon glyphicon-home"></span> 
+                <span class="glyphicon glyphicon-home"></span>
                 Local
             </a>
             <a class="area" ng-class="postType === 'following' ? 'active' : ''" ng-click="changePostType('following')">
-                <span class="glyphicon glyphicon-user"></span> 
+                <span class="glyphicon glyphicon-user"></span>
                 Following
             </a>
         </div>

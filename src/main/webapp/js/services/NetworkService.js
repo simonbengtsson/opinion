@@ -3,57 +3,34 @@ var app = angular.module('opinion');
 app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '$q', '$timeout',
     function ($http, API_URL, BASE_URL, model, $q, $timeout) {
 
+        // Include the api key in every request
         $http.defaults.headers.common.Authorization = localStorage.getItem('authKey');
-
-        // Temporary. Returns a dummy promise which mocks a real api result.
-        var dummyPromise = function (data) {
-            var deferred = $q.defer();
-            
-            $timeout(function() {
-                deferred.resolve({data: data});
-            }, 500);
-            
-            return deferred.promise;
-        };
-
-        // Posts
 
         this.getPosts = function (params) {
             var def = $q.defer();
-            $http({method: 'GET', params: params, url: API_URL + '/posts'}).then(function(res) {
-                $timeout(function() {
+            $http({method: 'GET', params: params, url: API_URL + '/posts'}).then(function (res) {
+                // Delay for giving the user feedback that new posts has been loaded
+                $timeout(function () {
                     def.resolve(res);
                 }, 400);
-            }, function(res) {
+            }, function (res) {
                 def.reject(res);
             });
             return def.promise;
         };
-        
-        this.getUserPosts = function(username, to, from) {
+
+        this.getUserPosts = function (username, to, from) {
             return $http.get(API_URL + '/users/' + username + '/posts');
-        };
-
-        this.updatePost = function (post) {
-            return dummyPromise("Success!");
-            //return $http.put(API_URL + '/posts/' + post.id, post);
-        };
-
-        this.deletePost = function (post) {
-            return dummyPromise("Success!");
-            //return $http.delete(API_URL + '/posts/' + post.id);
         };
 
         this.createPost = function (post) {
             return $http.post(API_URL + '/posts/', post);
         };
 
-        // Users
-        
         this.getLoggedInUser = function () {
             return $http.get(API_URL + '/users/me');
         };
-        
+
         this.getFeaturedUsers = function () {
             return $http.get(API_URL + '/users');
         };
@@ -66,33 +43,28 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
             return $http.put(API_URL + '/users/me', user);
         };
 
-        // Opinion
-
+        // Not yet supported
         this.opine = function (post) {
-            return dummyPromise("Success!");
+            return $q.defer().promise;
         };
-
-        // Comments
 
         this.createComment = function (post, comment) {
             return $http.post(API_URL + '/posts/' + post.postId + '/comments', comment);
         };
-        
-        this.followUser = function (username){
+
+        this.followUser = function (username) {
             return $http.post(API_URL + '/users/' + username + '/followers');
         };
 
-        this.unfollowUser = function (username){
+        this.unfollowUser = function (username) {
             return $http.delete(API_URL + '/users/' + username + '/followers/me');
         };
-        
-        // Meta
-        
-        this.getTrendingHashtags = function() {
+
+        this.getTrendingHashtags = function () {
             return $http.get(API_URL + "/hashtags");
         };
-        
-        this.initTestData = function() {
+
+        this.initTestData = function () {
             return $http.get(BASE_URL + 'seed-database');
         };
 
