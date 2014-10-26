@@ -9,7 +9,9 @@
                 <textarea ng-model="post.text" msd-elastic class="form-control"></textarea>
             </div>
             <div ng-hide="post.picture" class="drop-zone" ng-file-drop="onFileSelect($files)">
-                Drop image here <em>or</em> <div class="btn btn-default" ng-file-select="onFileSelect($files)" accept="image/*">Choose image</div>
+                Drop image here <em>or</em>
+
+                <div class="btn btn-default" ng-file-select="onFileSelect($files)" accept="image/*">Choose image</div>
             </div>
             <div class="uploaded-image" ng-if="post.picture">
                 <div class="info-bar">

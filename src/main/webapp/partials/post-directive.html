@@ -5,6 +5,7 @@
             <a href="#/{{ post.user.username}}">
                 <img class="profile-pic" ng-src="{{post.user.picture || '/assets/no-picture.png' }}" width="40">
             </a>
+
             <div class="post-author-desc">
                 <div class="username">{{ post.user.username}}</div>
                 <div class="time-ago" am-time-ago="post.date"></div>
@@ -24,7 +25,8 @@
             </div>
         </section>
 
-        <p class="opinion-content" ng-class="isPostLong(post) ? 'long' : ''" ng-bind-html="post.text | linky | hashTags"></p>
+        <p class="opinion-content" ng-class="isPostLong(post) ? 'long' : ''"
+           ng-bind-html="post.text | linky | hashTags"></p>
 
     </div>
 
@@ -37,22 +39,27 @@
             <a href="#/{{comment.user.username}}">
                 <img class="profile-pic" ng-src="{{comment.user.picture || '/assets/no-picture.png' }}">
             </a>
+
             <div class="comment-info">
                 <span class="comment-author-username">{{ comment.user.username }}</span>
                 <span class="time-ago" am-time-ago="comment.date"></span>
+
                 <p ng-bind-html='comment.text | linky | hashTags'></p>
             </div>
         </div>
 
-        <form role="form" ng-submit="comment();commentFormOpen = false" ng-show="model.user"  
+        <form role="form" ng-submit="comment();commentFormOpen = false" ng-show="model.user"
               class="comment-form" ng-class="commentFormOpen ? 'open' : ''">
-            <textarea ng-click="commentFormOpen = true" ng-model="newComment" msd-elastic class="form-control" placeholder="Write comment..."></textarea>
+            <textarea ng-click="commentFormOpen = true" ng-model="newComment" msd-elastic class="form-control"
+                      placeholder="Write comment..."></textarea>
+
             <div ng-show="commentFormOpen">
                 <button type="button" ng-click="commentFormOpen = false;
-                    newComment = ''" class="btn btn-default">Cancel</button>
+                    newComment = ''" class="btn btn-default">Cancel
+                </button>
                 <button type="submit" class="btn btn-primary">Comment</button>
             </div>
         </form>
     </section>
 
-    </article>
+</article>

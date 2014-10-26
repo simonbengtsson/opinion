@@ -2,11 +2,10 @@ var app = angular.module('opinion');
 
 app.controller('ProfileCtrl', ['$scope', '$routeParams', '$modal', 'ModelService', 'NetworkService', '$route', 'user',
     function ($scope, $routeParams, $modal, model, network, $route, user) {
-        
+
         $scope.user = user;
-        
-        network.getUserPosts(user.username).then(function(res) {
-            console.log(res.data);
+
+        network.getUserPosts(user.username).then(function (res) {
             user.posts = res.data;
         });
 
@@ -18,9 +17,10 @@ app.controller('ProfileCtrl', ['$scope', '$routeParams', '$modal', 'ModelService
         $scope.viewingSelf = function () {
             return $scope.user && model.user && model.user.username === $scope.user.username;
         };
-        
-        $scope.follow = function() {
-            if($scope.user.isFollowing) {
+
+        // Both follow and unfollow method
+        $scope.follow = function () {
+            if ($scope.user.isFollowing) {
                 network.unfollowUser($scope.user.username).then(function (res) {
                     $scope.user.isFollowing = false;
                 });

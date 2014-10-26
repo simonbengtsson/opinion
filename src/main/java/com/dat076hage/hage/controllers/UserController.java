@@ -163,7 +163,11 @@ public class UserController {
         JsonObject obj = gson.toJsonTree(user).getAsJsonObject();
         obj.addProperty("followersCount", user.getFollowers().size());
         obj.addProperty("followingCount", user.getFollowing().size());
-        obj.addProperty("isFollowing", askingUser.isFollowing(user));
+        if(askingUser != null) {
+            obj.addProperty("isFollowing", askingUser.isFollowing(user));
+        } else 
+            obj.addProperty("isFollowing", user.isFollowing(askingUser));{
+        }
         obj.addProperty("opinionsCount", user.getPosts().size());
         return obj;
     }
