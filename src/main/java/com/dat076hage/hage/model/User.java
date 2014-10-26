@@ -86,7 +86,7 @@ public class User implements Serializable {
     }
     
     public List<Post> getPosts(){
-        return new ArrayList<>(posts);
+        return posts;
     }
     
     public List<Post> getPostsRange(int fromIndex, int toIndex) {
@@ -96,11 +96,11 @@ public class User implements Serializable {
 
     public List<User> getUsersIAmFollowing(){
 
-        return new ArrayList<>(usersIAmFollowing);
+        return usersIAmFollowing;
     }
     
     public List<User> getUsersWhoArefollowersOfMe(){
-        return new ArrayList<>(usersWhoArefollowersOfMe);
+        return usersWhoArefollowersOfMe;
     }
     
     public String getHash(){
@@ -132,9 +132,6 @@ public class User implements Serializable {
     
     public Post createNewPost(String content){
         Post post = new Post(this, content);
-        if(posts == null) {
-            posts = new ArrayList<Post>();
-        }
         posts.add(post);
         return post;
     }
