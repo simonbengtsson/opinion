@@ -19,7 +19,6 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -70,7 +69,7 @@ public class UserController {
         String password = json.get("password").getAsString();
         String passHash = BCrypt.hashpw(password, BCrypt.gensalt());
         
-        User user = new User(username, description, passHash, "", "");
+        User user = new User(username, description, passHash, "", "", "");
         //TODO: Exceptions not caught?
         try{
             userReg.create(user);
@@ -90,15 +89,17 @@ public class UserController {
         User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
-            //return "{\"error\": \"401, Not authorized\"}";
         }
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
         
         String description = json.get("description").getAsString();
+        String name = json.get("name").getAsString();
         askingUser.setDescription(description);
+        askingUser.setName(name);
         userReg.update(askingUser);
         
-        return Response.created(URI.create("/users/" + askingUser.getUsername())).build();
+        String str = gson.toJson(askingUser);
+        return Response.ok(str).build();
     }
     
     @DELETE
@@ -107,7 +108,6 @@ public class UserController {
         User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
-            //return "{\"error\": \"401, Not authorized\"}";
         }
         userReg.delete(askingUser.getUsername());
         return Response.noContent().build();
@@ -152,8 +152,8 @@ public class UserController {
         userReg.update(user);
         
         System.out.println("*** Add new Follower ***");
-        System.out.println("Asking user " + askingUser.getUsername() + " followers: " + askingUser.getUsersWhoArefollowersOfMe()+ " following: " + askingUser.getUsersIAmFollowing());
-        System.out.println("User " + user.getUsername() + " followers: " + user.getUsersWhoArefollowersOfMe() + " following: " + user.getUsersIAmFollowing());
+        System.out.println("Asking user " + askingUser.getUsername() + " followers: " + askingUser.getFollowers()+ " following: " + askingUser.getFollowing());
+        System.out.println("User " + user.getUsername() + " followers: " + user.getFollowers() + " following: " + user.getFollowing());
         
         return Response.ok(askingUser.getUsername() + " now follows " + user.getUsername()).build();
     }
@@ -170,7 +170,7 @@ public class UserController {
         if(user == null) {
             return Response.status(404).build();
         }
-        List<User> users = user.getUsersWhoArefollowersOfMe();
+        List<User> users = user.getFollowers();
         for(User listedUser : users){
             listedUser.emptyUsersIAmFollowing(); // To prevent circular arrays in gson. This wont be saved in DB.
             listedUser.emptyUsersWhoArefollowersOfMe();
@@ -178,8 +178,8 @@ public class UserController {
         String json = gson.toJson(users);
         
         System.out.println("*** GET Followers ***");
-        System.out.println("Asking user " + askingUser.getUsername() + " followers: " + askingUser.getUsersWhoArefollowersOfMe()+ " following: " + askingUser.getUsersIAmFollowing());
-        System.out.println("User " + user.getUsername() + " followers: " + user.getUsersWhoArefollowersOfMe() + " following: " + user.getUsersIAmFollowing());
+        System.out.println("Asking user " + askingUser.getUsername() + " followers: " + askingUser.getFollowers()+ " following: " + askingUser.getFollowing());
+        System.out.println("User " + user.getUsername() + " followers: " + user.getFollowers() + " following: " + user.getFollowing());
         
         return Response.ok(json, MediaType.APPLICATION_JSON).build();
     }

@@ -4,9 +4,9 @@ import com.dat076hage.hage.ApiKeyRegistry;
 import com.dat076hage.hage.Tools;
 import com.dat076hage.hage.UserRegistry;
 import com.dat076hage.hage.model.User;
+
 import java.io.IOException;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -26,70 +26,15 @@ import org.brickred.socialauth.util.SocialAuthUtil;
  */
 @WebServlet(name = "CallbackServlet", urlPatterns = {"/callback"})
 public class CallbackServlet extends HttpServlet {
-    
+
     @EJB
     UserRegistry userReg;
-    
+
     @EJB
     ApiKeyRegistry apiKeyReg;
-    
+
     private static final Logger LOG = Logger.getLogger(CallbackServlet.class.getSimpleName());
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        LOG.log(Level.INFO, "*** CallbackServlet");
-        AccessGrant ag;
-        String username = "";
-        String description = "";
-        String picture = "";
-
-        try {
-            // Must use same manager as used for login
-            SocialAuthManager manager = (SocialAuthManager) request.getSession().getAttribute("authManager");
-            Map<String, String> paramsMap = SocialAuthUtil.getRequestParametersMap(request);
-            AuthProvider provider = manager.connect(paramsMap);
-            Profile profile = provider.getUserProfile();
-            username = profile.getDisplayName();
-            description = profile.getLastName();
-            picture = profile.getProfileImageURL();
-            picture = picture.replaceAll("_normal", "_bigger");
-            LOG.log(Level.INFO, "*** Name " + username);
-            ag = provider.getAccessGrant();
-        } catch (Exception ex) {
-            response.sendRedirect("");
-            return;
-        }
-        
-        if(!username.equals("")){
-            User searchedUser = userReg.find(username);
-            if(searchedUser == null){
-                User user = new User(username, description, "", ag.getKey(), picture);
-                userReg.create(user);
-                
-                ApiKey apiKey = new ApiKey(user);
-                apiKeyReg.create(apiKey);
-                
-                String script = "<script>localStorage.setItem('authKey', '" + 
-                        apiKey.getKey() + "'); location.href = '" + Tools.URL_FOLDER + "'; </script>";
-                response.getWriter().write(script);
-            }else{
-                
-                ApiKey apiKey = new ApiKey(searchedUser);
-                apiKeyReg.create(apiKey);
-                
-                String script = "<script>localStorage.setItem('authKey', '" + 
-                        apiKey.getKey() + "'); location.href = '" + Tools.URL_FOLDER + "'; </script>";
-                response.getWriter().write(script);
-            }
-        }else{
-            response.getWriter().write("Not a valid username");
-        }
-
-        request.getSession().invalidate();
-    }
-
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -101,30 +46,51 @@ public class CallbackServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        // Must use same manager as used for login
+        SocialAuthManager manager = (SocialAuthManager) request.getSession().getAttribute("authManager");
+        Map<String, String> paramsMap = SocialAuthUtil.getRequestParametersMap(request);
+
+        AuthProvider provider = null;
+        Profile profile = null;
+
+        try {
+            provider = manager.connect(paramsMap);
+            profile = provider.getUserProfile();
+        } catch (Exception ex) {
+            response.sendRedirect("");
+            return;
+        }
+        
+        AccessGrant ag = provider.getAccessGrant();
+
+        User user = getUser(profile, ag);
+        ApiKey apiKey = new ApiKey(user);
+        apiKeyReg.create(apiKey);
+
+        response.getWriter().write(getResponseScript(apiKey.getKey()));
+
+        request.getSession().invalidate();
+    }
+    
+    private User getUser(Profile profile, AccessGrant ag) {
+        String username = profile.getDisplayName();
+        String name = profile.getFullName();
+        String description = "I live in " + profile.getLocation();
+        String picture = profile.getProfileImageURL();
+        picture = picture.replaceAll("_normal", "_bigger");
+        
+        User user = userReg.find(username);
+        if (user == null) {
+            user = new User(username, description, "", ag.getKey(), picture, name);
+            userReg.create(user);
+        }
+        
+        return user;
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    private String getResponseScript(String apiKey) {
+        return "<script>localStorage.setItem('authKey', '"
+                + apiKey + "'); location.href = '" + Tools.URL_FOLDER + "'; </script>";
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 }

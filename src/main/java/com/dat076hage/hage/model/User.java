@@ -28,6 +28,7 @@ public class User implements Serializable {
     @Id
     @Column(nullable = false, updatable = false, length = 50)
     @Expose private String username;
+    @Expose private String name;
     
     @Expose private String description;
     
@@ -39,10 +40,10 @@ public class User implements Serializable {
     }, inverseJoinColumns = {
         @JoinColumn(name = "target", referencedColumnName = "username", nullable = false)})*/
     @ManyToMany
-    @Expose private List<User> usersIAmFollowing;
+    @Expose private List<User> following;
     
-    @ManyToMany(mappedBy = "usersIAmFollowing")
-    @Expose private List<User> usersWhoArefollowersOfMe;
+    @ManyToMany(mappedBy = "following")
+    @Expose private List<User> followers;
     
     @OneToMany(mappedBy = "user") 
     @Expose private List<Post> posts;
@@ -55,9 +56,10 @@ public class User implements Serializable {
     public User(){
     }
 
-    public User(String username, String description, String passwordHash, String twitterApiHash, String picture){
+    public User(String username, String description, String passwordHash, String twitterApiHash, String picture, String name){
 
         this.username = username;
+        this.name = name;
         this.description = description;
         this.passwordHash = passwordHash;
         this.twitterApiHash = twitterApiHash;
@@ -65,9 +67,17 @@ public class User implements Serializable {
         
         memberSince = new Date();
         posts = new ArrayList<>();
-        usersIAmFollowing = new ArrayList<>();
-        usersWhoArefollowersOfMe = new ArrayList<>();
+        following = new ArrayList<>();
+        followers = new ArrayList<>();
         
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
     public String getUsername(){
@@ -92,13 +102,13 @@ public class User implements Serializable {
     }
 
 
-    public List<User> getUsersIAmFollowing(){
+    public List<User> getFollowing(){
 
-        return new ArrayList<>(usersIAmFollowing);
+        return new ArrayList<>(following);
     }
     
-    public List<User> getUsersWhoArefollowersOfMe(){
-        return new ArrayList<>(usersWhoArefollowersOfMe);
+    public List<User> getFollowers(){
+        return new ArrayList<>(followers);
     }
     
     public String getHash(){
@@ -141,39 +151,48 @@ public class User implements Serializable {
     // ACTIONS WITH FOLLOWED USERS
 
     public void follow(User user){
-        user.usersWhoArefollowersOfMe.add(this);
-        usersIAmFollowing.add(user);
+        user.followers.add(this);
+        following.add(user);
     }
     
 
     public void unfollow(User user){
         
-        for(int i = 0; i < usersIAmFollowing.size(); i++){
-            if(usersIAmFollowing.get(i).getUsername().equals(user.getUsername())){
-                usersIAmFollowing.remove(i);
+        for(int i = 0; i < following.size(); i++){
+            if(following.get(i).getUsername().equals(user.getUsername())){
+                following.remove(i);
                 break;
             }
         }
         
-        for(int i = 0; i < user.usersWhoArefollowersOfMe.size(); i++){
-            if(user.usersWhoArefollowersOfMe.get(i).getUsername().equals(user.getUsername())){
-                user.usersWhoArefollowersOfMe.remove(i);
+        for(int i = 0; i < user.followers.size(); i++){
+            if(user.followers.get(i).getUsername().equals(user.getUsername())){
+                user.followers.remove(i);
                 break;
             }
         }
     }
     
     public void emptyUsersIAmFollowing(){
-        usersIAmFollowing.clear();
+        following.clear();
     }
     
     public void emptyUsersWhoArefollowersOfMe(){
-        usersWhoArefollowersOfMe.clear();
+        followers.clear();
     }
-    
+
     @Override
-    public String toString(){
-        return String.format("username: %s | description: %s", username, description);
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", description='" + description + '\'' +
+                ", memberSince=" + memberSince +
+                ", following=" + following +
+                ", followers=" + followers +
+                ", posts=" + posts +
+                ", picture='" + picture + '\'' +
+                ", twitterApiHash='" + twitterApiHash + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                '}';
     }
-    
 }
