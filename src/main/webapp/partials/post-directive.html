@@ -2,14 +2,14 @@
     <div class="content">
 
         <section class="post-info-section">
-            <a href="#/{{ post.author.username}}">
-                <img class="profile-pic" ng-src="{{post.author.picture || '/assets/no-picture.png' }}" width="40">
+            <a href="#/{{ post.user.username}}">
+                <img class="profile-pic" ng-src="{{post.user.picture || '/assets/no-picture.png' }}" width="40">
             </a>
             <div class="post-author-desc">
-                <div class="username">{{ post.author.username}}</div>
-                <div class="time-ago" am-time-ago="post.time"></div>
+                <div class="username">{{ post.user.username}}</div>
+                <div class="time-ago" am-time-ago="post.date"></div>
             </div>
-            <div class="pull-right" ng-if="model.user && model.user.username !== post.author.username">
+            <div class="pull-right" ng-if="model.user && model.user.username !== post.user.username">
                 <div class="btn btn-inverse btn-sm">
                     <span style="color: #1ABC9C;" class="glyphicon glyphicon-ok"></span>
                     Agree
@@ -34,12 +34,12 @@
 
     <section class="comments">
         <div class="comment" ng-repeat="comment in post.comments">
-            <a href="#/{{comment.author.username}}">
-                <img class="profile-pic" ng-src="{{comment.author.picture || '/assets/no-picture.png' }}">
+            <a href="#/{{comment.user.username}}">
+                <img class="profile-pic" ng-src="{{comment.user.picture || '/assets/no-picture.png' }}">
             </a>
             <div class="comment-info">
-                <span class="comment-author-username">{{ comment.author.username }}</span>
-                <span class="time-ago" am-time-ago="comment.time"></span>
+                <span class="comment-author-username">{{ comment.user.username }}</span>
+                <span class="time-ago" am-time-ago="comment.date"></span>
                 <p ng-bind-html='comment.text | linky | hashTags'></p>
             </div>
         </div>

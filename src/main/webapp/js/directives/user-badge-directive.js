@@ -15,12 +15,13 @@ app.directive('opinionUserBadge', ['ModelService', 'NetworkService', function (m
                         network.unfollowUser(scope.user.username).then(function (res) {
                             console.log('unfollowed!');
                             scope.user.isFollowing = false;
-                        }, function() {
-                            console.log('failed');
                         });
                     } else {
                         network.followUser(scope.user.username).then(function (res) {
                             scope.user.isFollowing = true;
+                            network.getUser(scope.user.username).then(function(res) {
+                                console.log(res);
+                            });
                         });
                     }
                 };

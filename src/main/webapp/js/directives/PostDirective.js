@@ -23,7 +23,7 @@ app.directive('opinionPost', ['ModelService', 'NetworkService', function (model,
                 };
 
                 scope.comment = function () {
-                    network.createComment(scope.post, scope.newComment).then(function (res) {
+                    network.createComment(scope.post, {text: scope.newComment}).then(function (res) {
                         scope.post.comments.push(res.data);
                         scope.newComment = '';
                     });

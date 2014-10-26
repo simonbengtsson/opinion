@@ -163,7 +163,7 @@ public class UserController {
         JsonObject obj = gson.toJsonTree(user).getAsJsonObject();
         obj.addProperty("followersCount", user.getFollowers().size());
         obj.addProperty("followingCount", user.getFollowing().size());
-        obj.addProperty("isFollowing", user.isFollowedBy(askingUser));
+        obj.addProperty("isFollowing", askingUser.isFollowing(user));
         obj.addProperty("opinionsCount", user.getPosts().size());
         return obj;
     }
@@ -179,15 +179,16 @@ public class UserController {
         if(user == null) {
             return Response.status(404).build();
         }
-            askingUser.follow(user);
-            
-            try {
-                userReg.update(askingUser);
-                userReg.update(user);
-            } catch(EJBException e) {
-                // If already following
-                return Response.status(Response.Status.BAD_REQUEST).build();
-            }
+        askingUser.follow(user);
+        user.getFollowers().add(askingUser);
+        
+        try {
+            userReg.update(askingUser);
+            userReg.update(user);
+        } catch(EJBException e) {
+            System.out.println("Already following user. Followers count: " + askingUser.getFollowing().size());
+            return Response.status(Response.Status.BAD_REQUEST).entity("{\"msg\": \"Already following\"}").build();
+        }
         
         return Response.ok().build();
     }
