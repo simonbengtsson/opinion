@@ -1,8 +1,6 @@
 
 package com.dat076hage.hage.persistence;
 
-import java.util.List;
-
 /**
  * Basic CRUD interface implemented by all DAO (Facade)
  * classes 
@@ -23,6 +21,4 @@ public interface IDAO<T, K> {
     public T find(K id);
 
     public int count();
-    
-    //public void refresh(T t);
 }

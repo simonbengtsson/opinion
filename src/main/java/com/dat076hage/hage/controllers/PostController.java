@@ -4,7 +4,6 @@ import com.dat076hage.hage.ApiKeyRegistry;
 import com.dat076hage.hage.CommentRegistry;
 import com.dat076hage.hage.PostRegistry;
 import com.dat076hage.hage.UserRegistry;
-import com.dat076hage.hage.auth.ApiKey;
 import com.dat076hage.hage.model.Comment;
 import com.dat076hage.hage.model.GPS;
 import com.dat076hage.hage.model.Post;
@@ -16,10 +15,8 @@ import com.google.gson.JsonObject;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import javax.ejb.EJB;
 
-import javax.ejb.EJBException;
 
 import javax.servlet.ServletContext;
 
@@ -30,7 +27,6 @@ import javax.ws.rs.core.*;
 @Consumes(value = MediaType.APPLICATION_JSON)
 @Produces(value = MediaType.APPLICATION_JSON)
 public class PostController {
-
 
     @javax.ws.rs.core.Context
     ServletContext context;
@@ -49,17 +45,6 @@ public class PostController {
     
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
-    public User validateApiKey(String key){
-        if (key==null)
-            return null;
-        ApiKey apiKey = apiKeyReg.find(key);
-        if(apiKey != null){
-            return apiKey.getUser();
-        }else{
-            return null;
-        }
-    }
-
     @GET
     public Response findAll(@HeaderParam("Authorization") String authorization,
                             @DefaultValue("1000") @QueryParam("lat") long lat,
@@ -68,7 +53,7 @@ public class PostController {
                             @QueryParam("from") int fromIndex,
                             @QueryParam("to") int toIndex) {
 
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
 
         switch (postType) {
             case "global":
@@ -97,7 +82,7 @@ public class PostController {
     
     @POST
     public Response createPost(@HeaderParam("Authorization") String authorization, String contentBody) {
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
@@ -133,11 +118,10 @@ public class PostController {
         return res.build();
     }
     
-    // Working
     @PUT
     @Path("{id}")
     public Response updatePost(@HeaderParam("Authorization") String authorization, @PathParam("id") long postId, String contentBody) {
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
             //return "{\"error\": \"401, Not authorized\"}";
@@ -157,24 +141,21 @@ public class PostController {
         }
     }
     
-    // Working
     @DELETE
     @Path("{id}")
     public Response deletePost(@HeaderParam("Authorization") String authorization, @PathParam("id") long postId) {
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
-            //return "{\"error\": \"401, Not authorized\"}";
         }
         postReg.delete(postId);
         return Response.noContent().build();
     }
     
-    // Working
     @GET
     @Path("{id}")
     public String findPost(@HeaderParam("Authorization") String authorization, @PathParam("id") long postId) {
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
         if(askingUser == null){
             //return Response.status(401).build();
             return "{\"error\": \"401, Not authorized\"}";
@@ -188,7 +169,7 @@ public class PostController {
     @POST
     @Path("{id}/comments")
     public Response createCommentOnPost(@HeaderParam("Authorization") String authorization, @PathParam("id") long postId, String contentBody) {
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
         }
@@ -206,11 +187,9 @@ public class PostController {
     @GET
     @Path("{id}/comments")
     public Response getCommentOnPost(@HeaderParam("Authorization") String authorization, @PathParam("id") long postId) {
-        System.out.println("*** Get Comments On Post ***");
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
-            //return "{\"error\": \"401, Not authorized\"}";
         }
         
         Post post = postReg.find(postId);

@@ -30,11 +30,6 @@ public abstract class AbstractDAO<T, K> implements IDAO<T, K> {
     public void create(T t) {
         getEntityManager().persist(t);
     }
-    
-    //@Override
-    public void refresh(T t){
-        getEntityManager().refresh(t);
-    }
 
     @Override
     public void delete(K id) {

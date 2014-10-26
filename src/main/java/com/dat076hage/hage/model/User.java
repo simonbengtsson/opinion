@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -63,7 +62,6 @@ public class User implements Serializable {
     }
 
     public User(String username, String description, String passwordHash, String twitterApiHash, String picture, String name){
-
         this.username = username;
         this.name = name;
         this.description = description;
