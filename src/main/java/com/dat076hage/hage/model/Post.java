@@ -12,7 +12,9 @@ import javax.persistence.*;
 import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -100,6 +102,10 @@ public class Post implements Serializable {
     
     public String getLink(){
         return link;
+    }
+    
+    public User getAuthor(){
+        return user;
     }
     
     public List getHageTags(){

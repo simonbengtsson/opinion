@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
 
 import javax.ejb.EJBException;
@@ -87,18 +88,10 @@ public class PostController {
     }
 
     private Response getFollowingPosts(User askingUser) {
-        List<Post> posts = new ArrayList<>();
-        
         if (askingUser == null) {
             return Response.status(401).build();
         }
-
-        List<User> followList = askingUser.getFollowers();
-        for (User u : followList) {
-            posts.addAll(u.getPosts());
-        }
-        
-        return Response.ok(gson.toJson(posts)).build();
+        return Response.ok(gson.toJson(postReg.getPostsFromUsersIFollow(askingUser)), MediaType.APPLICATION_JSON).build();
         
     }
     
@@ -150,15 +143,18 @@ public class PostController {
             //return "{\"error\": \"401, Not authorized\"}";
         }
         
-        //TODO: Validate if this user should be able to edit post...
-        
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
         String newContent = json.get("content").getAsString();
-        Post p = postReg.find(postId);
-        p.setText(newContent);
-        postReg.update(p);
         
-        return Response.created(URI.create("/posts/" + postId)).build();
+        Post p = postReg.find(postId);
+        if(p.getAuthor().getUsername().equals(askingUser.getUsername())){
+            // Same username on original postcreator and the user now trying to update it.
+            p.setText(newContent);
+            postReg.update(p);
+            return Response.created(URI.create("/posts/" + postId)).build();
+        }else{
+            return Response.status(401).build();
+        }
     }
     
     // Working
@@ -199,10 +195,10 @@ public class PostController {
         Post post = postReg.find(postId);
         
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
+
         String newContent = json.get("text").getAsString();
         Comment comment = new Comment(askingUser, post, newContent);
         commentReg.create(comment);
-        postReg.update(post);
         
         return Response.status(201).entity(gson.toJson(comment)).build();
     }
@@ -210,17 +206,15 @@ public class PostController {
     @GET
     @Path("{id}/comments")
     public Response getCommentOnPost(@HeaderParam("Authorization") String authorization, @PathParam("id") long postId) {
+        System.out.println("*** Get Comments On Post ***");
         User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
             //return "{\"error\": \"401, Not authorized\"}";
         }
+        
         Post post = postReg.find(postId);
-        System.out.println("Comments: " + post.getComments().size());
-        List<Comment> comments = post.getComments();
-        for(Comment comment : comments){
-            comment.getUser().emptyRelations();
-        }
+        List<Comment> comments = commentReg.getCommentsOnPost(post);
         
         return Response.ok(gson.toJson(comments), MediaType.APPLICATION_JSON).build();
     }

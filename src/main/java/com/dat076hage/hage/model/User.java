@@ -109,14 +109,16 @@ public class User implements Serializable {
 
 
     public List<User> getFollowing(){
-
-
         return new ArrayList<>(following);
     }
     
     public List<User> getFollowers(){
         return new ArrayList<>(followers);
 
+    }
+    
+    public List<Comment> getComments(){
+        return comments;
     }
     
     public String getHash(){
@@ -165,14 +167,6 @@ public class User implements Serializable {
     
     public boolean isFollowing(User user) {
         return following.contains(user);
-    }
-    
-    public void emptyUsersIAmFollowing(){
-        following.clear();
-    }
-    
-    public void emptyUsersWhoArefollowersOfMe(){
-        followers.clear();
     }
     
     public void emptyRelations(){

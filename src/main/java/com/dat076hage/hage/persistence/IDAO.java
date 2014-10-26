@@ -23,4 +23,6 @@ public interface IDAO<T, K> {
     public T find(K id);
 
     public int count();
+    
+    //public void refresh(T t);
 }

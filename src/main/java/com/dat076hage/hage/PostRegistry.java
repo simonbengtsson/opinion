@@ -5,9 +5,11 @@
  */
 package com.dat076hage.hage;
 
+import com.dat076hage.hage.model.Comment;
 import com.dat076hage.hage.model.Post;
 import com.dat076hage.hage.model.User;
 import com.dat076hage.hage.persistence.AbstractDAO;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -28,14 +30,20 @@ public class PostRegistry extends AbstractDAO<Post, Long>{
     }
     
     @Override
-    protected EntityManager getEntityManager() {
-        System.out.print(em.toString());
+    public EntityManager getEntityManager() {
         return em;
     }
     
     // Below is all special methods for Posts, see AbstractDAO for the rest
     
-    public List<Post> getRecentPostFromFollowed(User user, int numOfPosts){
-        return null;
+    
+    public List<Post> getPostsFromUsersIFollow(User user){
+        List<Post> posts = new ArrayList<>();
+        for (User u : user.getFollowing()) {
+            posts.addAll(em.createQuery("SELECT p FROM Post p WHERE p.user = :user", Post.class).setParameter("user", u).getResultList());
+        }
+        return posts;
+                
     }
+    
 }
