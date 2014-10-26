@@ -195,17 +195,16 @@ public class PostController {
         User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
-            //return "{\"error\": \"401, Not authorized\"}";
         }
         Post post = postReg.find(postId);
         
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
-        String newContent = json.get("content").getAsString();
+        String newContent = json.get("text").getAsString();
         Comment comment = new Comment(askingUser, post, newContent);
         commentReg.create(comment);
         postReg.update(post);
         
-        return Response.created(URI.create("/api/posts/" + post.getId() + "/comments")).build();
+        return Response.status(201).entity(gson.toJson(comment)).build();
     }
     
     @GET

@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -35,17 +36,17 @@ public class User implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     @Expose private Date memberSince;
     
-    @ManyToMany
+    @ManyToMany(mappedBy = "followers")
     private List<User> following;
     
-    @ManyToMany(mappedBy = "following")
+    @ManyToMany
     private List<User> followers;
     
-    @OneToMany(mappedBy = "user") 
-    @Expose private List<Post> posts;
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
     
     @OneToMany(mappedBy = "user") 
-    @Expose private List<Comment> comments;
+    private List<Comment> comments;
     
     @ManyToMany(mappedBy = "agreeingUsers")
     @Expose private List<Post> agreements;
@@ -157,14 +158,13 @@ public class User implements Serializable {
     public void follow(User user){
         following.add(user);
     }
-    
 
     public void unfollow(User user){
         following.remove(user);
     }
     
-    public boolean isFollowedBy(User user) {
-        return followers.contains(user);
+    public boolean isFollowing(User user) {
+        return following.contains(user);
     }
     
     public void emptyUsersIAmFollowing(){

@@ -11,7 +11,6 @@ import javax.persistence.*;
 
 import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class Post implements Serializable {
     @Expose private String picture;
     
     @Temporal(javax.persistence.TemporalType.DATE)
-    @Expose private Date postDate;
+    @Expose private Date date;
     @Expose private String link;
     
     @Expose private List<String> hageTagList;
@@ -43,27 +42,27 @@ public class Post implements Serializable {
     @Expose private List<Comment> comments;
     
     @ManyToMany
-    @Expose private List<User> agreeingUsers;
+    private List<User> agreeingUsers;
     
     @ManyToMany
-    @Expose private List<User> disagreeingUsers;
+    private List<User> disagreeingUsers;
 
     @Embedded
     @Expose private GPS position;
     
     @ManyToOne
-    private User user;
+    @Expose private User user;
     
     public Post(){
     } 
     
     public Post (User user, String text) {
         this.user = user;
-
         this.text = text;
-        this.postDate = new Date();
+        this.date = new Date();
         
         comments = new ArrayList<>();
+        comments.add(new Comment(user, this, "This is an awful comment"));
         agreeingUsers = new ArrayList<>();
         disagreeingUsers = new ArrayList<>();
     }
@@ -76,6 +75,7 @@ public class Post implements Serializable {
         this.link = link;
         this.hageTagList = new ArrayList<>(hageTags);
         this.position = pos;
+        this.date = new Date();
     }
     
     public String getText(){
@@ -94,8 +94,8 @@ public class Post implements Serializable {
         return picture;
     }
     
-    public Date getPostDate(){
-        return new Date(postDate.getTime());
+    public Date getDate(){
+        return new Date(date.getTime());
     }
     
     public String getLink(){
@@ -130,8 +130,8 @@ public class Post implements Serializable {
         this.picture = path;
     }
     
-    public void setPostDate(Date date){
-        this.postDate = new Date(date.getTime());
+    public void setDate(Date date){
+        this.date = new Date(date.getTime());
     }
     
     public void setLink(String link){
@@ -144,7 +144,7 @@ public class Post implements Serializable {
                 "text='" + text + '\'' +
                 ", postId=" + postId +
                 ", picturePath='" + picture + '\'' +
-                ", postDate=" + postDate +
+                ", postDate=" + date +
                 ", link='" + link + '\'' +
                 ", hageTagList=" + hageTagList +
                 ", position=" + position +

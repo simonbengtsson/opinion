@@ -45,16 +45,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
         };
 
         this.createPost = function (post) {
-            var d = $q.defer();
-            $http.post(API_URL + '/posts/', post).then(function(res) {
-                if(!res.data.author) {
-                    res.data.author = model.user;
-                }
-                d.resolve(res);
-            }, function(res) {
-                d.reject(res);
-            });
-            return d.promise;
+            return $http.post(API_URL + '/posts/', post);
         };
 
         // Users
@@ -84,13 +75,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
         // Comments
 
         this.createComment = function (post, comment) {
-            var c = {
-                id: 15,
-                text: comment,
-                time: new Date(),
-                author: model.user
-            };
-            return dummyPromise(c);
+            return $http.post(API_URL + '/posts/' + post.postId + '/comments', comment);
         };
         
         this.followUser = function (username){

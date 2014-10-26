@@ -103,7 +103,7 @@ public class PostTest {
         System.out.println("getPostDate");
         Post instance = new Post();
         Date expResult = null;
-        Date result = instance.getPostDate();
+        Date result = instance.getDate();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -184,7 +184,7 @@ public class PostTest {
         System.out.println("setPostDate");
         Date date = null;
         Post instance = new Post();
-        instance.setPostDate(date);
+        instance.setDate(date);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
