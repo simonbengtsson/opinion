@@ -29,7 +29,6 @@ public class PostRegistry extends AbstractDAO<Post, Long>{
     
     @Override
     protected EntityManager getEntityManager() {
-        System.out.print(em.toString());
         return em;
     }
     

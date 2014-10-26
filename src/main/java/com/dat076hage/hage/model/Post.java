@@ -102,6 +102,10 @@ public class Post implements Serializable {
         return link;
     }
     
+    public User getAuthor(){
+        return user;
+    }
+    
     public List getHageTags(){
         return hageTagList;
     }

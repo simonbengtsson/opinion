@@ -150,15 +150,18 @@ public class PostController {
             //return "{\"error\": \"401, Not authorized\"}";
         }
         
-        //TODO: Validate if this user should be able to edit post...
-        
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
         String newContent = json.get("content").getAsString();
-        Post p = postReg.find(postId);
-        p.setText(newContent);
-        postReg.update(p);
         
-        return Response.created(URI.create("/posts/" + postId)).build();
+        Post p = postReg.find(postId);
+        if(p.getAuthor().getUsername().equals(askingUser.getUsername())){
+            // Same username on original postcreator and the user now trying to update it.
+            p.setText(newContent);
+            postReg.update(p);
+            return Response.created(URI.create("/posts/" + postId)).build();
+        }else{
+            return Response.status(401).build();
+        }
     }
     
     // Working
