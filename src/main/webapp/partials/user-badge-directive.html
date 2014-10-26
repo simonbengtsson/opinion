@@ -1,13 +1,15 @@
 <div class="user-badge">
     <div class="clearfix">
-        <a href="#/{{ user.username}}" class="item pull-left" style="padding-right: 10px;">
-            <img ng-src="{{ user.picture}}" class="profile-pic">
+        <a src="img" href="#/{{ user.username}}">
+            <img ng-src="{{ user.picture || '/assets/no-picture.png' }}" class="profile-pic">
         </a>
-        <div class="item pull-left" style="line-height: 20px; font-size: 16px;">
-            {{ user.username}} <br> {{ user.firstName}} {{ user.lastName}}
+
+        <div class="name">
+            {{ user.username}} <br> {{ user.name}}
         </div>
-        <div class="item pull-right">
-            <div class="btn btn-primary">Follow</div>
+        <div ng-if="model.user" class="btn" ng-class="user.isFollowing ? 'btn-default' : 'btn-primary'"
+             ng-click="follow()">
+            Follow{{ user.isFollowing ? 'ing' : ''}}
         </div>
     </div>
     <div class="desc">

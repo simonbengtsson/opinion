@@ -1,4 +1,4 @@
-var app = angular.module('hage');
+var app = angular.module('opinion');
 
 app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$location', '$timeout', '$routeParams',
     function ($scope, network, model, $location, $timeout, $routeParams) {
@@ -10,28 +10,29 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
         
         if ($routeParams.hashtag) {
             $scope.searchTerm = '#' + $routeParams.hashtag;
-            network.getPosts().then(function (data) {
-                model.posts = data;
+            network.getPosts().then(function (res) {
+                model.posts = res.data;
             });
         } else if ($routeParams.searchTerm) {
             $scope.searchTerm = $routeParams.searchTerm;
-            network.getPosts().then(function (data) {
-                model.posts = data;
+            network.getPosts().then(function (res) {
+                model.posts = res.data;
             });
         } else {
-            network.getPosts().then(function (data) {
-                model.posts = data;
+            network.getPosts().then(function (res) {
+                model.posts = res.data;
             });
         }
 
         var page = 0;
 
         network.getFeaturedUsers().then(function (res) {
-            model.featuredUsers = res;
+            var data = res.data;
+            model.featuredUsers = data;
         });
 
         network.getTrendingHashtags().then(function (res) {
-            model.trendingHashtags = res;
+            model.trendingHashtags = res.data;
         });
 
         $scope.changePostType = function (type) {
@@ -51,7 +52,7 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
                 navigator.geolocation.getCurrentPosition(function (geo) {
                     network.getPosts(page, $scope.postType, geo.coords).then(function (res) {
                         $timeout(function () {
-                            model.posts = model.posts.concat(res);
+                            model.posts = model.posts.concat(res.data);
                             page++;
                             $scope.loadingPosts = false;
                         });
@@ -64,7 +65,7 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
                 });
             } else {
                 network.getPosts(page, $scope.postType).then(function (res) {
-                    model.posts = model.posts.concat(res);
+                    model.posts = model.posts.concat(res.data);
                     page++;
                     $scope.loadingPosts = false;
                 });

@@ -1,16 +1,16 @@
-var app = angular.module('hage');
+var app = angular.module('opinion');
 
 app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '$q', '$timeout',
     function ($http, API_URL, BASE_URL, model, $q, $timeout) {
-        
+
+        //console.log(localStorage.authKey);
         $http.defaults.headers.common.Authorization = localStorage.getItem('authKey');
 
         var dummyUser = {
             username: "adalove",
             followers: [],
             following: [],
-            firstName: 'Ada',
-            lastName: 'Lovelace',
+            name: 'Ada Lovelace',
             description: 'This is a personal description that is pretty long, but not TLDR',
             picture: 'https://lh4.googleusercontent.com/-q-IPv9Ub8eY/AAAAAAAAAAI/AAAAAAAAAb4/36Ea1HIRW0c/photo.jpg'
         };
@@ -19,8 +19,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
             username: "test123",
             followers: [dummyUser],
             following: [],
-            firstName: 'Testare',
-            lastName: 'TestTest',
+            name: 'Test Testare',
             description: 'This is a personal test description',
             picture: 'http://www.horizon-properties.com/assets/test-user-7bc7f39edf559e62535e37437b232f46.png'
         };
@@ -30,21 +29,21 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
         var dummyPosts = [
             {
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. #awesome #test',
-                hatingUsers: [angular.copy(dummyUser2)],
+                disagreeingUsers: [angular.copy(dummyUser2)],
                 author: angular.copy(dummyUser),
                 time: new Date(2013, 2, 1, 1, 10),
                 comments: [{id: 1, author: angular.copy(dummyUser2), text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt", time: new Date()}]
             },
             {
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim adminse incididunt ut labore incididunt ut labo.',
-                hatingUsers: [angular.copy(dummyUser), angular.copy(dummyUser2)],
+                disagreeingUsers: [angular.copy(dummyUser), angular.copy(dummyUser2)],
                 author: angular.copy(dummyUser),
                 time: new Date(2014, 2, 1, 1, 10),
                 comments: [{id: 1, author: angular.copy(dummyUser2), text: "Test comment", time: new Date()}]
             },
             {
                 text: "BILJETTKONTROLLANTER >:((((",
-                hatingUsers: [],
+                disagreeingUsers: [],
                 author: angular.copy(dummyUser),
                 time: new Date(),
                 picture: 'http://www.nhs.uk/Conditions/stress-anxiety-depression/PublishingImages/E%20to%20I/expert-tips-on-child-anger_364x200_107668795.jpg',
@@ -52,14 +51,14 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
             },
             {
                 text: "When you change to autumn jacket and forget your västtrafikkort in your summer jacket... at home",
-                hatingUsers: [],
+                disagreeingUsers: [],
                 time: new Date(),
                 author: angular.copy(dummyUser),
                 comments: []
             },
             {
                 text: "Hello world! :D ..... not.",
-                hatingUsers: [],
+                disagreeingUsers: [],
                 time: new Date(),
                 author: angular.copy(dummyUser),
                 comments: []
@@ -69,7 +68,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
         var dummyPosts2 = [
             {
                 text: 'Test test test test test test test test',
-                hatingUsers: [angular.copy(dummyUser)],
+                disagreeingUsers: [angular.copy(dummyUser)],
                 time: new Date(),
                 author: angular.copy(dummyUser2),
                 comments: [{id: 2, author: angular.copy(dummyUser), text: "Test tes test"}]
@@ -84,7 +83,7 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
             var deferred = $q.defer();
             
             $timeout(function() {
-                deferred.resolve(data);
+                deferred.resolve({data: data});
             }, 500);
             
             return deferred.promise;
@@ -108,15 +107,16 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
         };
 
         this.createPost = function (post) {
-            return dummyPromise({
-                text: post.text,
-                picture: post.picture,
-                hatingUsers: [],
-                author: angular.copy(model.user),
-                time: new Date(),
-                comments: []
+            var d = $q.defer();
+            $http.post(API_URL + '/posts/', post).then(function(res) {
+                if(!res.data.author) {
+                    res.data.author = model.user;
+                }
+                d.resolve(res);
+            }, function(res) {
+                d.reject(res);
             });
-            //return $http.post(API_URL + '/posts/');
+            return d.promise;
         };
 
         // Users
@@ -125,9 +125,8 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
             return $http.get(API_URL + '/users/me');
         };
         
-        this.getFeaturedUsers = function (username) {
-            return dummyPromise([dummyUser, dummyUser2]);
-            //return $http.get(API_URL + '/users/' + user.id);
+        this.getFeaturedUsers = function () {
+            return $http.get(API_URL + '/users');
         };
 
         this.getUser = function (username) {
@@ -135,20 +134,13 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
         };
 
         this.updateUser = function (user) {
-            return dummyPromise("Success!");
-            //return $http.put(API_URL + '/users/' + user.id, user);
+            return $http.put(API_URL + '/users/me', user);
         };
 
-        // Hates
+        // Opinion
 
-        this.createHate = function (post) {
+        this.opine = function (post) {
             return dummyPromise("Success!");
-            //return $http.post(API_URL + '/hate/' + post.id);
-        };
-
-        this.deleteHate = function (post) {
-            return dummyPromise("Success!");
-            //return $http.delete(API_URL + '/hate/' + post.id);
         };
 
         // Comments
@@ -161,23 +153,20 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
                 author: model.user
             };
             return dummyPromise(c);
-            //return $http.post(API_URL + '/hate/' + post.id + '/comments/');
-        };
-
-        this.deleteHate = function (post, comment) {
-            return dummyPromise("Success!");
-            return $http.delete(API_URL + '/hate/' + post.id + '/comments/' + comment.id);
         };
         
-        this.followUser = function (user){
-            return dummyPromise("Success!");
-            // put user to users following list
+        this.followUser = function (username){
+            return $http.post(API_URL + '/users/' + username + '/followers');
+        };
+
+        this.unfollowUser = function (username){
+            return $http.delete(API_URL + '/users/' + username + '/followers/me');
         };
         
         // Meta
         
         this.getTrendingHashtags = function() {
-            return dummyPromise(['awesome', 'bp15', 'Lamela', 'Gothenburg', 'Ullevi', 'awesome', 'bp15', 'Lamela', 'Gothenburg', 'Ullevi']);
+            return $http.get(API_URL + "/hashtags");
         };
         
         this.initTestData = function() {

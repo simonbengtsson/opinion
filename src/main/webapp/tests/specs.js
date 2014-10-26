@@ -4,7 +4,7 @@ describe('ModelService tests', function () {
     var service = null;
 
     beforeEach(function () {
-        var $injector = angular.injector(['ng', 'hage']);
+        var $injector = angular.injector(['ng', 'opinion']);
         service = $injector.get('ModelService');
     });
 
@@ -27,7 +27,7 @@ describe('NetworkService tests', function () {
     var service = null;
 
     beforeEach(function () {
-        var $injector = angular.injector(['ng', 'hage']);
+        var $injector = angular.injector(['ng', 'opinion']);
         service = $injector.get('NetworkService');
     });
 

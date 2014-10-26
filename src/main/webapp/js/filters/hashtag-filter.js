@@ -1,4 +1,4 @@
-var app = angular.module('hage');
+var app = angular.module('opinion');
 
 app.filter('hashTags', function () {
     return function (input) {

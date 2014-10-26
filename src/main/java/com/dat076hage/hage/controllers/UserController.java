@@ -13,13 +13,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import java.net.URI;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.persistence.EntityExistsException;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -60,6 +62,17 @@ public class UserController {
         }
     }
     
+    @GET
+    public Response getFeaturedUsers(@HeaderParam("Authorization") String authorization) {
+        User askingUser = validateApiKey(authorization);
+        List<User> list = userReg.getFeaturedUsers();
+        List<JsonObject> respList = new ArrayList<>();
+        for(User u : list) {
+            respList.add(prepareUser(u, askingUser));
+        }
+        return Response.ok(gson.toJson(respList)).build();
+    }
+    
     @POST
     public Response createUser(String contentBody) {
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
@@ -70,7 +83,7 @@ public class UserController {
         String password = json.get("password").getAsString();
         String passHash = BCrypt.hashpw(password, BCrypt.gensalt());
         
-        User user = new User(username, description, passHash, "", "");
+        User user = new User(username, description, passHash, "", "", "");
         //TODO: Exceptions not caught?
         try{
             userReg.create(user);
@@ -90,15 +103,17 @@ public class UserController {
         User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
-            //return "{\"error\": \"401, Not authorized\"}";
         }
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
         
         String description = json.get("description").getAsString();
+        String name = json.get("name").getAsString();
         askingUser.setDescription(description);
+        askingUser.setName(name);
         userReg.update(askingUser);
         
-        return Response.created(URI.create("/users/" + askingUser.getUsername())).build();
+        String str = gson.toJson(askingUser);
+        return Response.ok(str).build();
     }
     
     @DELETE
@@ -107,7 +122,6 @@ public class UserController {
         User askingUser = validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
-            //return "{\"error\": \"401, Not authorized\"}";
         }
         userReg.delete(askingUser.getUsername());
         return Response.noContent().build();
@@ -121,19 +135,30 @@ public class UserController {
         if(askingUser == null){
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
-        String json = gson.toJson(askingUser);
+        String json = gson.toJson(prepareUser(askingUser, askingUser));
         return Response.ok(json, MediaType.APPLICATION_JSON).build(); 
     }
     
     @GET
     @Path("{username}")
-    public Response findUser(@PathParam("username") String username){
+    public Response findUser(@HeaderParam("Authorization") String authorization, @PathParam("username") String username){
+        User askingUser = validateApiKey(authorization);
         User user = userReg.find(username);
         if(user == null) {
             return Response.status(404).build();
         }
-        String json = gson.toJson(user);
+        String json = gson.toJson(prepareUser(user, askingUser));
         return Response.ok(json, MediaType.APPLICATION_JSON).build();
+    }
+
+    // TODO refactor so that count queries is used
+    private JsonObject prepareUser(User user, User askingUser) {
+        JsonObject obj = gson.toJsonTree(user).getAsJsonObject();
+        obj.addProperty("followersCount", user.getFollowers().size());
+        obj.addProperty("followingCount", user.getFollowing().size());
+        obj.addProperty("isFollowing", user.isFollowedBy(askingUser));
+        obj.addProperty("opinionsCount", user.getPosts().size());
+        return obj;
     }
     
     @POST
@@ -147,15 +172,17 @@ public class UserController {
         if(user == null) {
             return Response.status(404).build();
         }
-        askingUser.follow(user);
-        userReg.update(askingUser);
-        userReg.update(user);
+            askingUser.follow(user);
+            
+            try {
+                userReg.update(askingUser);
+                userReg.update(user);
+            } catch(EJBException e) {
+                // If already following
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
         
-        System.out.println("*** Add new Follower ***");
-        System.out.println("Asking user " + askingUser.getUsername() + " followers: " + askingUser.getUsersWhoArefollowersOfMe()+ " following: " + askingUser.getUsersIAmFollowing());
-        System.out.println("User " + user.getUsername() + " followers: " + user.getUsersWhoArefollowersOfMe() + " following: " + user.getUsersIAmFollowing());
-        
-        return Response.ok(askingUser.getUsername() + " now follows " + user.getUsername()).build();
+        return Response.ok().build();
     }
     
     @GET
@@ -170,7 +197,7 @@ public class UserController {
         if(user == null) {
             return Response.status(404).build();
         }
-        List<User> users = user.getUsersWhoArefollowersOfMe();
+        List<User> users = user.getFollowers();
         for(User listedUser : users){
             listedUser.emptyUsersIAmFollowing(); // To prevent circular arrays in gson. This wont be saved in DB.
             listedUser.emptyUsersWhoArefollowersOfMe();
@@ -178,8 +205,8 @@ public class UserController {
         String json = gson.toJson(users);
         
         System.out.println("*** GET Followers ***");
-        System.out.println("Asking user " + askingUser.getUsername() + " followers: " + askingUser.getUsersWhoArefollowersOfMe()+ " following: " + askingUser.getUsersIAmFollowing());
-        System.out.println("User " + user.getUsername() + " followers: " + user.getUsersWhoArefollowersOfMe() + " following: " + user.getUsersIAmFollowing());
+        System.out.println("Asking user " + askingUser.getUsername() + " followers: " + askingUser.getFollowers()+ " following: " + askingUser.getFollowing());
+        System.out.println("User " + user.getUsername() + " followers: " + user.getFollowers() + " following: " + user.getFollowing());
         
         return Response.ok(json, MediaType.APPLICATION_JSON).build();
     }
@@ -192,13 +219,13 @@ public class UserController {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         User user = userReg.find(username);
-        //System.out.println(user);
         if(user == null) {
             return Response.status(404).build();
         }
         askingUser.unfollow(user);
         userReg.update(askingUser);
-        return Response.ok(askingUser.getUsername() + " have unfollowed " + user.getUsername()).build();
+        userReg.update(user);
+        return Response.ok().build();
     }
     
 }

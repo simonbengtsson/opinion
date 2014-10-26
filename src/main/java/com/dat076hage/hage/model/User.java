@@ -13,8 +13,6 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -30,6 +28,7 @@ public class User implements Serializable {
     @Id
     @Column(nullable = false, updatable = false, length = 50)
     @Expose private String username;
+    @Expose private String name;
     
     @Expose private String description;
     
@@ -41,13 +40,13 @@ public class User implements Serializable {
     }, inverseJoinColumns = {
         @JoinColumn(name = "target", referencedColumnName = "username", nullable = false)})*/
     @ManyToMany
-    @Expose private List<User> usersIAmFollowing;
+    private List<User> following;
     
-    @ManyToMany(mappedBy = "usersIAmFollowing")
-    @Expose private List<User> usersWhoArefollowersOfMe;
+    @ManyToMany(mappedBy = "following")
+    private List<User> followers;
     
     @OneToMany(mappedBy = "user") 
-    @Expose private List<Post> posts;
+    private List<Post> posts;
 
     @Expose private String picture;
 
@@ -57,9 +56,10 @@ public class User implements Serializable {
     public User(){
     }
 
-    public User(String username, String description, String passwordHash, String twitterApiHash, String picture){
+    public User(String username, String description, String passwordHash, String twitterApiHash, String picture, String name){
 
         this.username = username;
+        this.name = name;
         this.description = description;
         this.passwordHash = passwordHash;
         this.twitterApiHash = twitterApiHash;
@@ -67,9 +67,17 @@ public class User implements Serializable {
         
         memberSince = new Date();
         posts = new ArrayList<>();
-        usersIAmFollowing = new ArrayList<>();
-        usersWhoArefollowersOfMe = new ArrayList<>();
+        following = new ArrayList<>();
+        followers = new ArrayList<>();
         
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
     public String getUsername(){
@@ -94,13 +102,15 @@ public class User implements Serializable {
     }
 
 
-    public List<User> getUsersIAmFollowing(){
+    public List<User> getFollowing(){
 
-        return usersIAmFollowing;
+
+        return new ArrayList<>(following);
     }
     
-    public List<User> getUsersWhoArefollowersOfMe(){
-        return usersWhoArefollowersOfMe;
+    public List<User> getFollowers(){
+        return new ArrayList<>(followers);
+
     }
     
     public String getHash(){
@@ -135,44 +145,58 @@ public class User implements Serializable {
         posts.add(post);
         return post;
     }
-
+    
     
     // ACTIONS WITH FOLLOWED USERS
-
+    
     public void follow(User user){
-        user.usersWhoArefollowersOfMe.add(this);
-        usersIAmFollowing.add(user);
+        user.followers.add(this);
+        following.add(user);
     }
     
 
     public void unfollow(User user){
-        
-        for(int i = 0; i < usersIAmFollowing.size(); i++){
-            if(usersIAmFollowing.get(i).getUsername().equals(user.getUsername())){
-                usersIAmFollowing.remove(i);
-                break;
-            }
-        }
-        
-        for(int i = 0; i < user.usersWhoArefollowersOfMe.size(); i++){
-            if(user.usersWhoArefollowersOfMe.get(i).getUsername().equals(user.getUsername())){
-                user.usersWhoArefollowersOfMe.remove(i);
-                break;
-            }
-        }
+        following.remove(user);
+        user.followers.remove(this);
+    }
+    
+    public boolean isFollowedBy(User user) {
+        return followers.contains(user);
     }
     
     public void emptyUsersIAmFollowing(){
-        usersIAmFollowing.clear();
+        following.clear();
     }
     
     public void emptyUsersWhoArefollowersOfMe(){
-        usersWhoArefollowersOfMe.clear();
+        followers.clear();
     }
-    
+
     @Override
-    public String toString(){
-        return String.format("username: %s | description: %s", username, description);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return username.equals(user.username);
     }
-    
+
+    @Override
+    public int hashCode() {
+        return username != null ? username.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", description='" + description + '\'' +
+                ", memberSince=" + memberSince +
+                ", following=" + following +
+                ", followers=" + followers +
+                ", posts=" + posts +
+                ", picture='" + picture + '\'' +
+                ", twitterApiHash='" + twitterApiHash + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                '}';
+    }
 }

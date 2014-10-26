@@ -1,22 +1,22 @@
-var app = angular.module('hage');
+var app = angular.module('opinion');
 
 app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http', '$modal', '$location',
     function ($scope, model, network, $http, $modal, $location) {
 
         $scope.model = model;
-        
+
         network.initTestData().then(function(res) {
             console.log('Seeded!');
         });
 
-        network.getLoggedInUser().then(function (data) {
-            data = data.data;
-            if(!data.picture) {
-                data.picture = "assets/no-picture.png";
-            }
-            model.user = data;
+        network.getLoggedInUser().then(function (res) {
+            model.user = res.data;
         });
-
+        
+        $scope.isLoggedIn = function() {
+            return !!model.user;
+        };
+        
         $scope.openCreateModal = function () {
             var mi = $modal.open({
                 templateUrl: 'partials/create-modal.html',
@@ -24,12 +24,10 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
                         
                         $scope.posMessage = '';
                         $scope.post = {};
-                        var coords = null;
-                        
+
                         $scope.onFileSelect = function(file) {
                             $scope.upload = $upload.upload({
                                 url: '/uploads',
-                                //headers: {'Authenication': 'header-value'},
                                 file: file
                             }).success(function (data, status, headers, config) {
                                 $scope.post.picture = '/uploads/' + data.filename;
@@ -43,11 +41,15 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
                         
                         $scope.$watch('localPost', function (newVal) {
                             $scope.posMessage = '';
+                            delete $scope.post.lat;
+                            delete $scope.post.lon;
+
                             if (newVal) {
                                 $scope.posMessage = 'Loading...';
                                 navigator.geolocation.getCurrentPosition(function (res) {
                                     $timeout(function() {
-                                        coords = res.coords;
+                                        $scope.post.lat = res.coords.latitude;
+                                        $scope.post.lon = res.coords.longitude;
                                         $scope.posMessage = 'Position attached';
                                     });
                                 }, function () {
@@ -60,15 +62,16 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
                         });
 
                         $scope.create = function () {
-                            network.createPost($scope.post).then(function (post) {
-                                $scope.$close(post);
+                            network.createPost($scope.post).then(function (res) {
+                                $scope.$close(res.data);
                             });
                         };
                     }]
             });
 
-            mi.result.then(function (res) {
-                model.posts.unshift(res);
+            mi.result.then(function (post) {
+                model.posts.unshift(post);
+                model.user.posts.unshift(post);
             });
         };
 
