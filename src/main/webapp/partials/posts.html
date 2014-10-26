@@ -5,17 +5,17 @@
         <h6>Trending</h6>
 
         <div class="trending-box">
-            <a ng-repeat="hashtag in model.trendingHashtags track by $index" href="#/hashtags/{{hashtag}}"> #{{
-                hashtag}} </a>
+            <a ng-repeat="hashtag in model.trendingHashtags track by $index" href="#/hashtags/{{hashtag}}"> 
+                #{{ hashtag }} </a>
         </div>
     </div>
     <div class="col-sm-8" infinite-scroll="loadMorePosts()">
         <div ng-hide="searchTerm" class="area-selector">
-            <a class="area" ng-class="postType === 'world' ? 'active' : ''" ng-click="changePostType('world')">
+            <a class="area" ng-class="postType === 'global' ? 'active' : ''" ng-click="changePostType('global')">
                 <span class="glyphicon glyphicon-globe"></span>
                 Global
             </a>
-            <a class="area" ng-class="postType === 'city' ? 'active' : ''" ng-click="changePostType('city')">
+            <a class="area" ng-class="postType === 'local' ? 'active' : ''" ng-click="changePostType('local')">
                 <span class="glyphicon glyphicon-home"></span>
                 Local
             </a>

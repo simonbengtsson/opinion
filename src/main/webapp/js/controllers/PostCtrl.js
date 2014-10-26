@@ -4,7 +4,7 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
     function ($scope, network, model, $location, $timeout, $routeParams) {
 
         $scope.loadingPosts = false;
-        $scope.postType = 'world';
+        $scope.postType = 'global';
         $scope.searchTerm = '';
         model.posts = [];
 
