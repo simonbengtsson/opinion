@@ -50,7 +50,12 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
 
             if ($scope.postType === 'city') {
                 navigator.geolocation.getCurrentPosition(function (geo) {
-                    network.getPosts(page, $scope.postType, geo.coords).then(function (res) {
+                    var params = {
+                        type: 'local',
+                        lat: geo.latitude,
+                        lon: geo.longitude
+                    };
+                    network.getPosts(params).then(function (res) {
                         $timeout(function () {
                             model.posts = model.posts.concat(res.data);
                             page++;
@@ -64,7 +69,10 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
                     });
                 });
             } else {
-                network.getPosts(page, $scope.postType).then(function (res) {
+                var params = {
+                    type: $scope.postType
+                };
+                network.getPosts().then(function (res) {
                     model.posts = model.posts.concat(res.data);
                     page++;
                     $scope.loadingPosts = false;
