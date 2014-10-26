@@ -1,15 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.dat076hage.hage.controllers;
-
 
 import com.dat076hage.hage.ApiKeyRegistry;
 import com.dat076hage.hage.PostRegistry;
-import com.dat076hage.hage.Tools;
 import com.dat076hage.hage.UserRegistry;
 import com.dat076hage.hage.auth.ApiKey;
 import com.dat076hage.hage.model.GPS;
@@ -23,18 +15,18 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-
-/**
- *
- * @author stek
- */
 @Path("posts")
 @Consumes(value = MediaType.APPLICATION_JSON)
 @Produces(value = MediaType.APPLICATION_JSON)
 public class PostController {
+
+    @EJB
+    HttpServletRequest request;
+    
     @EJB
     PostRegistry postReg;
     
@@ -133,7 +125,7 @@ public class PostController {
 
         Response.ResponseBuilder res = Response.status(Response.Status.CREATED);
         res.entity(gson.toJson(newPost));
-        res.contentLocation(URI.create(Tools.URL_FOLDER + "/api/posts/" + newPost.getId()));
+        res.contentLocation(URI.create(request.getServletContext() + "/api/posts/" + newPost.getId()));
 
         return res.build();
     }

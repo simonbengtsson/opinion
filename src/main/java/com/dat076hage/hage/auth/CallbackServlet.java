@@ -1,7 +1,6 @@
 package com.dat076hage.hage.auth;
 
 import com.dat076hage.hage.ApiKeyRegistry;
-import com.dat076hage.hage.Tools;
 import com.dat076hage.hage.UserRegistry;
 import com.dat076hage.hage.model.User;
 
@@ -68,7 +67,7 @@ public class CallbackServlet extends HttpServlet {
         ApiKey apiKey = new ApiKey(user);
         apiKeyReg.create(apiKey);
 
-        response.getWriter().write(getResponseScript(apiKey.getKey()));
+        response.getWriter().write(getResponseScript(apiKey.getKey(), request.getContextPath()));
 
         request.getSession().invalidate();
     }
@@ -89,8 +88,8 @@ public class CallbackServlet extends HttpServlet {
         return user;
     }
 
-    private String getResponseScript(String apiKey) {
+    private String getResponseScript(String apiKey, String url) {
         return "<script>localStorage.setItem('authKey', '"
-                + apiKey + "'); location.href = '" + Tools.URL_FOLDER + "'; </script>";
+                + apiKey + "'); location.href = '" + url + "'; </script>";
     }
 }
