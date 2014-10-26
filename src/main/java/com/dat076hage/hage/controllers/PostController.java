@@ -1,16 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.dat076hage.hage.controllers;
-
 
 import com.dat076hage.hage.ApiKeyRegistry;
 import com.dat076hage.hage.CommentRegistry;
 import com.dat076hage.hage.PostRegistry;
-import com.dat076hage.hage.Tools;
 import com.dat076hage.hage.UserRegistry;
 import com.dat076hage.hage.auth.ApiKey;
 import com.dat076hage.hage.model.Comment;
@@ -25,18 +17,22 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+
+import javax.ejb.EJBException;
+
+import javax.servlet.http.HttpServletRequest;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-
-/**
- *
- * @author stek
- */
 @Path("posts")
 @Consumes(value = MediaType.APPLICATION_JSON)
 @Produces(value = MediaType.APPLICATION_JSON)
 public class PostController {
+
+    /*@EJB
+    HttpServletRequest request;*/
+    
     @EJB
     PostRegistry postReg;
     
@@ -53,7 +49,7 @@ public class PostController {
     
     public User validateApiKey(String key){
         if (key==null)
-            key="ddsfs";
+            return null;
         ApiKey apiKey = apiKeyReg.find(key);
         if(apiKey != null){
             return apiKey.getUser();
@@ -69,40 +65,107 @@ public class PostController {
             @QueryParam("from") int fromIndex, @QueryParam("to") int toIndex) {
         
 
-        List<Post> postList = new ArrayList<>();
-        User askingUser = userReg.find("simonp");
-        /**
+
+        //User askingUser = userReg.find("simonopinion");
+
         User askingUser = validateApiKey(authorization);
         if(askingUser == null){
-            askingUser = userReg.find("simonh");
-            
-            //return Response.status(401).build();
-            return "{\"error\": \"401, Not authorized\"}";
+            //return "unauthorized";
         }
+        User user = userReg.find("simonopinion");
+        
+        /*
+        List<String> tags = new ArrayList<>();
+        tags.add("awesome");
+        tags.add("hashtags");
+        
+        Post kimPost1 = new Post(kim, "This is my first, simple Post!");
+        Post kimPost2 = new Post(kim, "This is my second post, with link and position!", "", "http://feber.se", new ArrayList(), new GPS(57.689470, 11.973038));
+        Post kimPost3 = new Post(kim, "This is my third, #awesome post with #hashtags!", "", "", tags, null);
+        Post simonBPost1 = new Post(simonB, "This is my first, simple Post!");
+        Post simonBPost2 = new Post(simonB, "This is my second post, with link and position!", "", "http://feber.se", new ArrayList(), new GPS(57.689470, 11.973038));
+        Post simonBPost3 = new Post(simonB, "This is my third, #awesome post with #hashtags!", "", "", tags, null);
+        Post simonPPost1 = new Post(simonP, "This is my first, simple Post!");
+        Post simonPPost2 = new Post(simonP, "This is my second post, with link and position!", "", "http://feber.se", new ArrayList(), new GPS(57.689470, 11.973038));
+        Post simonPPost3 = new Post(simonP, "This is my third, #awesome post with #hashtags!", "", "", tags, null);
+        Post carolinePost1 = new Post(caroline, "This is my first, simple Post!");
+        Post carolinePost2 = new Post(caroline, "This is my second post, with link and position!", "", "http://feber.se", new ArrayList(), new GPS(57.689470, 11.973038));
+        Post carolinePost3 = new Post(caroline, "This is my third, #awesome post with #hashtags!", "", "", tags, null);
+        postReg.create(kimPost1);
+        postReg.create(kimPost2);
+        postReg.create(kimPost3);
+        postReg.create(simonBPost1);
+        postReg.create(simonBPost2);
+        postReg.create(simonBPost3);
+        postReg.create(simonPPost1);
+        postReg.create(simonPPost2);
+        postReg.create(simonPPost3);
+        postReg.create(carolinePost1);
+        postReg.create(carolinePost2);
+        postReg.create(carolinePost3);
         */
         
+        User kim = userReg.find("kim");
+        User caroline = userReg.find("caroline");
+        User simonB = userReg.find("simonb");
+        User simonP = userReg.find("simonp");
+        user.follow(kim);
+        user.follow(caroline);
+        user.follow(simonB);
+        user.follow(simonP);
+        try {
+                userReg.update(kim);
+                userReg.update(caroline);
+                userReg.update(simonB);
+                userReg.update(simonP);
+                userReg.update(user);
+            } catch(EJBException e) {
+                // If already following
+                return "aboo";
+            }
+        
+        /*
         if ((lat != 1000L) && (lon != 1000L)) {
             // search with coordinates lat+- 0.5, lon 1
         }
+        */
+        
+        /*
+        Först loggar jag in via twitter-knappen med mitt vanliga twitterkonto,
+        därefter får jag ändå hårdkoda in vilken användare jag är, eller vem det är som frågar kan man säga,
+        på rad 74 i samma fil. Debuggar man rad 133 och framåt under körning ser man att man får in listan med
+        users jag följer och de ska ha posts enligt databasen, men när jag försöker få ut postsen blir listan ändå tom.
+        
+        */
+        List<Post> postList = new ArrayList<>();
         
         if (postType.equals("following")) {
-            List<User> userList = askingUser.getFollowing();
-            for(User u : userList) {
-                postList.addAll(u.getPosts());
+
+            List<User> followList = user.getFollowers();
+            for(User u : followList) {
+                for(Post p: u.getPosts())
+                    System.out.println(p.toString());
+                postList.addAll(userReg.find(u.getUsername()).getPosts());
+
             }
-            return gson.toJson(postList.subList(fromIndex, toIndex));
+            
+            for(User u : followList) {
+                u.emptyUsersIAmFollowing(); // prevent circular arrays in gson
+                u.emptyUsersWhoArefollowersOfMe();
+            }  
+            
+            
         }
-        
+        /*
         if (postType.equals("global")) {
             ArrayList<Post> globalList = new ArrayList<>();   
         }
-       
+       */
         
-        
+        return gson.toJson(postList);
         
         // Get the most recent 10  posts from the followed users...
         
-        return gson.toJson(postList.subList(fromIndex, toIndex));
     }
     
     @POST
@@ -138,7 +201,7 @@ public class PostController {
 
         Response.ResponseBuilder res = Response.status(Response.Status.CREATED);
         res.entity(gson.toJson(newPost));
-        res.contentLocation(URI.create(Tools.URL_FOLDER + "/api/posts/" + newPost.getId()));
+        res.contentLocation(URI.create(/*request.getServletContext() +*/ "/api/posts/" + newPost.getId()));
 
         return res.build();
     }
@@ -206,8 +269,9 @@ public class PostController {
         String newContent = json.get("content").getAsString();
         Comment comment = new Comment(askingUser, post, newContent);
         commentReg.create(comment);
+        postReg.update(post);
         
-        return Response.created(URI.create(Tools.URL_FOLDER + "/api/posts/" + post.getId() + "/comments")).build();
+        return Response.created(URI.create("/api/posts/" + post.getId() + "/comments")).build();
     }
     
     @GET
@@ -219,6 +283,7 @@ public class PostController {
             //return "{\"error\": \"401, Not authorized\"}";
         }
         Post post = postReg.find(postId);
+        System.out.println("Comments: " + post.getComments().size());
         List<Comment> comments = post.getComments();
         for(Comment comment : comments){
             comment.getUser().emptyRelations();

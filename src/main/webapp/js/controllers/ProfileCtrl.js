@@ -13,6 +13,18 @@ app.controller('ProfileCtrl', ['$scope', '$routeParams', '$modal', 'ModelService
         $scope.viewingSelf = function () {
             return $scope.user && model.user && model.user.username === $scope.user.username;
         };
+        
+        $scope.follow = function() {
+            if($scope.user.isFollowing) {
+                network.unfollowUser($scope.user.username).then(function (res) {
+                    $scope.user.isFollowing = false;
+                });
+            } else {
+                network.followUser($scope.user.username).then(function (res) {
+                    $scope.user.isFollowing = true;
+                });
+            }
+        };
 
         $scope.openEditModal = function () {
             var mi = $modal.open({

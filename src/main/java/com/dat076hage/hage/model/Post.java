@@ -40,13 +40,13 @@ public class Post implements Serializable {
     @Expose private List<String> hageTagList;
     
     @OneToMany(mappedBy = "post")
-    @Expose private List<Comment> comments = new ArrayList<>();
+    @Expose private List<Comment> comments;
     
     @ManyToMany
-    @Expose private List<User> agreeingUsers = new ArrayList<>();
+    @Expose private List<User> agreeingUsers;
     
     @ManyToMany
-    @Expose private List<User> disagreeingUsers = new ArrayList<>();
+    @Expose private List<User> disagreeingUsers;
 
     @Embedded
     @Expose private GPS position;
@@ -59,9 +59,15 @@ public class Post implements Serializable {
     
     public Post (User user, String text) {
         this.user = user;
+
         this.text = text;
         this.postDate = new Date();
+        
+        comments = new ArrayList<>();
+        agreeingUsers = new ArrayList<>();
+        disagreeingUsers = new ArrayList<>();
     }
+
     
     public Post(User user, String text, String picturePath, String link, List<String> hageTags, GPS pos){
         this.user = user;

@@ -54,10 +54,10 @@ public class SeedServlet extends HttpServlet {
 
         if(userReg.find("kim") == null){
           
-            User kim = new User("kim", "My name is Kim Kling", "", "", "", "");
-            User simonB = new User("simonb", "My name is Simon Bengtsson", "", "", "", "");
-            User simonP = new User("simonp", "My name is Simon Planhage", "", "", "", "");
-            User caroline = new User("caroline", "My name is Caroline Kabat", "", "", "", "");
+            User kim = new User("kim", "My name is Kim Kling", "", "", "", "Kim Kling");
+            User simonB = new User("simonb", "My name is Simon Bengtsson", "", "", "", "Simon Bengtsson");
+            User simonP = new User("simonp", "My name is Simon Planhage", "", "", "", "Simon Planhage");
+            User caroline = new User("caroline", "My name is Caroline Kabat", "", "", "", "Caroline Kabat");
 
             simonP.follow(kim);
             simonP.follow(caroline);
@@ -87,8 +87,8 @@ public class SeedServlet extends HttpServlet {
             
             userReg.create(kim);
             userReg.create(simonB);
-            userReg.create(simonP);
             userReg.create(caroline);
+            userReg.create(simonP);
             
             postReg.create(kimPost1);
             postReg.create(kimPost2);

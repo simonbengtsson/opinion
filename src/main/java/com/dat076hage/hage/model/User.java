@@ -36,10 +36,10 @@ public class User implements Serializable {
     @Expose private Date memberSince;
     
     @ManyToMany
-    @Expose private List<User> following;
+    private List<User> following;
     
     @ManyToMany(mappedBy = "following")
-    @Expose private List<User> followers;
+    private List<User> followers;
     
     @OneToMany(mappedBy = "user") 
     @Expose private List<Post> posts;
@@ -99,7 +99,7 @@ public class User implements Serializable {
     }
     
     public List<Post> getPosts(){
-        return new ArrayList<>(posts);
+        return posts;
     }
     
     public List<Post> getPostsRange(int fromIndex, int toIndex) {
@@ -109,11 +109,13 @@ public class User implements Serializable {
 
     public List<User> getFollowing(){
 
+
         return new ArrayList<>(following);
     }
     
     public List<User> getFollowers(){
         return new ArrayList<>(followers);
+
     }
     
     public String getHash(){
@@ -145,37 +147,24 @@ public class User implements Serializable {
     
     public Post createNewPost(String content){
         Post post = new Post(this, content);
-        if(posts == null) {
-            posts = new ArrayList<Post>();
-        }
         posts.add(post);
         return post;
     }
-
+    
     
     // ACTIONS WITH FOLLOWED USERS
-
+    
     public void follow(User user){
-        user.followers.add(this);
         following.add(user);
     }
     
 
     public void unfollow(User user){
-        
-        for(int i = 0; i < following.size(); i++){
-            if(following.get(i).getUsername().equals(user.getUsername())){
-                following.remove(i);
-                break;
-            }
-        }
-        
-        for(int i = 0; i < user.followers.size(); i++){
-            if(user.followers.get(i).getUsername().equals(user.getUsername())){
-                user.followers.remove(i);
-                break;
-            }
-        }
+        following.remove(user);
+    }
+    
+    public boolean isFollowedBy(User user) {
+        return followers.contains(user);
     }
     
     public void emptyUsersIAmFollowing(){
@@ -192,6 +181,19 @@ public class User implements Serializable {
         comments.clear();
         followers.clear();
         following.clear();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return username.equals(user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return username != null ? username.hashCode() : 0;
     }
 
     @Override

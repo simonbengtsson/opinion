@@ -10,13 +10,13 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
         });
 
         network.getLoggedInUser().then(function (res) {
-            var data = res.data;
-            if(!data.picture) {
-                data.picture = "assets/no-picture.png";
-            }
-            model.user = data;
+            model.user = res.data;
         });
-
+        
+        $scope.isLoggedIn = function() {
+            return !!model.user;
+        };
+        
         $scope.openCreateModal = function () {
             var mi = $modal.open({
                 templateUrl: 'partials/create-modal.html',

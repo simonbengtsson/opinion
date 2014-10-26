@@ -83,4 +83,9 @@ public class Comment implements Serializable {
         return new ArrayList<>(tagList);
     }
     
+    public String toString(){
+        return "id: " + commentId +
+                "text: " + text;
+    }
+    
 }

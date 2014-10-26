@@ -125,9 +125,8 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
             return $http.get(API_URL + '/users/me');
         };
         
-        this.getFeaturedUsers = function (username) {
-            return dummyPromise([dummyUser, dummyUser2]);
-            //return $http.get(API_URL + '/users/' + user.id);
+        this.getFeaturedUsers = function () {
+            return $http.get(API_URL + '/users');
         };
 
         this.getUser = function (username) {
@@ -156,15 +155,18 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
             return dummyPromise(c);
         };
         
-        this.followUser = function (user){
-            return dummyPromise("Success!");
-            // put user to users following list
+        this.followUser = function (username){
+            return $http.post(API_URL + '/users/' + username + '/followers');
+        };
+
+        this.unfollowUser = function (username){
+            return $http.delete(API_URL + '/users/' + username + '/followers/me');
         };
         
         // Meta
         
         this.getTrendingHashtags = function() {
-            return dummyPromise(['awesome', 'bp15', 'Lamela', 'Gothenburg', 'Ullevi', 'awesome', 'bp15', 'Lamela', 'Gothenburg', 'Ullevi']);
+            return $http.get(API_URL + "/hashtags");
         };
         
         this.initTestData = function() {

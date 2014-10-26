@@ -26,37 +26,18 @@ app.config(['$routeProvider', '$locationProvider',
                             var deferred = $q.defer();
 
                             var username = $route.current.params.username;
-
-                            var post = {
-                                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. #awesome #test',
-                                disagreeingUsers: [], time: new Date(2013, 2, 1, 1, 10), comments: []
-                            };
-
-                            var user = {
-                                username: username, followers: [], posts: [], following: [], name: 'First Lastname',
-                                description: 'This is a personal test description that is way to short for showing any information what so ever that is relevant.',
-                                picture: 'http://www.horizon-properties.com/assets/test-user-7bc7f39edf559e62535e37437b232f46.png'
-                            };
-
-                            post.author = angular.copy(user);
-                            user.posts.push(post);
-
-
-                            if (model.user && username === model.user.username) {
-                                deferred.resolve(model.user);
-                            } else {
-                                network.getUser(username).then(function (res) {
-                                    deferred.resolve(res.data);
-                                }, function (res) {
-                                    if (username === 'adalove') {
-                                        deferred.resolve(user);
-                                    } else {
-                                        $location.path('/404');
-                                        $location.replace();
-                                        deferred.reject(res);
-                                    }
-                                });
-                            }
+                            
+                            network.getUser(username).then(function (res) {
+                                deferred.resolve(res.data);
+                            }, function (res) {
+                                if (username === 'adalove') {
+                                    deferred.resolve(user);
+                                } else {
+                                    $location.path('/404');
+                                    $location.replace();
+                                    deferred.reject(res);
+                                }
+                            });
 
                             return deferred.promise;
                         }
