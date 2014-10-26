@@ -23,6 +23,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
@@ -112,6 +113,16 @@ public class PostController {
         user.follow(caroline);
         user.follow(simonB);
         user.follow(simonP);
+        try {
+                userReg.update(kim);
+                userReg.update(caroline);
+                userReg.update(simonB);
+                userReg.update(simonP);
+                userReg.update(user);
+            } catch(EJBException e) {
+                // If already following
+                return "aboo";
+            }
         
         /*
         if ((lat != 1000L) && (lon != 1000L)) {
@@ -132,9 +143,12 @@ public class PostController {
 
             List<User> followList = user.getFollowers();
             for(User u : followList) {
+                for(Post p: u.getPosts())
+                    System.out.println(p.toString());
                 postList.addAll(userReg.find(u.getUsername()).getPosts());
 
             }
+            
             for(User u : followList) {
                 u.emptyUsersIAmFollowing(); // prevent circular arrays in gson
                 u.emptyUsersWhoArefollowersOfMe();
@@ -147,8 +161,8 @@ public class PostController {
             ArrayList<Post> globalList = new ArrayList<>();   
         }
        */
-        return gson.toJson(postList);
         
+        return gson.toJson(postList);
         
         // Get the most recent 10  posts from the followed users...
         
