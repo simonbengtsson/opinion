@@ -4,6 +4,11 @@ app.controller('ProfileCtrl', ['$scope', '$routeParams', '$modal', 'ModelService
     function ($scope, $routeParams, $modal, model, network, $route, user) {
         
         $scope.user = user;
+        
+        network.getUserPosts(user.username).then(function(res) {
+            console.log(res.data);
+            user.posts = res.data;
+        });
 
         $scope.logout = function () {
             model.user = null;

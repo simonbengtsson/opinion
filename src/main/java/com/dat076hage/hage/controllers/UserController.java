@@ -6,6 +6,7 @@
 package com.dat076hage.hage.controllers;
 
 import com.dat076hage.hage.ApiKeyRegistry;
+import com.dat076hage.hage.model.Post;
 import com.dat076hage.hage.model.User;
 import com.dat076hage.hage.UserRegistry;
 import com.dat076hage.hage.auth.ApiKey;
@@ -20,6 +21,7 @@ import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.persistence.EntityExistsException;
 import javax.persistence.PersistenceException;
+import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -42,6 +44,10 @@ import org.mindrot.jbcrypt.BCrypt;
 @Produces(value = {MediaType.APPLICATION_JSON})
 @Consumes(value = {MediaType.APPLICATION_JSON})
 public class UserController {
+
+    @javax.ws.rs.core.Context
+    ServletContext context;
+    
     @EJB
     UserRegistry userReg;
     
@@ -54,6 +60,7 @@ public class UserController {
         if(key == null) {
             return null;
         }
+        System.out.println(apiKeyReg);
         ApiKey apiKey = apiKeyReg.find(key);
         if(apiKey != null){
             return apiKey.getUser();
@@ -226,6 +233,19 @@ public class UserController {
         userReg.update(askingUser);
         userReg.update(user);
         return Response.ok().build();
+    }
+
+    @GET
+    @Path("{username}/posts")
+    public Response removeMeAsFollower(@PathParam("username") String username){
+        User user = userReg.find(username);
+        if(user == null) {
+            return Response.status(404).build();
+        }
+        
+        List<Post> posts = user.getPosts();
+        posts.add(new Post(user, "This is not an opinion"));
+        return Response.ok(gson.toJson(posts)).build();
     }
     
 }

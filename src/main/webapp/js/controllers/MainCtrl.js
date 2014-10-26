@@ -70,7 +70,13 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
             });
 
             mi.result.then(function (post) {
+                if(!model.posts) {
+                    model.posts = [];
+                }
                 model.posts.unshift(post);
+                if(!model.user.posts) {
+                    model.user.posts = [];
+                }
                 model.user.posts.unshift(post);
             });
         };
