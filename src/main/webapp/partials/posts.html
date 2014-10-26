@@ -1,7 +1,7 @@
 <div class="container" style="padding: 0;">
     <div class="col-sm-4">
         <h6>Featured</h6>
-        <hage-user-badge ng-repeat="user in model.featuredUsers" hage-user="user"></hage-user-badge>
+        <opinion-user-badge ng-repeat="user in model.featuredUsers" opinion-user="user"></opinion-user-badge>
         <h6>Trending</h6>
         <div class="trending-box">
             <a ng-repeat="hashtag in model.trendingHashtags track by $index" href="#/hashtags/{{hashtag}}"> #{{ hashtag}} </a> 
@@ -26,7 +26,7 @@
             {{ searchTerm }}
             <a href="#/" class="close close-bright pull-right" ng-click="$dismiss()">&times;</a>
         </h5>
-        <hage-post ng-repeat="post in model.posts| filter: search" hage-post="post"></hage-post>
+        <opinion-post ng-repeat="post in model.posts| filter: search" opinion-post="post"></opinion-post>
         <div class="loader-cont" style="height: 100px;" ng-show="loadingPosts">
             <div ng-cloak class="loading">
                 <div class="dot"></div>

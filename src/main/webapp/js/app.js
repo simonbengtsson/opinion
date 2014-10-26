@@ -1,4 +1,4 @@
-var app = angular.module('hage', ['ui.bootstrap', 'ngRoute', 'ngSanitize', 'monospaced.elastic', 'angularMoment', 'infinite-scroll', 'angularFileUpload']);
+var app = angular.module('opinion', ['ui.bootstrap', 'ngRoute', 'ngSanitize', 'monospaced.elastic', 'angularMoment', 'infinite-scroll', 'angularFileUpload']);
 
 app.constant('BASE_URL', '/');
 app.constant('API_URL', '' + '/api');
@@ -29,11 +29,11 @@ app.config(['$routeProvider', '$locationProvider',
 
                             var post = {
                                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. #awesome #test',
-                                hatingUsers: [], time: new Date(2013, 2, 1, 1, 10), comments: []
+                                disagreeingUsers: [], time: new Date(2013, 2, 1, 1, 10), comments: []
                             };
 
                             var user = {
-                                username: username, followers: [], posts: [], following: [], firstName: 'First', lastName: 'Lastname',
+                                username: username, followers: [], posts: [], following: [], name: 'First Lastname',
                                 description: 'This is a personal test description that is way to short for showing any information what so ever that is relevant.',
                                 picture: 'http://www.horizon-properties.com/assets/test-user-7bc7f39edf559e62535e37437b232f46.png'
                             };

@@ -1,4 +1,4 @@
-var app = angular.module('hage');
+var app = angular.module('opinion');
 
 app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$location', '$timeout', '$routeParams',
     function ($scope, network, model, $location, $timeout, $routeParams) {

@@ -9,15 +9,22 @@
                 <div class="username">{{ post.author.username}}</div>
                 <div class="time-ago" am-time-ago="post.time"></div>
             </div>
-            <div class="pull-right">
-                <div ng-show="model.user" class="hate-btn" ng-click="hate(post)" ng-class="model.isHated(post) ? 'hated' : ''">
-                    <span class="hate-smiley"></span>
-                    {{ post.hatingUsers.length}}
+            <div class="pull-right" ng-if="model.user && model.user.username !== post.author.username">
+                <div class="btn btn-inverse btn-sm">
+                    <span style="color: #1ABC9C;" class="glyphicon glyphicon-ok"></span>
+                    Agree
+                </div>
+                <div class="btn btn-inverse btn-sm">
+                    <span style="color: #E74C3C;" class="glyphicon glyphicon-remove"></span>
+                    Disagree
+                </div>
+                <div ng-if="false" ng-show="model.user" ng-click="opine(post)">
+                    {{ post.disagreeingUsers.length}}
                 </div>
             </div>
         </section>
 
-        <p class="hage-content" ng-class="isPostLong(post) ? 'long' : ''" ng-bind-html="post.text | linky | hashTags"></p>
+        <p class="opinion-content" ng-class="isPostLong(post) ? 'long' : ''" ng-bind-html="post.text | linky | hashTags"></p>
 
     </div>
 

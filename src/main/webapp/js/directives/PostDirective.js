@@ -1,11 +1,11 @@
-var app = angular.module('hage');
+var app = angular.module('opinion');
 
-app.directive('hagePost', ['ModelService', 'NetworkService', function (model, network) {
+app.directive('opinionPost', ['ModelService', 'NetworkService', function (model, network) {
 
         return {
             restrict: 'E',
             scope: {
-                post: '=hagePost'
+                post: '=opinionPost'
             },
             templateUrl: 'partials/post-directive.html',
             link: function (scope) {
@@ -13,31 +13,18 @@ app.directive('hagePost', ['ModelService', 'NetworkService', function (model, ne
                 
                 var busy = false;
 
-                scope.hate = function (post) {
+                scope.opine = function (post) {
                     if(busy) return;
                     busy = true;
-                    
-                    if (model.isHated(post)) {
-                        network.deleteHate().then(function () {
-                            var index = model.indexOfUser(post.hatingUsers, model.user);
-                            post.hatingUsers.splice(index, 1);
-                            busy = false;
-                        });
-                    } else {
-                        network.createHate().then(function () {
-                            post.hatingUsers.push(model.user);
-                            busy = false;
-                        });
-                    }
                 };
-
+ 
                 scope.isPostLong = function (post) {
                     return post.text.length > 180;
                 };
 
                 scope.comment = function () {
                     network.createComment(scope.post, scope.newComment).then(function (res) {
-                        scope.post.comments.push(res);
+                        scope.post.comments.push(res.data);
                         scope.newComment = '';
                     });
                 };

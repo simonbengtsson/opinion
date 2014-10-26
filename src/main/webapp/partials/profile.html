@@ -5,11 +5,11 @@
             <img class="img-circle" ng-src="{{ user.picture}}" style="width:100px">
 
             <h4 class="name">
-                {{ user.firstName}} {{ user.lastName}}
+                {{ user.name }}
                 <span style="color: #999;">@{{ user.username}}</span>
             </h4>
             <div class="follow-row">
-                Opinions: {{user.posts.length}} | 
+                Opinions: {{ user.posts.length }} | 
                 Followers: {{ user.followers.length }} |  
                 Following: {{ user.following.length }} 
             </div>
@@ -28,7 +28,7 @@
     </div>
 
     <div class="col-md-8">
-        <hage-post ng-repeat="post in user.posts| filter: search" hage-post="post"></hage-post>
+        <opinion-post ng-repeat="post in user.posts| filter: search" opinion-post="post"></opinion-post>
     </div>
 
 </div>

@@ -4,10 +4,10 @@
             <img ng-src="{{ user.picture}}" class="profile-pic">
         </a>
         <div class="item pull-left" style="line-height: 20px; font-size: 16px;">
-            {{ user.username}} <br> {{ user.firstName}} {{ user.lastName}}
+            {{ user.username}} <br> {{ user.name}}
         </div>
-        <div class="item pull-right">
-            <div class="btn btn-primary">Follow</div>
+        <div class="item pull-right" ng-if="model.user">
+            <div class="btn" ng-class="following ? 'btn-default' : 'btn-primary'" ng-click="follow();following = !following">Follow{{ following ? 'ing' : ''}}</div>
         </div>
     </div>
     <div class="desc">

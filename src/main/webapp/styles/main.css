@@ -129,39 +129,14 @@
     margin-right: 5px;
 }
 
-.hage-content {
+.opinion-content {
     color: #555;
     white-space: pre-wrap;
     margin: 0;
 }
 
-.hage-content.long {
+.opinion-content.long {
     font-size: 15px;
-}
-
-.hate-btn {
-    cursor: pointer;
-    -webkit-user-select: none;
-    line-height: 35px;
-    vertical-align: top;
-    font-size: 20px;
-    width: 70px;
-}
-
-.hate-btn .hate-smiley {
-    width: 32px;
-    height: 32px;
-    display: inline-block;
-    background-size: 10px 10px;
-    background: url(../assets/angry.png);
-}
-
-.hate-btn.hated .hate-smiley {
-    background: url(../assets/angry_black.png);
-}
-
-.hate-btn:hover .hate-smiley {
-    opacity: 0.6;
 }
 
 .time-ago {
@@ -267,7 +242,7 @@ hr {
 .user-badge .desc {
     font-size: 14px;
     line-height: 18px;
-    margin-top: 5px;
+    margin-top: 7px;
 }
 
 .user-badge:hover {

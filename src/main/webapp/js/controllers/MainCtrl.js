@@ -1,4 +1,4 @@
-var app = angular.module('hage');
+var app = angular.module('opinion');
 
 app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http', '$modal', '$location',
     function ($scope, model, network, $http, $modal, $location) {
@@ -24,12 +24,10 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
                         
                         $scope.posMessage = '';
                         $scope.post = {};
-                        var coords = null;
-                        
+
                         $scope.onFileSelect = function(file) {
                             $scope.upload = $upload.upload({
                                 url: '/uploads',
-                                //headers: {'Authenication': 'header-value'},
                                 file: file
                             }).success(function (data, status, headers, config) {
                                 $scope.post.picture = '/uploads/' + data.filename;
@@ -43,11 +41,15 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
                         
                         $scope.$watch('localPost', function (newVal) {
                             $scope.posMessage = '';
+                            delete $scope.post.lat;
+                            delete $scope.post.lon;
+
                             if (newVal) {
                                 $scope.posMessage = 'Loading...';
                                 navigator.geolocation.getCurrentPosition(function (res) {
                                     $timeout(function() {
-                                        coords = res.coords;
+                                        $scope.post.lat = res.coords.latitude;
+                                        $scope.post.lon = res.coords.longitude;
                                         $scope.posMessage = 'Position attached';
                                     });
                                 }, function () {

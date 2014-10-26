@@ -1,5 +1,5 @@
-var app = angular.module('hage');
-app.directive('hageSwitch', ['$timeout',
+var app = angular.module('opinion');
+app.directive('opinionSwitch', ['$timeout',
     function ($timeout) {
         return {
             restrict: 'A',
