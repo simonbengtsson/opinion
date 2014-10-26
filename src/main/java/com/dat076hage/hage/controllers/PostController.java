@@ -1,9 +1,11 @@
 package com.dat076hage.hage.controllers;
 
 import com.dat076hage.hage.ApiKeyRegistry;
+import com.dat076hage.hage.CommentRegistry;
 import com.dat076hage.hage.PostRegistry;
 import com.dat076hage.hage.UserRegistry;
 import com.dat076hage.hage.auth.ApiKey;
+import com.dat076hage.hage.model.Comment;
 import com.dat076hage.hage.model.GPS;
 import com.dat076hage.hage.model.Post;
 import com.dat076hage.hage.model.User;
@@ -28,6 +30,7 @@ import javax.ws.rs.core.*;
 @Produces(value = MediaType.APPLICATION_JSON)
 public class PostController {
 
+
     @javax.ws.rs.core.Context
     ServletContext context;
     
@@ -39,6 +42,9 @@ public class PostController {
     
     @EJB
     ApiKeyRegistry apiKeyReg;
+    
+    @EJB
+    CommentRegistry commentReg;
     
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
@@ -180,4 +186,44 @@ public class PostController {
         Post post = postReg.find(postId);
         return gson.toJson(post);
     }
+    
+    // COMMENTS
+    
+    @POST
+    @Path("{id}/comments")
+    public Response createCommentOnPost(@HeaderParam("Authorization") String authorization, @PathParam("id") long postId, String contentBody) {
+        User askingUser = validateApiKey(authorization);
+        if(askingUser == null){
+            return Response.status(401).build();
+            //return "{\"error\": \"401, Not authorized\"}";
+        }
+        Post post = postReg.find(postId);
+        
+        JsonObject json = gson.fromJson(contentBody, JsonObject.class);
+        String newContent = json.get("content").getAsString();
+        Comment comment = new Comment(askingUser, post, newContent);
+        commentReg.create(comment);
+        postReg.update(post);
+        
+        return Response.created(URI.create("/api/posts/" + post.getId() + "/comments")).build();
+    }
+    
+    @GET
+    @Path("{id}/comments")
+    public Response getCommentOnPost(@HeaderParam("Authorization") String authorization, @PathParam("id") long postId) {
+        User askingUser = validateApiKey(authorization);
+        if(askingUser == null){
+            return Response.status(401).build();
+            //return "{\"error\": \"401, Not authorized\"}";
+        }
+        Post post = postReg.find(postId);
+        System.out.println("Comments: " + post.getComments().size());
+        List<Comment> comments = post.getComments();
+        for(Comment comment : comments){
+            comment.getUser().emptyRelations();
+        }
+        
+        return Response.ok(gson.toJson(comments), MediaType.APPLICATION_JSON).build();
+    }
+    
 }

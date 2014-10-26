@@ -35,10 +35,6 @@ public class User implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     @Expose private Date memberSince;
     
-    /*@JoinTable(name = "stalkers", joinColumns = {
-        @JoinColumn(name = "stalker", referencedColumnName = "username", nullable = false)
-    }, inverseJoinColumns = {
-        @JoinColumn(name = "target", referencedColumnName = "username", nullable = false)})*/
     @ManyToMany
     private List<User> following;
     
@@ -46,7 +42,16 @@ public class User implements Serializable {
     private List<User> followers;
     
     @OneToMany(mappedBy = "user") 
-    private List<Post> posts;
+    @Expose private List<Post> posts;
+    
+    @OneToMany(mappedBy = "user") 
+    @Expose private List<Comment> comments;
+    
+    @ManyToMany(mappedBy = "agreeingUsers")
+    @Expose private List<Post> agreements;
+    
+    @ManyToMany(mappedBy = "disagreeingUsers")
+    @Expose private List<Post> disagreements;
 
     @Expose private String picture;
 
@@ -150,14 +155,12 @@ public class User implements Serializable {
     // ACTIONS WITH FOLLOWED USERS
     
     public void follow(User user){
-        user.followers.add(this);
         following.add(user);
     }
     
 
     public void unfollow(User user){
         following.remove(user);
-        user.followers.remove(this);
     }
     
     public boolean isFollowedBy(User user) {
@@ -170,6 +173,14 @@ public class User implements Serializable {
     
     public void emptyUsersWhoArefollowersOfMe(){
         followers.clear();
+    }
+    
+    public void emptyRelations(){
+        agreements.clear();
+        disagreements.clear();
+        comments.clear();
+        followers.clear();
+        following.clear();
     }
 
     @Override
