@@ -1,4 +1,6 @@
-Hage-DAT076
+Opinion
 ===========
 
-Social network for everything you hage.
+Social network for everything you have an opinion about.
+
+See documentation.pdf for more information.
