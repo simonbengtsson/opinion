@@ -57,7 +57,6 @@ public class ApiKeyController {
             return "{'error': 'Password didn't match username'}";
         }
         
-        
     }
     
     @DELETE

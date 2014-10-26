@@ -292,30 +292,6 @@ public class UserTest {
     }
 
     /**
-     * Test of emptyUsersIAmFollowing method, of class User.
-     */
-    @Test
-    public void testEmptyUsersIAmFollowing() {
-        System.out.println("emptyUsersIAmFollowing");
-        User instance = new User();
-        instance.emptyUsersIAmFollowing();
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of emptyUsersWhoArefollowersOfMe method, of class User.
-     */
-    @Test
-    public void testEmptyUsersWhoArefollowersOfMe() {
-        System.out.println("emptyUsersWhoArefollowersOfMe");
-        User instance = new User();
-        instance.emptyUsersWhoArefollowersOfMe();
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of equals method, of class User.
      */
     @Test

@@ -6,6 +6,7 @@
 package com.dat076hage.hage;
 
 import com.dat076hage.hage.auth.ApiKey;
+import com.dat076hage.hage.model.User;
 import com.dat076hage.hage.persistence.AbstractDAO;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -31,4 +32,16 @@ public class ApiKeyRegistry extends AbstractDAO<ApiKey, String>{
     }
     
     // Below is all special methods for Posts, see AbstractDAO for the rest
+    
+    public User validateApiKey(String key) {
+        if(key == null) {
+            return null;
+        }
+        ApiKey apiKey = find(key);
+        if(apiKey != null){
+            return apiKey.getUser();
+        }else{
+            return null;
+        }
+    }
 }

@@ -9,12 +9,10 @@ import com.dat076hage.hage.ApiKeyRegistry;
 import com.dat076hage.hage.model.Post;
 import com.dat076hage.hage.model.User;
 import com.dat076hage.hage.UserRegistry;
-import com.dat076hage.hage.auth.ApiKey;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import java.net.URI;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -56,22 +54,9 @@ public class UserController {
     
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     
-    public User validateApiKey(String key) {
-        if(key == null) {
-            return null;
-        }
-        System.out.println(apiKeyReg);
-        ApiKey apiKey = apiKeyReg.find(key);
-        if(apiKey != null){
-            return apiKey.getUser();
-        }else{
-            return null;
-        }
-    }
-    
     @GET
     public Response getFeaturedUsers(@HeaderParam("Authorization") String authorization) {
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
         List<User> list = userReg.getFeaturedUsers();
         List<JsonObject> respList = new ArrayList<>();
         for(User u : list) {
@@ -80,10 +65,12 @@ public class UserController {
         return Response.ok(gson.toJson(respList)).build();
     }
     
+    /*
+     * Create User via registration form. Not currently used, but might be used in the future.
+     */
     @POST
     public Response createUser(String contentBody) {
         JsonObject json = gson.fromJson(contentBody, JsonObject.class);
-        
         
         String username = json.get("username").getAsString();
         String description = json.get("description").getAsString();
@@ -91,7 +78,6 @@ public class UserController {
         String passHash = BCrypt.hashpw(password, BCrypt.gensalt());
         
         User user = new User(username, description, passHash, "", "", "");
-        //TODO: Exceptions not caught?
         try{
             userReg.create(user);
         }catch(EntityExistsException e){
@@ -103,11 +89,13 @@ public class UserController {
         return Response.created(URI.create("/users/" + username)).build();
     }
     
-    // Working
+    /*
+     * Update the user who sent the request with incoming data.
+     */
     @PUT
     @Path("/me")
     public Response updateUser(@HeaderParam("Authorization") String authorization, String contentBody) {
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
         }
@@ -126,7 +114,7 @@ public class UserController {
     @DELETE
     @Path("/me")
     public Response deleteUser(@HeaderParam("Authorization") String authorization) {
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(401).build();
         }
@@ -134,11 +122,14 @@ public class UserController {
         return Response.noContent().build();
     }
     
-    // Working
+    /**
+     * Retrieve information about the user who made the request.
+     * Useful when newly logged in via Twitter and front-end needs to get username and picture.
+     */
     @GET
     @Path("/me")
     public Response findMe(@HeaderParam("Authorization") String authorization){
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
@@ -149,7 +140,7 @@ public class UserController {
     @GET
     @Path("{username}")
     public Response findUser(@HeaderParam("Authorization") String authorization, @PathParam("username") String username){
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
         User user = userReg.find(username);
         if(user == null) {
             return Response.status(404).build();
@@ -171,7 +162,7 @@ public class UserController {
     @POST
     @Path("{username}/followers")
     public Response addToFollowers(@HeaderParam("Authorization") String authorization, @PathParam("username") String username){
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
@@ -196,7 +187,7 @@ public class UserController {
     @GET
     @Path("{username}/followers")
     public Response getFollowers(@HeaderParam("Authorization") String authorization, @PathParam("username") String username){
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
@@ -221,7 +212,7 @@ public class UserController {
     @DELETE
     @Path("{username}/followers/me")
     public Response removeMeAsFollower(@HeaderParam("Authorization") String authorization, @PathParam("username") String username){
-        User askingUser = validateApiKey(authorization);
+        User askingUser = apiKeyReg.validateApiKey(authorization);
         if(askingUser == null){
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }

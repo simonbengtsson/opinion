@@ -12,9 +12,7 @@ import javax.persistence.*;
 import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  *
@@ -27,15 +25,15 @@ import java.util.Set;
 })
 public class Post implements Serializable {
     
-    @Expose private String text;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Expose private long postId;
     @Expose private String picture;
     
+    @Expose private String text;
+    
     @Temporal(javax.persistence.TemporalType.DATE)
-    @Expose private Date date;
+    @Expose private Date dateCreated;
     @Expose private String link;
     
     @Expose private List<String> hageTagList;
@@ -61,7 +59,7 @@ public class Post implements Serializable {
     public Post (User user, String text) {
         this.user = user;
         this.text = text;
-        this.date = new Date();
+        this.dateCreated = new Date();
         
         comments = new ArrayList<>();
         comments.add(new Comment(user, this, "This is an awful comment"));
@@ -77,7 +75,7 @@ public class Post implements Serializable {
         this.link = link;
         this.hageTagList = new ArrayList<>(hageTags);
         this.position = pos;
-        this.date = new Date();
+        this.dateCreated = new Date();
     }
     
     public String getText(){
@@ -97,7 +95,7 @@ public class Post implements Serializable {
     }
     
     public Date getDate(){
-        return new Date(date.getTime());
+        return new Date(dateCreated.getTime());
     }
     
     public String getLink(){
@@ -137,7 +135,7 @@ public class Post implements Serializable {
     }
     
     public void setDate(Date date){
-        this.date = new Date(date.getTime());
+        this.dateCreated = new Date(date.getTime());
     }
     
     public void setLink(String link){
@@ -150,7 +148,7 @@ public class Post implements Serializable {
                 "text='" + text + '\'' +
                 ", postId=" + postId +
                 ", picturePath='" + picture + '\'' +
-                ", postDate=" + date +
+                ", postDate=" + dateCreated +
                 ", link='" + link + '\'' +
                 ", hageTagList=" + hageTagList +
                 ", position=" + position +

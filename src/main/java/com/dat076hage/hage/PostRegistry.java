@@ -5,7 +5,6 @@
  */
 package com.dat076hage.hage;
 
-import com.dat076hage.hage.model.Comment;
 import com.dat076hage.hage.model.Post;
 import com.dat076hage.hage.model.User;
 import com.dat076hage.hage.persistence.AbstractDAO;
