@@ -33,7 +33,7 @@ public class Post implements Serializable {
     @Expose private String text;
     
     @Temporal(javax.persistence.TemporalType.DATE)
-    @Expose private Date dateCreated;
+    @Expose private Date date;
     @Expose private String link;
     
     @Expose private List<String> hageTagList;
@@ -59,7 +59,7 @@ public class Post implements Serializable {
     public Post (User user, String text) {
         this.user = user;
         this.text = text;
-        this.dateCreated = new Date();
+        this.date = new Date();
         
         comments = new ArrayList<>();
         comments.add(new Comment(user, this, "This is an awful comment"));
@@ -75,7 +75,7 @@ public class Post implements Serializable {
         this.link = link;
         this.hageTagList = new ArrayList<>(hageTags);
         this.position = pos;
-        this.dateCreated = new Date();
+        this.date = new Date();
     }
     
     public String getText(){
@@ -95,7 +95,7 @@ public class Post implements Serializable {
     }
     
     public Date getDate(){
-        return new Date(dateCreated.getTime());
+        return new Date(date.getTime());
     }
     
     public String getLink(){
@@ -135,7 +135,7 @@ public class Post implements Serializable {
     }
     
     public void setDate(Date date){
-        this.dateCreated = new Date(date.getTime());
+        this.date = new Date(date.getTime());
     }
     
     public void setLink(String link){
@@ -148,7 +148,7 @@ public class Post implements Serializable {
                 "text='" + text + '\'' +
                 ", postId=" + postId +
                 ", picturePath='" + picture + '\'' +
-                ", postDate=" + dateCreated +
+                ", postDate=" + date +
                 ", link='" + link + '\'' +
                 ", hageTagList=" + hageTagList +
                 ", position=" + position +
