@@ -1,89 +1,51 @@
 package com.dat076hage.hage.auth;
 
 
-import com.dat076hage.hage.Tools;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.brickred.socialauth.SocialAuthConfig;
 import org.brickred.socialauth.SocialAuthManager;
 
 /**
- * Third party auth servlet
+ * Third party oauth servlet
  */
 @WebServlet(name = "AuthServlet", urlPatterns = {"/auth"})
 public class AuthServlet extends HttpServlet {
 
-    private static final Logger LOG = Logger.getLogger(AuthServlet.class.getSimpleName());
-    protected final String callbackUrl = "http://localhost:8080" + Tools.URL_FOLDER + "/callback";
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        LOG.log(Level.INFO, "*** AuthServlet");
-        SocialAuthConfig config = SocialAuthConfig.getDefault();
-
-        try {
-            // By default conf from oauth_consumer.properties is loaded.
-            config.load();
-            SocialAuthManager manager = new SocialAuthManager();
-            manager.setSocialAuthConfig(config);
-
-            String url = manager.getAuthenticationUrl("twitter", callbackUrl);
-
-            // Store temporarily in session
-            request.getSession().setAttribute("authManager", manager);
-
-            response.sendRedirect(url);
-                      
-        } catch (Exception e) {
-            e.printStackTrace();  // TODO 
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-    }
+        
+        String host = request.getHeader("Host");
+        String server = host == null ? request.getServerName() + ":" + request.getServerPort() : host;
+        String callbackUrl = "http://" + server + "/callback";
+        
+        SocialAuthConfig config = SocialAuthConfig.getDefault();
+        SocialAuthManager manager = new SocialAuthManager();
+        String url;
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+        try {
+            // If an environment.properties exist, use it
+            try {
+                config.load("environment.properties");
+            } catch( FileNotFoundException e) {
+                config.load("default.properties"); 
+            }
+            
+            manager.setSocialAuthConfig(config);
+            url = manager.getAuthenticationUrl("twitter", callbackUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+        // Store temporarily in session
+        request.getSession().setAttribute("authManager", manager);
+        response.sendRedirect(url);
+    }
 }
