@@ -18,10 +18,5 @@ app.service('ModelService', [
             return -1;
         };
 
-        this.follow = function (user) {
-            this.user.following.push(user);
-            user.followers.push(this.user);
-        };
-
     }
 ]);

@@ -3,7 +3,7 @@
 
         <section class="post-info-section">
             <a href="#/{{ post.author.username}}">
-                <img class="profile-pic" ng-src="{{post.author.picture}}" width="40">
+                <img class="profile-pic" ng-src="{{post.author.picture || '/assets/no-picture.png' }}" width="40">
             </a>
             <div class="post-author-desc">
                 <div class="username">{{ post.author.username}}</div>
@@ -35,7 +35,7 @@
     <section class="comments">
         <div class="comment" ng-repeat="comment in post.comments">
             <a href="#/{{comment.author.username}}">
-                <img class="profile-pic" ng-src="{{comment.author.picture}}">
+                <img class="profile-pic" ng-src="{{comment.author.picture || '/assets/no-picture.png' }}">
             </a>
             <div class="comment-info">
                 <span class="comment-author-username">{{ comment.author.username }}</span>

@@ -39,8 +39,8 @@ public class Post implements Serializable {
     
     @Expose private List<String> hageTagList;
     @Expose private List<String> comments = new ArrayList<>();
-    @Expose private List<User> agreeingUsers = new ArrayList<>();
-    @Expose private List<User> disagreeingUsers = new ArrayList<>();
+    private List<User> agreeingUsers = new ArrayList<>();
+    private List<User> disagreeingUsers = new ArrayList<>();
 
     @Embedded
     @Expose private GPS position;

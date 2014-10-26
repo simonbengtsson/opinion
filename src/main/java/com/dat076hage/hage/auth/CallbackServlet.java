@@ -51,8 +51,8 @@ public class CallbackServlet extends HttpServlet {
         SocialAuthManager manager = (SocialAuthManager) request.getSession().getAttribute("authManager");
         Map<String, String> paramsMap = SocialAuthUtil.getRequestParametersMap(request);
 
-        AuthProvider provider = null;
-        Profile profile = null;
+        AuthProvider provider;
+        Profile profile;
 
         try {
             provider = manager.connect(paramsMap);

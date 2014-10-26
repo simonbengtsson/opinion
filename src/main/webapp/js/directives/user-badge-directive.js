@@ -11,10 +11,21 @@ app.directive('opinionUserBadge', ['ModelService', 'NetworkService', function (m
             link: function (scope) {
                 scope.model = model;
                 scope.follow = function() {
-                    model.follow(scope.user);
+                    if(scope.user.isFollowing) {
+                        network.unfollowUser(scope.user.username).then(function (res) {
+                            console.log('unfollowed!');
+                            scope.user.isFollowing = false;
+                        }, function() {
+                            console.log('failed');
+                        });
+                    } else {
+                        network.followUser(scope.user.username).then(function (res) {
+                            scope.user.isFollowing = true;
+                        });
+                    }
                 };
 
-            }
+            }   
         };
 
     }

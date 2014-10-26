@@ -40,13 +40,13 @@ public class User implements Serializable {
     }, inverseJoinColumns = {
         @JoinColumn(name = "target", referencedColumnName = "username", nullable = false)})*/
     @ManyToMany
-    @Expose private List<User> following;
+    private List<User> following;
     
     @ManyToMany(mappedBy = "following")
-    @Expose private List<User> followers;
+    private List<User> followers;
     
     @OneToMany(mappedBy = "user") 
-    @Expose private List<Post> posts;
+    private List<Post> posts;
 
     @Expose private String picture;
 
@@ -146,10 +146,10 @@ public class User implements Serializable {
         posts.add(post);
         return post;
     }
-
+    
     
     // ACTIONS WITH FOLLOWED USERS
-
+    
     public void follow(User user){
         user.followers.add(this);
         following.add(user);
@@ -157,20 +157,12 @@ public class User implements Serializable {
     
 
     public void unfollow(User user){
-        
-        for(int i = 0; i < following.size(); i++){
-            if(following.get(i).getUsername().equals(user.getUsername())){
-                following.remove(i);
-                break;
-            }
-        }
-        
-        for(int i = 0; i < user.followers.size(); i++){
-            if(user.followers.get(i).getUsername().equals(user.getUsername())){
-                user.followers.remove(i);
-                break;
-            }
-        }
+        following.remove(user);
+        user.followers.remove(this);
+    }
+    
+    public boolean isFollowedBy(User user) {
+        return followers.contains(user);
     }
     
     public void emptyUsersIAmFollowing(){
@@ -179,6 +171,19 @@ public class User implements Serializable {
     
     public void emptyUsersWhoArefollowersOfMe(){
         followers.clear();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return username.equals(user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return username != null ? username.hashCode() : 0;
     }
 
     @Override

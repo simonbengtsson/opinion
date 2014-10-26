@@ -181,14 +181,14 @@ textarea {
 }
 
 .search-cont:hover .search, .search-cont .search:focus, .search-cont .search.visible {
-    opacity:1;
+    opacity: 1;
     width: 200px;
 }
 
 .search-cont .search {
-    opacity:0;
+    opacity: 0;
     width: 100px;
-    transition:opacity 0.2s linear;
+    transition: opacity 0.2s linear;
 }
 
 .search {
@@ -226,17 +226,44 @@ hr {
     background: #f5f5f5;
     box-shadow: 0 0 5px #ddd;
     margin-bottom: 20px;
-    padding: 10px;  
+    padding: 10px;
 }
 
 .user-badge {
+    position: relative;
     background: #f5f5f5;
     box-shadow: 0 0 5px #ddd;
     margin-bottom: 20px;
-    max-height: 60px;   
+    max-height: 60px;
     padding: 10px;
     transition: all 0.5s ease;
     overflow: hidden;
+}
+
+.user-badge .btn {
+    position: absolute;
+    right: 10px;
+    width: 93px;
+    top: 10px;
+}
+
+.user-badge .img {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+.user-badge .name {
+    position: absolute;
+    left: 60px;
+    right: 110px;
+    top: 10px;
+    line-height: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    float: left;
 }
 
 .user-badge .desc {
@@ -265,7 +292,7 @@ a {
     cursor: pointer;
 }
 
-.area-selector  {
+.area-selector {
     margin-bottom: 10px;
     margin-top: -10px;
 }
@@ -287,12 +314,13 @@ a {
 }
 
 .loading {
-    position: relative; 
+    position: relative;
     margin: 0 auto;
     margin-top: 50px;
     width: 140px;
     height: 20px;
 }
+
 .loading .dot {
     position: absolute;
     border-radius: 50%;
@@ -301,26 +329,32 @@ a {
     background: #1ABC9C;
     -webkit-animation: spin .5s 0s infinite alternate both;
 }
+
 .loading .dot:nth-child(0) {
     -webkit-animation: spin 0.5s 0ms infinite alternate both;
     left: 0px;
 }
+
 .loading .dot:nth-child(1) {
     -webkit-animation: spin 0.5s 80ms infinite alternate both;
     left: 24px;
 }
+
 .loading .dot:nth-child(2) {
     -webkit-animation: spin 0.5s 160ms infinite alternate both;
     left: 48px;
 }
+
 .loading .dot:nth-child(3) {
     -webkit-animation: spin 0.5s 240ms infinite alternate both;
     left: 72px;
 }
+
 .loading .dot:nth-child(4) {
     -webkit-animation: spin 0.5s 320ms infinite alternate both;
     left: 96px;
 }
+
 .loading .dot:nth-child(5) {
     -webkit-animation: spin 0.5s 400ms infinite alternate both;
     left: 120px;
@@ -373,7 +407,7 @@ a {
 }
 
 .drop-zone em {
-    font-size: 24px; 
+    font-size: 24px;
     margin: 0 10px;
 }
 
@@ -383,7 +417,7 @@ a {
 
 .uploaded-image .info-bar {
     position: absolute;
-    opacity:0;
+    opacity: 0;
     transition: opacity 0.2s linear;
     top: 0;
     right: 0;

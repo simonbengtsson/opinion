@@ -27,7 +27,8 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
         var page = 0;
 
         network.getFeaturedUsers().then(function (res) {
-            model.featuredUsers = res.data;
+            var data = res.data;
+            model.featuredUsers = data;
         });
 
         network.getTrendingHashtags().then(function (res) {
