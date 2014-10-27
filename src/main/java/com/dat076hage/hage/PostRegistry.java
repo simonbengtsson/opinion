@@ -35,6 +35,9 @@ public class PostRegistry extends AbstractDAO<Post, Long>{
     
     // Below is all special methods for Posts, see AbstractDAO for the rest
     
+    public List<Post> getRandomPosts(int count){
+        return em.createQuery("SELECT p FROM Post p", Post.class).setMaxResults(count).getResultList();
+    }
     
     public List<Post> getPostsFromUsersIFollow(User user){
         List<Post> posts = new ArrayList<>();

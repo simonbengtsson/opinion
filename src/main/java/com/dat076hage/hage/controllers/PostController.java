@@ -57,12 +57,7 @@ public class PostController {
 
         switch (postType) {
             case "global":
-                ArrayList<Post> posts = new ArrayList<>();
-                posts.add(new Post(askingUser, "This is a beautiful post"));
-                posts.add(new Post(askingUser, "This is a beautiful post 1"));
-                posts.add(new Post(askingUser, "This is a beautiful post 2"));
-                posts.add(new Post(askingUser, "This is a beautiful post 3"));
-                return Response.ok(gson.toJson(posts)).build();
+                return Response.ok(gson.toJson(postReg.getRandomPosts(10))).build();
             case "local":
                 return Response.ok().build();
             case "following":
