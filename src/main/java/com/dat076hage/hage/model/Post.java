@@ -62,7 +62,7 @@ public class Post implements Serializable {
         this.date = new Date();
         
         comments = new ArrayList<>();
-        comments.add(new Comment(user, this, "This is an awful comment"));
+        //comments.add(new Comment(user, this, "This is an awful comment"));
         agreeingUsers = new ArrayList<>();
         disagreeingUsers = new ArrayList<>();
     }
