@@ -2,14 +2,17 @@ var app = angular.module('opinion');
 
 app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '$q', '$timeout',
     function ($http, API_URL, BASE_URL, model, $q, $timeout) {
+        
+        var POSTS_PER_PAGE = 10;
 
         // Include the api key in every request
         $http.defaults.headers.common.Authorization = localStorage.getItem('authKey');
 
         this.getPosts = function (params) {
             var def = $q.defer();
+            angular.extend(params || {}, {from: model.posts.length, to: model.posts.length + POSTS_PER_PAGE});
             $http({method: 'GET', params: params, url: API_URL + '/posts'}).then(function (res) {
-                // Delay for giving the user feedback that new posts has been loaded
+                // Delay to give the user feedback that new posts has been loaded
                 $timeout(function () {
                     def.resolve(res);
                 }, 400);

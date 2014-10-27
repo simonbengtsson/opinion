@@ -5,6 +5,7 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
 
         $scope.loadingPosts = false;
         $scope.postType = 'global';
+        $scope.loadingError = '';
         $scope.searchTerm = '';
         model.posts = [];
 
@@ -13,18 +14,14 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
             network.getPosts().then(function (res) {
                 model.posts = res.data;
             });
-        } else if ($routeParams.searchTerm) {
-            $scope.searchTerm = $routeParams.searchTerm;
-            network.getPosts().then(function (res) {
-                model.posts = res.data;
-            });
         } else {
             network.getPosts().then(function (res) {
+                if (res.data.length === 0) {
+                    $scope.loadingError = 'No opinions';
+                }
                 model.posts = res.data;
             });
         }
-
-        var page = 0;
 
         network.getFeaturedUsers().then(function (res) {
             model.featuredUsers = res.data;
@@ -36,7 +33,6 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
 
         $scope.changePostType = function (type) {
             $scope.postType = type;
-            page = 0;
             model.posts = [];
             $scope.loadMorePosts();
         };
@@ -47,20 +43,23 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
                 return;
             $scope.loadingPosts = true;
 
-            if ($scope.postType === 'city') {
+            if ($scope.postType === 'local') {
                 navigator.geolocation.getCurrentPosition(function (geo) {
                     var params = {
-                        page: page,
                         type: 'local',
                         lat: geo.latitude,
                         lon: geo.longitude
                     };
                     network.getPosts(params).then(function (res) {
                         $timeout(function () {
+                            if (res.data.length === 0) {
+                                $scope.loadingError = 'No more posts';
+                            }
                             model.posts = model.posts.concat(res.data);
-                            page++;
                             $scope.loadingPosts = false;
                         });
+                    }, function() {
+                        $scope.loadingError = "Couldn't load posts";
                     });
                 }, function () {
                     $timeout(function () {
@@ -73,8 +72,10 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
                     type: $scope.postType
                 };
                 network.getPosts(params).then(function (res) {
+                    if (res.data.length === 0) {
+                        $scope.loadingError = 'No opinions';
+                    }
                     model.posts = model.posts.concat(res.data);
-                    page++;
                     $scope.loadingPosts = false;
                 });
             }

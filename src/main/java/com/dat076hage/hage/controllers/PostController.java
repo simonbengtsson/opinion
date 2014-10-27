@@ -13,6 +13,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.net.URI;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -43,7 +44,8 @@ public class PostController {
     @EJB
     CommentRegistry commentReg;
     
-    Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm'Z'").create();
     
     @GET
     public Response findAll(@HeaderParam("Authorization") String authorization,
@@ -53,28 +55,34 @@ public class PostController {
                             @QueryParam("from") int fromIndex,
                             @QueryParam("to") int toIndex) {
 
-        User askingUser = apiKeyReg.validateApiKey(authorization);
-
+        List<Post> posts;
+        
+        User kim = userReg.find("kim");
+        Post kimPost1 = new Post(kim, "This is my first, simple Post!", "", "", new ArrayList<String>(), null);
+        postReg.create(kimPost1);
+                
         switch (postType) {
             case "global":
-                return Response.ok(gson.toJson(postReg.getRandomPosts(10))).build();
+                posts = postReg.getPosts(fromIndex, toIndex);
+                return Response.ok(gson.toJson(posts)).build();
             case "local":
-                return Response.ok().build();
+                if(lat == 1000 || lon == 1000) {
+                    return Response.status(400).entity("Lat and long required").build();
+                }
+                posts = postReg.getPosts(fromIndex, toIndex, lat, lon);
+                return Response.ok(gson.toJson(posts)).build();
             case "following":
-                return getFollowingPosts(askingUser);
+                User askingUser = apiKeyReg.validateApiKey(authorization);
+                if (askingUser == null) {
+                    return Response.status(400).entity("User must be logged in to view follower's posts").build();
+                }
+                posts = postReg.getPosts(fromIndex, toIndex, askingUser);
+                return Response.ok(gson.toJson(posts), MediaType.APPLICATION_JSON).build();
             default:
                 throw new WebApplicationException(400);
         }
     }
 
-    private Response getFollowingPosts(User askingUser) {
-        if (askingUser == null) {
-            return Response.status(401).build();
-        }
-        return Response.ok(gson.toJson(postReg.getPostsFromUsersIFollow(askingUser)), MediaType.APPLICATION_JSON).build();
-        
-    }
-    
     @POST
     public Response createPost(@HeaderParam("Authorization") String authorization, String contentBody) {
         User askingUser = apiKeyReg.validateApiKey(authorization);
@@ -100,11 +108,7 @@ public class PostController {
 
         Post newPost = new Post(askingUser, text, picture, "", new ArrayList<String>(), gps);
 
-        try {
-            postReg.create(newPost);
-        } catch (Exception e) { // duplicate posts in database
-            return Response.notAcceptable(null).build();
-        }
+        postReg.create(newPost);
 
         Response.ResponseBuilder res = Response.status(Response.Status.CREATED);
         res.entity(gson.toJson(newPost));
