@@ -450,3 +450,8 @@ a {
 .uploaded-image img {
     margin-bottom: 20px;
 }
+
+#opinion a.disabled {
+    color: #aaa;
+    cursor: default;
+}

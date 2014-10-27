@@ -19,7 +19,7 @@
                 <span class="glyphicon glyphicon-home"></span>
                 Local
             </a>
-            <a class="area" ng-class="postType === 'following' ? 'active' : ''" ng-click="changePostType('following')">
+            <a ng-class="isLoggedIn() ? '' : 'disabled'" class="area" ng-class="postType === 'following' ? 'active' : ''" ng-click="changePostType('following')">
                 <span class="glyphicon glyphicon-user"></span>
                 Following
             </a>

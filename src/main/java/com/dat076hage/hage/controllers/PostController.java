@@ -49,8 +49,8 @@ public class PostController {
     
     @GET
     public Response findAll(@HeaderParam("Authorization") String authorization,
-                            @DefaultValue("1000") @QueryParam("lat") long lat,
-                            @DefaultValue("1000") @QueryParam("lon") long lon,
+                            @DefaultValue("1000") @QueryParam("lat") double lat,
+                            @DefaultValue("1000") @QueryParam("lon") double lon,
                             @DefaultValue("global") @QueryParam("type") String postType,
                             @QueryParam("from") int fromIndex,
                             @QueryParam("to") int toIndex) {

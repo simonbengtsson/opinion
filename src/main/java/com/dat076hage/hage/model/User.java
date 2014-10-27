@@ -35,10 +35,10 @@ public class User implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     @Expose private Date memberSince;
     
-    @ManyToMany(mappedBy = "followers")
+    @ManyToMany
     private List<User> following;
     
-    @ManyToMany
+    @ManyToMany(mappedBy = "following")
     private List<User> followers;
     
     @OneToMany(mappedBy = "user")

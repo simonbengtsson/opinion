@@ -32,6 +32,9 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
         });
 
         $scope.changePostType = function (type) {
+            if(type === 'following' && !$scope.isLoggedIn()) {
+                return;
+            }
             $scope.postType = type;
             model.posts = [];
             $scope.loadMorePosts();
@@ -47,8 +50,8 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
                 navigator.geolocation.getCurrentPosition(function (geo) {
                     var params = {
                         type: 'local',
-                        lat: geo.latitude,
-                        lon: geo.longitude
+                        lat: geo.coords.latitude,
+                        lon: geo.coords.longitude
                     };
                     console.log(params);
                     network.getPosts(params).then(function (res) {

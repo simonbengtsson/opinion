@@ -232,15 +232,12 @@ public class UserController {
 
     @GET
     @Path("{username}/posts")
-    public Response removeMeAsFollower(@PathParam("username") String username){
+    public Response getUserPosts(@PathParam("username") String username){
         User user = userReg.find(username);
         if(user == null) {
             return Response.status(404).build();
         }
-        
-        List<Post> posts = user.getPosts();
-        posts.add(new Post(user, "This is not an opinion"));
-        return Response.ok(gson.toJson(posts)).build();
+        return Response.ok(gson.toJson(user.getPosts())).build();
     }
     
 }

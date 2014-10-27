@@ -67,9 +67,5 @@ app.service('NetworkService', ['$http', 'API_URL', 'BASE_URL', 'ModelService', '
             return $http.get(API_URL + "/hashtags");
         };
 
-        this.initTestData = function () {
-            return $http.get(BASE_URL + 'seed-database');
-        };
-
     }
 ]);

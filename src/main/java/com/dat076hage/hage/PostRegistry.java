@@ -30,7 +30,7 @@ public class PostRegistry extends AbstractDAO<Post, Long> {
     }
     
     // Local posts
-    public List<Post> getPosts(int from, int to, long lat, long lon) {
+    public List<Post> getPosts(int from, int to, double lat, double lon) {
         Query q = em.createQuery("SELECT p FROM Post p ORDER BY p.date", Post.class);
         q.setFirstResult(from);
         q.setMaxResults(to - from);

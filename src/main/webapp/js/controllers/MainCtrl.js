@@ -5,10 +5,6 @@ app.controller('MainCtrl', ['$scope', 'ModelService', 'NetworkService', '$http',
 
         $scope.model = model;
 
-        network.initTestData().then(function (res) {
-            console.log('Seeded!');
-        });
-
         network.getLoggedInUser().then(function (res) {
             model.user = res.data;
         });
