@@ -56,10 +56,6 @@ public class PostController {
                             @QueryParam("to") int toIndex) {
 
         List<Post> posts;
-        
-        User kim = userReg.find("kim");
-        Post kimPost1 = new Post(kim, "This is my first, simple Post!", "", "", new ArrayList<String>(), null);
-        postReg.create(kimPost1);
                 
         switch (postType) {
             case "global":

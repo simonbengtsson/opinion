@@ -50,6 +50,7 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
                         lat: geo.latitude,
                         lon: geo.longitude
                     };
+                    console.log(params);
                     network.getPosts(params).then(function (res) {
                         $timeout(function () {
                             if (res.data.length === 0) {
@@ -59,6 +60,7 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
                             $scope.loadingPosts = false;
                         });
                     }, function() {
+                        $scope.loadingPosts = false;
                         $scope.loadingError = "Couldn't load posts";
                     });
                 }, function () {
