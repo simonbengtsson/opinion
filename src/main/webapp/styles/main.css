@@ -16,6 +16,11 @@
     padding: 0;
 }
 
+body.modal-open {
+    overflow: hidden;
+    position: fixed;
+}
+
 .nav-right {
     right: 10px;
 }
