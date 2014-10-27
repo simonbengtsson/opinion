@@ -14,13 +14,6 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
             network.getPosts().then(function (res) {
                 model.posts = res.data;
             });
-        } else {
-            network.getPosts().then(function (res) {
-                if (res.data.length === 0) {
-                    $scope.loadingError = 'No opinions';
-                }
-                model.posts = res.data;
-            });
         }
 
         network.getFeaturedUsers().then(function (res) {
@@ -39,11 +32,13 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
             model.posts = [];
             $scope.loadMorePosts();
         };
+        
+        var noMorePosts = false;
 
         $scope.loadMorePosts = function () {
-            $scope.loadingError = '';
-            if ($scope.loadingPosts)
+            if ($scope.loadingPosts || noMorePosts)
                 return;
+            $scope.loadingError = '';
             $scope.loadingPosts = true;
 
             if ($scope.postType === 'local') {
@@ -53,10 +48,10 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
                         lat: geo.coords.latitude,
                         lon: geo.coords.longitude
                     };
-                    console.log(params);
                     network.getPosts(params).then(function (res) {
                         $timeout(function () {
                             if (res.data.length === 0) {
+                                noMorePosts = true;
                                 $scope.loadingError = 'No more posts';
                             }
                             model.posts = model.posts.concat(res.data);
@@ -78,7 +73,8 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
                 };
                 network.getPosts(params).then(function (res) {
                     if (res.data.length === 0) {
-                        $scope.loadingError = 'No opinions';
+                        noMorePosts = true;
+                        $scope.loadingError = 'No more opinions';
                     }
                     model.posts = model.posts.concat(res.data);
                     $scope.loadingPosts = false;

@@ -455,3 +455,9 @@ a {
     color: #aaa;
     cursor: default;
 }
+
+.opineText {
+    color: #34495e;
+    font-size: 20px;
+    margin: 0;
+}

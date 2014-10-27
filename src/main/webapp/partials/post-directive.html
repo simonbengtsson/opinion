@@ -11,11 +11,12 @@
                 <div class="time-ago" am-time-ago="post.date"></div>
             </div>
             <div class="pull-right" ng-if="model.user && model.user.username !== post.user.username">
-                <div class="btn btn-inverse btn-sm">
+                <h5 class="opineText" ng-show="opineText">{{ opineText }}</h5>
+                <div ng-hide="opineText" class="btn btn-inverse btn-sm" ng-click="opineText = 'Agreed'">
                     <span style="color: #1ABC9C;" class="glyphicon glyphicon-ok"></span>
                     Agree
                 </div>
-                <div class="btn btn-inverse btn-sm">
+                <div ng-hide="opineText" class="btn btn-inverse btn-sm" ng-click="opineText = 'Disagreed'">
                     <span style="color: #E74C3C;" class="glyphicon glyphicon-remove"></span>
                     Disagree
                 </div>
