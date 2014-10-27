@@ -45,7 +45,7 @@ public class PostController {
     CommentRegistry commentReg;
     
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm'Z'").create();
+            .create();
     
     @GET
     public Response findAll(@HeaderParam("Authorization") String authorization,
@@ -53,11 +53,15 @@ public class PostController {
                             @DefaultValue("1000") @QueryParam("lon") double lon,
                             @DefaultValue("global") @QueryParam("type") String postType,
                             @QueryParam("from") int fromIndex,
-                            @QueryParam("to") int toIndex) {
+                            @QueryParam("to") int toIndex,
+                            @QueryParam("hashtag") String hashtag){
 
         List<Post> posts;
                 
         switch (postType) {
+            case "hashtag":
+                posts = postReg.getPosts(fromIndex, toIndex, hashtag);
+                return Response.ok(gson.toJson(posts)).build();
             case "global":
                 posts = postReg.getPosts(fromIndex, toIndex);
                 return Response.ok(gson.toJson(posts)).build();

@@ -10,10 +10,8 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
         model.posts = [];
 
         if ($routeParams.hashtag) {
+            $scope.postType = 'hashtag';
             $scope.searchTerm = '#' + $routeParams.hashtag;
-            network.getPosts().then(function (res) {
-                model.posts = res.data;
-            });
         }
 
         network.getFeaturedUsers().then(function (res) {
@@ -25,6 +23,7 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
         });
 
         $scope.changePostType = function (type) {
+            noMorePosts = false;
             if(type === 'following' && !$scope.isLoggedIn()) {
                 return;
             }
@@ -40,7 +39,7 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
                 return;
             $scope.loadingError = '';
             $scope.loadingPosts = true;
-
+            
             if ($scope.postType === 'local') {
                 navigator.geolocation.getCurrentPosition(function (geo) {
                     var params = {
@@ -71,6 +70,9 @@ app.controller('PostCtrl', ['$scope', 'NetworkService', 'ModelService', '$locati
                 var params = {
                     type: $scope.postType
                 };
+                if($scope.postType === 'hashtag') {
+                    params.hashtag = $routeParams.hashtag;
+                }
                 network.getPosts(params).then(function (res) {
                     if (res.data.length === 0) {
                         noMorePosts = true;

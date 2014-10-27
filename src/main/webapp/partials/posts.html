@@ -2,7 +2,7 @@
     <div class="col-sm-4">
         <h6>Featured</h6>
         <opinion-user-badge ng-repeat="user in model.featuredUsers" opinion-user="user"></opinion-user-badge>
-        <h6>Trending</h6>
+        <h6>Suggested</h6>
 
         <div class="trending-box">
             <a ng-repeat="hashtag in model.trendingHashtags track by $index" href="#/hashtags/{{hashtag}}"> 
@@ -19,7 +19,7 @@
                 <span class="glyphicon glyphicon-home"></span>
                 Local
             </a>
-            <a ng-class="isLoggedIn() ? '' : 'disabled'" class="area" ng-class="postType === 'following' ? 'active' : ''" ng-click="changePostType('following')">
+            <a ng-class="{'disabled': !isLoggedIn(), 'active': postType === 'following'}" class="area" ng-click="changePostType('following')">
                 <span class="glyphicon glyphicon-user"></span>
                 Following
             </a>

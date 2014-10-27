@@ -309,8 +309,8 @@ a {
     line-height: 55px;
 }
 
-.area.active {
-    color: #1ABC9C;
+#opinion .area.active {
+    color: #1ABC9C !important;
 }
 
 .loading {

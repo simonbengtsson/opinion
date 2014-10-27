@@ -20,6 +20,20 @@ public class PostRegistry extends AbstractDAO<Post, Long> {
     public PostRegistry() {
         super(Post.class);
     }
+    
+    // Hashtag posts
+    public List<Post> getPosts(int from, int to, String hashtag) {
+        Query q = em.createQuery("SELECT p FROM Post p ORDER BY p.date", Post.class);
+        List<Post> allPosts = q.getResultList();
+        
+        List<Post> posts = new ArrayList<>();
+        for(Post post : allPosts) {
+            if(post.getText().contains(hashtag)) {
+                posts.add(post);
+            }
+        }
+        return posts;
+    }
 
     // Global posts
     public List<Post> getPosts(int from, int to) {
